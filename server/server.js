@@ -44,14 +44,12 @@ app.post("/api/pictures", async (req, res, next) => {
 
 app.post("/api/users/:userId/pictures/:pictureId", async (req, res, next) => {
   try {
-    res
-      .status(201)
-      .send(
-        await linkUserToPicture({
-          user_id: req.params.userId,
-          picture_id: req.params.pictureId,
-        })
-      );
+    res.status(201).send(
+      await linkUserToPicture({
+        user_id: req.params.userId,
+        picture_id: req.params.pictureId,
+      })
+    );
   } catch (ex) {
     next(ex);
   }
@@ -152,7 +150,7 @@ const init = async () => {
     const port = process.env.PORT || 3000;
     app.listen(port, () => console.log(`Listening on port ${port}`));
   } catch (err) {
-    console.error("❌ Init function failed:", err);
+    console.error("Init function failed:", err);
     process.exit(1); // Exit the process if the database connection fails
   }
 };
