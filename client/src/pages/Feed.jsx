@@ -75,6 +75,7 @@ function Feed() {
           </div>
         ))}
       </div>
+      <Upload />
     </div>
   );
 }
