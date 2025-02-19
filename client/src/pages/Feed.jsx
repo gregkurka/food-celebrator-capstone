@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Upload from "../components/Upload";
 
 function Feed() {
   return (
-    <div>Feed</div>
-  )
+    <div>
+      <Upload />
+    </div>
+  );
 }
 
-export default Feed
+export default Feed;
