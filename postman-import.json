@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "abc12345-6789-0123-4567-abcdef123456",
+    "name": "User-Picture API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"newUser123\",\n  \"password\": \"securePass!\",\n  \"email\": \"newuser123@example.com\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/users",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Picture",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"URL\": \"https://random.image/newpic.jpg\",\n  \"caption\": \"A new amazing picture\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/pictures",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pictures"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch Pictures",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/pictures",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pictures"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Link User to Picture",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userId}}/pictures/{{pictureId}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userId}}", "pictures", "{{pictureId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fetch User Pictures",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userId}}/pictures",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userId}}", "pictures"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Picture",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/pictures/{{id}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "pictures", "{{id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete User-Picture Link",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/{{userId}}/pictures/{{pictureId}}",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "{{userId}}", "pictures", "{{pictureId}}"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
