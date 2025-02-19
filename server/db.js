@@ -6,31 +6,43 @@ const bcrypt = require("bcrypt");
 //replace with real table data
 const createTables = async () => {
   const SQL = `
-      DROP TABLE IF EXISTS favorite;
-      DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS products;
-  
-      CREATE TABLE users(
-        id UUID PRIMARY KEY,
-        username VARCHAR(64) NOT NULL UNIQUE,
-        password VARCHAR(256) NOT NULL
-      );
-  
-      CREATE TABLE products(
-        id UUID PRIMARY KEY,
-        name VARCHAR(64) NOT NULL
-      );
-  
-      CREATE TABLE favorite(
-        id UUID PRIMARY KEY,
-        user_id UUID REFERENCES users(id) NOT NULL,
-        product_id UUID REFERENCES products(id) NOT NULL,
-        CONSTRAINT unique_user_favorite UNIQUE (user_id, product_id)
-      );
+    DROP TABLE IF EXISTS users_x_pictures;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS pictures;
+
+CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- Required for gen_random_uuid()
+
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pictures (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    URL VARCHAR(2083) NOT NULL,
+    caption TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users_x_pictures (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    picture_id UUID NOT NULL REFERENCES pictures(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, picture_id) -- Prevents duplicate relations
+);
+
+
     `;
   await client.query(SQL);
 };
 
 module.exports = {
   client,
+  createTables,
 };
