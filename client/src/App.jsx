@@ -10,16 +10,18 @@ import Footer from "./components/Footer";
 // import "./App.css";
 
 function App() {
-  <div>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/feed" element={<Feed />} />
-    </Routes>
-    <Footer />
-  </div>;
+  return (
+    <div>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/feed" element={<Feed />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
