@@ -1,23 +1,117 @@
 {
   "info": {
-    "_postman_id": "abc12345-6789-0123-4567-abcdef123456",
-    "name": "User-Picture API Tests",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "name": "Node Express App",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "000000"
   },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    }
+  ],
   "item": [
+    {
+      "name": "Auth - Register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser_register\",\n  \"password\": \"password\",\n  \"email\": \"testregister@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser_register\",\n  \"password\": \"password\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Save token to a collection/global variable for subsequent requests.",
+              "let jsonData = pm.response.json();",
+              "if (jsonData.token) {",
+              "    pm.collectionVariables.set(\"authToken\", jsonData.token);",
+              "    pm.globals.set(\"authToken\", jsonData.token);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth - Me",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{authToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "me"]
+        }
+      },
+      "response": []
+    },
     {
       "name": "Create User",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"username\": \"newUser123\",\n  \"password\": \"securePass!\",\n  \"email\": \"newuser123@example.com\"\n}"
+          "raw": "{\n  \"username\": \"newuser\",\n  \"password\": \"password\",\n  \"email\": \"newuser@example.com\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/users",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{baseUrl}}/api/users",
+          "host": ["{{baseUrl}}"],
           "path": ["api", "users"]
         }
       },
@@ -27,43 +121,19 @@
       "name": "Create Picture",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"URL\": \"https://random.image/newpic.jpg\",\n  \"caption\": \"A new amazing picture\"\n}"
+          "raw": "{\n  \"URL\": \"https://example.com/myimage.jpg\",\n  \"caption\": \"A lovely image.\"\n}"
         },
         "url": {
-          "raw": "http://localhost:3000/api/pictures",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "pictures"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Fetch Users",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:3000/api/users",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "users"]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Fetch Pictures",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:3000/api/pictures",
-          "host": ["localhost"],
-          "port": "3000",
+          "raw": "{{baseUrl}}/api/pictures",
+          "host": ["{{baseUrl}}"],
           "path": ["api", "pictures"]
         }
       },
@@ -73,26 +143,75 @@
       "name": "Link User to Picture",
       "request": {
         "method": "POST",
-        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
         "url": {
-          "raw": "http://localhost:3000/api/users/{{userId}}/pictures/{{pictureId}}",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "users", "{{userId}}", "pictures", "{{pictureId}}"]
+          "raw": "{{baseUrl}}/api/users/:userId/pictures/:pictureId",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", ":userId", "pictures", ":pictureId"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "REPLACE_WITH_USER_ID"
+            },
+            {
+              "key": "pictureId",
+              "value": "REPLACE_WITH_PICTURE_ID"
+            }
+          ]
         }
       },
       "response": []
     },
     {
-      "name": "Fetch User Pictures",
+      "name": "Get All Users",
       "request": {
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/users/{{userId}}/pictures",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "users", "{{userId}}", "pictures"]
+          "raw": "{{baseUrl}}/api/users",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Pictures",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/pictures",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pictures"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User's Pictures",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/users/:userId/pictures",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", ":userId", "pictures"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "REPLACE_WITH_USER_ID"
+            }
+          ]
         }
       },
       "response": []
@@ -103,10 +222,15 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/users/{{id}}",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "users", "{{id}}"]
+          "raw": "{{baseUrl}}/api/users/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "REPLACE_WITH_USER_ID"
+            }
+          ]
         }
       },
       "response": []
@@ -117,10 +241,15 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/pictures/{{id}}",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "pictures", "{{id}}"]
+          "raw": "{{baseUrl}}/api/pictures/:id",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "pictures", ":id"],
+          "variable": [
+            {
+              "key": "id",
+              "value": "REPLACE_WITH_PICTURE_ID"
+            }
+          ]
         }
       },
       "response": []
@@ -131,10 +260,19 @@
         "method": "DELETE",
         "header": [],
         "url": {
-          "raw": "http://localhost:3000/api/users/{{userId}}/pictures/{{pictureId}}",
-          "host": ["localhost"],
-          "port": "3000",
-          "path": ["api", "users", "{{userId}}", "pictures", "{{pictureId}}"]
+          "raw": "{{baseUrl}}/api/users/:userId/pictures/:pictureId",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", ":userId", "pictures", ":pictureId"],
+          "variable": [
+            {
+              "key": "userId",
+              "value": "REPLACE_WITH_USER_ID"
+            },
+            {
+              "key": "pictureId",
+              "value": "REPLACE_WITH_PICTURE_ID"
+            }
+          ]
         }
       },
       "response": []
