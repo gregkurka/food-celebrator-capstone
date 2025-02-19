@@ -18,6 +18,9 @@ const app = express();
 app.use(express.json());
 
 const path = require("path");
+
+const { authenticate, findUserByToken, isLoggedIn } = require("./auth");
+
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "../client/dist/index.html"))
 );
@@ -26,6 +29,32 @@ app.use(
   express.static(path.join(__dirname, "../client/dist/assets"))
 );
 
+app.post("/api/auth/register", async (req, res, next) => {
+  try {
+    const newUser = await createUser(req.body);
+    res.status(201).send(newUser);
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.post("/api/auth/login", async (req, res, next) => {
+  try {
+    const token = await authenticate(req.body);
+    res.send({ token });
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/auth/me", isLoggedIn, async (req, res, next) => {
+  try {
+    const user = await findUserByToken(req.headers.authorization);
+    res.send(user);
+  } catch (ex) {
+    next(ex);
+  }
+});
 app.post("/api/users", async (req, res, next) => {
   try {
     res.status(201).send(await createUser(req.body));
@@ -122,6 +151,7 @@ const init = async () => {
     await createTables();
     console.log("Tables created.");
 
+    // Seed data if you'd like
     const user1 = await createUser({
       username: "testuser1",
       password: "password1",
@@ -151,7 +181,7 @@ const init = async () => {
     app.listen(port, () => console.log(`Listening on port ${port}`));
   } catch (err) {
     console.error("Init function failed:", err);
-    process.exit(1); // Exit the process if the database connection fails
+    process.exit(1);
   }
 };
 
