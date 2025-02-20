@@ -1,99 +1,48 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from "react";
+import GetFeedAll from "./ApiCalls/GetFeedAll";
 
 function PictureFeed() {
   // Sample posts data (replace with API data later)
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      username: "johndoe",
-      avatar: "https://i.pravatar.cc/150?img=1",
-      content: "Loving the sunny weather today! ☀️",
-      likes: 12,
-      comments: 3,
-    },
-    {
-      id: 2,
-      username: "janesmith",
-      avatar: "https://i.pravatar.cc/150?img=2",
-      content: "Just finished my latest painting 🎨",
-      likes: 30,
-      comments: 5,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-    {
-      id: 3,
-      username: "mikelee",
-      avatar: "https://i.pravatar.cc/150?img=3",
-      content: "Hiking adventures in the mountains! ⛰️",
-      likes: 24,
-      comments: 8,
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await GetFeedAll();
+        setPosts(data);
+      } catch (error) {
+        console.error("Failed to fetch feed data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   // Function to handle likes
-//   const handleLike = (postId) => {
-//     setPosts(
-//       posts.map((post) =>
-//         post.id === postId ? { ...post, likes: post.likes + 1 } : post
-//       )
-//     );
-//   };
+  //   const handleLike = (postId) => {
+  //     setPosts(
+  //       posts.map((post) =>
+  //         post.id === postId ? { ...post, likes: post.likes + 1 } : post
+  //       )
+  //     );
+  //   };
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {posts.map((post) => (
         <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
           {/* User Info */}
           <div className="flex flex-col items-center space-y-4">
             <img
-              src={post.avatar}
+              src={post.url}
               alt={post.username}
               className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-green-400"
             />
-            <h2 className="text-lg font-semibold">{post.username}</h2>
+            <h2 className="text-lg font-semibold">{post.caption}</h2>
           </div>
 
           {/* Post Content */}
-          <p className="mt-4 text-gray-300">{post.content}</p>
+          <p className="mt-4 text-gray-300">{post.caption}</p>
 
           {/* Actions (Like & Comment) */}
           <div className="mt-4 flex space-x-6">
@@ -113,4 +62,4 @@ function PictureFeed() {
   );
 }
 
-export default PictureFeed
+export default PictureFeed;

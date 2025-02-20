@@ -53,11 +53,11 @@ const seed = async () => {
     });
 
     const picture1 = await createPicture({
-      URL: "https://example.com/image1.jpg",
+      URL: "https://i.pravatar.cc/150?img=1",
       caption: "A beautiful sunset.",
     });
     const picture2 = await createPicture({
-      URL: "https://example.com/image2.jpg",
+      URL: "https://i.pravatar.cc/150?img=3",
       caption: "A mountain view.",
     });
 
