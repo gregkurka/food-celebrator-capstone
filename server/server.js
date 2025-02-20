@@ -13,6 +13,8 @@ const {
   deleteUserPictureLink,
 } = require("./db");
 
+const port = process.env.PORT || 3000;
+
 const express = require("express");
 const app = express();
 app.use(express.json());
@@ -144,40 +146,7 @@ app.use((err, req, res, next) => {
 
 const init = async () => {
   try {
-    console.log("Connecting to database...");
     await client.connect();
-    console.log("Connected to database.");
-
-    await createTables();
-    console.log("Tables created.");
-
-    // Seed data if you'd like
-    const user1 = await createUser({
-      username: "testuser1",
-      password: "password1",
-      email: "test1@example.com",
-    });
-    const user2 = await createUser({
-      username: "testuser2",
-      password: "password2",
-      email: "test2@example.com",
-    });
-
-    const picture1 = await createPicture({
-      URL: "https://example.com/image1.jpg",
-      caption: "A beautiful sunset.",
-    });
-    const picture2 = await createPicture({
-      URL: "https://example.com/image2.jpg",
-      caption: "A mountain view.",
-    });
-
-    await linkUserToPicture({ user_id: user1.id, picture_id: picture1.id });
-    await linkUserToPicture({ user_id: user2.id, picture_id: picture2.id });
-
-    console.log("Data seeded.");
-
-    const port = process.env.PORT || 3000;
     app.listen(port, () => console.log(`Listening on port ${port}`));
   } catch (err) {
     console.error("Init function failed:", err);
