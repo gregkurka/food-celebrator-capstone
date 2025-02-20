@@ -1,4 +1,6 @@
 require("dotenv").config();
+const cors = require("cors");
+
 const {
   client,
   createTables,
@@ -18,6 +20,8 @@ const port = process.env.PORT || 3000;
 const express = require("express");
 const app = express();
 app.use(express.json());
+
+app.use(cors());
 
 const path = require("path");
 
