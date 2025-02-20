@@ -46,7 +46,9 @@ async function authenticate({ username, password }) {
 
 async function isLoggedIn(req, res, next) {
   try {
-    const token = req.headers.authorization;
+    const token =
+      req.headers.authorization?.split(" ")[1] || req.headers.authorization;
+
     if (!token) {
       const error = new Error("No token provided");
       error.status = 401;

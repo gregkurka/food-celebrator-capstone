@@ -21,37 +21,37 @@ function Form({
         {parent === "signup" ? "Signup" : "Login"}
       </h2>
 
+      <div className="mb-4">
+        <label htmlFor="username" className="block text-sm font-medium">
+          Username
+        </label>
+        <input
+          id="username"
+          type="text"
+          placeholder="User Name..."
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          className="w-full px-4 py-2 mt-1 bg-gray-800 text-white border border-gray-700 rounded-md focus:ring-2 focus:ring-green-400 focus:outline-none"
+        />
+      </div>
+
       {parent === "signup" && (
         <div className="mb-4">
-          <label htmlFor="username" className="block text-sm font-medium">
-            Username
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
           </label>
           <input
-            id="username"
-            type="text"
-            placeholder="User Name..."
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            type="email"
+            placeholder="Email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full px-4 py-2 mt-1 bg-gray-800 text-white border border-gray-700 rounded-md focus:ring-2 focus:ring-green-400 focus:outline-none"
           />
         </div>
       )}
-
-      <div className="mb-4">
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Email..."
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="w-full px-4 py-2 mt-1 bg-gray-800 text-white border border-gray-700 rounded-md focus:ring-2 focus:ring-green-400 focus:outline-none"
-        />
-      </div>
 
       <div className="mb-4">
         <label htmlFor="password" className="block text-sm font-medium">

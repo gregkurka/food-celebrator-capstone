@@ -20,6 +20,14 @@ const port = process.env.PORT || 3000;
 const express = require("express");
 const app = express();
 app.use(express.json());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Allow only the frontend origin
+    credentials: true, // Allow cookies and authentication headers
+    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+  })
+);
 
 app.use(cors());
 
