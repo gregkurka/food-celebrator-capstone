@@ -4,6 +4,7 @@ import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 
+
 function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
