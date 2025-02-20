@@ -128,6 +128,23 @@ const fetchUserPictureLinks = async () => {
   return response.rows;
 };
 
+const fetchFeed = async () => {
+  const SQL = `
+    SELECT 
+      ux.user_id, 
+      ux.picture_id, 
+      p.URL, 
+      p.caption, 
+      p.created_at, 
+      u.username
+    FROM users_x_pictures ux
+    JOIN pictures p ON ux.picture_id = p.id
+    JOIN users u ON ux.user_id = u.id;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
 module.exports = {
   client,
   createTables,
@@ -137,8 +154,9 @@ module.exports = {
   fetchUsers,
   fetchPictures,
   fetchUserPictures,
-  fetchUserPictureLinks, // <-- New
+  fetchUserPictureLinks,
   deleteUser,
   deletePicture,
   deleteUserPictureLink,
+  fetchFeed, // <-- New export
 };
