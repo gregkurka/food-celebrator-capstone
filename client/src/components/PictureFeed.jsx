@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import GetFeedAll from "./ApiCalls/GetFeedAll";
+import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 
 function PictureFeed() {
-  // Sample posts data (replace with API data later)
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -32,13 +32,14 @@ function PictureFeed() {
       {posts.map((post) => (
         <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
           {/* User Info */}
+          <p>{post.username}</p>
           <div className="flex flex-col items-center space-y-4">
             <img
               src={post.url}
               alt={post.username}
               className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-green-400"
             />
-            <h2 className="text-lg font-semibold">{post.caption}</h2>
+            {/* <h2 className="text-lg font-semibold">{post.caption}</h2> */}
           </div>
 
           {/* Post Content */}

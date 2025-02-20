@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UserUploads from "../components/UserUploads";
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -57,6 +58,7 @@ function Account() {
           </div>
         )}
       </div>
+      <UserUploads user={user} />
     </div>
   );
 }
