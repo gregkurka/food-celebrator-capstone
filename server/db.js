@@ -120,6 +120,14 @@ const deleteUserPictureLink = async ({ user_id, picture_id }) => {
   return response.rows[0];
 };
 
+const fetchUserPictureLinks = async () => {
+  const SQL = `
+    SELECT * FROM users_x_pictures;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
 module.exports = {
   client,
   createTables,
@@ -129,6 +137,7 @@ module.exports = {
   fetchUsers,
   fetchPictures,
   fetchUserPictures,
+  fetchUserPictureLinks, // <-- New
   deleteUser,
   deletePicture,
   deleteUserPictureLink,

@@ -122,6 +122,14 @@ app.get("/api/users/:userId/pictures", async (req, res, next) => {
   }
 });
 
+app.get("/api/users_x_pictures", async (req, res, next) => {
+  try {
+    res.send(await fetchUserPictureLinks());
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 app.delete("/api/users/:id", async (req, res, next) => {
   try {
     res.send(await deleteUser(req.params.id));
