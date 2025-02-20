@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UserUploads from "../components/UserUploads";
+import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 
 function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Controls visibility of the selection menu
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,19 +47,31 @@ function Account() {
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
           My Account
         </h2>
-        {user && (
-          <div className="flex flex-col items-center">
-            <img
-              src={user.profilePicture || "/default-profile.png"}
-              alt="Profile"
-              className="w-24 h-24 rounded-full border-4 border-gray-300 shadow-sm"
+        <div className="flex flex-col items-center">
+          {/* Clicking the profile picture toggles the selection menu */}
+          <img
+            src={selectedPicture}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-4 border-gray-300 shadow-sm cursor-pointer"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          />
+          <h3 className="mt-4 text-xl font-medium text-gray-900">
+            {user?.username}
+          </h3>
+
+          {/* Show profile picture selection menu only if isMenuOpen is true */}
+          {isMenuOpen && (
+            <ProfilePicture
+              selectedPicture={selectedPicture}
+              setSelectedPicture={(picture) => {
+                setSelectedPicture(picture);
+                setIsMenuOpen(false); // Close menu after selection
+              }}
             />
-            <h3 className="mt-4 text-xl font-medium text-gray-900">
-              {user.username}
-            </h3>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+      <UserUploads user={user} />
     </div>
   );
 }
