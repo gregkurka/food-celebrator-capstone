@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -28,15 +28,18 @@ function Navbar() {
           </div>
 
           <div className="hidden md:flex space-x-6">
-            <Link to="/feed" className="hover:text-green-400 transition">
-              Feed
-            </Link>
             {isAuthenticated ? (
               <>
+                <Link to="/feed" className="hover:text-green-400 transition">
+                  Feed
+                </Link>
                 <Link to="/account" className="hover:text-green-400 transition">
                   Account
                 </Link>
-                <button onClick={handleLogout} className="hover:text-red-400 transition">
+                <button
+                  onClick={handleLogout}
+                  className="hover:text-red-400 transition"
+                >
                   Logout
                 </button>
               </>
@@ -53,7 +56,10 @@ function Navbar() {
           </div>
 
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white focus:outline-none">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white focus:outline-none"
+            >
               {isOpen ? "✖" : "☰"}
             </button>
           </div>
