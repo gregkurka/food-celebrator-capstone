@@ -32,7 +32,6 @@ function App() {
       handleLogout();
     }
   }, []);
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -63,10 +62,6 @@ function App() {
       <Footer />
     </div>
   );
-}
-
-function ProtectedRoute({ token, children }) {
-  return token ? children : <Navigate to="/login" />;
 }
 
 export default App;
