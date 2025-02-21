@@ -59,8 +59,8 @@ function Account() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex flex-col items-center p-6 bg-gray-100 min-h-screen">
-      <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md">
+    <div className="flex flex-col items-center p-6 bg-background dark:bg-darkbackground min-h-screen">
+      <div className="bg-muted dark:bg-darkmuted shadow-lg rounded-xl p-6 w-full max-w-md">
         {/* Page title */}
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
           My Account

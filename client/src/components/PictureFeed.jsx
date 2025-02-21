@@ -32,7 +32,7 @@ function PictureFeed() {
   return (
     <div className="space-y-6">
       {posts.map((post) => (
-        <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <div key={post.id} className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg">
           {/* User Info */}
           <div>
             <Link
@@ -46,13 +46,13 @@ function PictureFeed() {
             <img
               src={post.url}
               alt={post.username}
-              className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-green-400"
+              className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-primary"
             />
             {/* <h2 className="text-lg font-semibold">{post.caption}</h2> */}
           </div>
 
           {/* Post Content */}
-          <p className="mt-4 text-gray-300">{post.caption}</p>
+          <p className="mt-4 text-secondary">{post.caption}</p>
 
           {/* Actions (Like & Comment) */}
           <div className="mt-4 flex space-x-6">

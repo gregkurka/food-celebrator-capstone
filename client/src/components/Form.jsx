@@ -17,7 +17,7 @@ function Form({
       className="bg-gray-900 bg-opacity-80 p-8 rounded-lg shadow-lg max-w-md mx-auto text-white backdrop-blur-md"
       onSubmit={submitFunction}
     >
-      <h2 className="text-2xl font-bold text-center text-green-400 mb-6">
+      <h2 className="text-2xl font-bold text-center text-primary dark:text-darksecondary">
         {parent === "signup" ? "Signup" : "Login"}
       </h2>
 
