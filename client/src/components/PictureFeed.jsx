@@ -53,8 +53,7 @@ function PictureFeed() {
             />
             {/* <h2 className="text-lg font-semibold">{post.caption}</h2> */}
           </div>
-
-          {/* Post Content */}
+          <p className="mt-4 text-secondary">{post.caption}</p>
           <p className="mt-4 text-secondary">
             Uploaded on {new Date(post.created_at).toLocaleDateString()}
           </p>
