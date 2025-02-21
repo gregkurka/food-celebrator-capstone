@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 const URL = "http://localhost:3000/api";
 import GetAllUsers from "./ApiCalls/GetAllUsers";
+import { Link } from "react-router-dom";
 
 function Search() {
   const [allUsers, setAllUsers] = useState([]);
@@ -37,18 +38,19 @@ function Search() {
 
       {/* Show user list only when searchText is not empty */}
       {searchText && (
-        <div className="mt-2 w-full max-w-xs bg-white shadow-md rounded-md">
+        <div className="mt-2 w-full max-w-xs bg-white shadow-md rounded-md border border-gray-200">
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
-              <div
+              <Link
                 key={user.id}
-                className="flex items-center justify-between p-2 border-b border-gray-200 last:border-b-0"
+                to={`/user/${user.username}`}
+                className="block w-full p-3 border-b border-gray-200 last:border-b-0 hover:bg-gray-100 transition"
               >
                 <p className="text-gray-700">{user.username}</p>
-              </div>
+              </Link>
             ))
           ) : (
-            <p className="text-gray-500 text-center mt-2">No users found.</p>
+            <p className="text-gray-500 text-center p-3">No users found.</p>
           )}
         </div>
       )}
