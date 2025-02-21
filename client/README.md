@@ -1,8 +1,13 @@
-# React + Vite
+# Food Celebrator Flow Chart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+App.jsx > Account.jsx> UserUploads.jsx
+App.jsx > Account.jsx> ProfilePicture.jsx
+App.jsx > Feed.jsx > Search.jsx > GetAllUsers.jsx
+App.jsx > Feed.jsx > Feed.jsx
+App.jsx > Feed.jsx > PictureFeed.jsx > GetPictureByUsers.jsx
+App.jsx > Feed.jsx > PictureFeed.jsx > GetFeedAll.jsx
+App.jsx > Login.jsx > Form.jsx
+App.jsx > SignUp.jsx > Form.jsx
+App.jsx > UserPage.jsx
+App.jsx > Header.jsx > Navbar.jsx
+App.jsx > Footer.jsx
