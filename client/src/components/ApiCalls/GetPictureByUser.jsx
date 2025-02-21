@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 const URL = "http://localhost:3000/api";
 
 async function GetPictureByUser(userId) {
@@ -18,6 +17,3 @@ async function GetPictureByUser(userId) {
 }
 
 export default GetPictureByUser;
-
-// const response = await axios.get(
-//     //   `${URL}/users/a3ffd62e-38af-4f4a-9664-942fc4df31ab/pictures`);
