@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle"; // Import the toggle button
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,9 +14,7 @@ function Navbar() {
       setIsAuthenticated(!!localStorage.getItem("token"));
     };
 
-    // Listen for changes in localStorage (only useful for multi-tab logout)
     window.addEventListener("storage", checkAuth);
-
     return () => {
       window.removeEventListener("storage", checkAuth);
     };
@@ -23,14 +22,15 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsAuthenticated(false); // Manually update state
+    setIsAuthenticated(false);
     navigate("/login");
   };
 
   return (
-    <nav className="bg-gray-900 text-white shadow-lg">
+    <nav className="bg-background text-primary dark:bg-darkbackground dark:text-darkprimary shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/feed" className="text-2xl font-bold text-green-400">
               <img
@@ -41,7 +41,8 @@ function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden md:flex space-x-6">
+          {/* Navigation Links */}
+          <div className="hidden md:flex space-x-6 items-center">
             {isAuthenticated ? (
               <>
                 <Link to="/feed" className="hover:text-green-400 transition">
@@ -67,12 +68,19 @@ function Navbar() {
                 </Link>
               </>
             )}
+
+            {/* Dark Mode Toggle Button */}
+            <DarkModeToggle />
           </div>
 
-          <div className="md:hidden">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            {/* Dark Mode Toggle for Mobile */}
+            <DarkModeToggle />
+
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white focus:outline-none"
+              className="ml-4 text-white focus:outline-none"
             >
               {isOpen ? "✖" : "☰"}
             </button>
@@ -80,6 +88,7 @@ function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-gray-800 p-4 space-y-3 text-center">
           <Link to="/feed" className="block hover:text-green-400">

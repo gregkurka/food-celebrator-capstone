@@ -59,7 +59,7 @@ function Signup({ setToken }) {
   return (
     <div>
       {/* Page header */}
-      <h2 className="text-2xl font-bold text-center text-green-400 mb-6">
+      <h2 className="text-2xl font-bold text-center text-primary dark:text-darksecondary mb-6">
         Register Here
       </h2>
 
