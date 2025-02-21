@@ -26,6 +26,7 @@ const {
   linkLikePictureAndUser,
   fetchAllLinkCommentPictureAndUser,
   fetchAllLinkLikePictureAndUser,
+  fetchUserPicturesByUsername,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -132,6 +133,14 @@ app.get("/api/pictures", async (req, res, next) => {
 app.get("/api/users/:userId/pictures", async (req, res, next) => {
   try {
     res.send(await fetchUserPictures(req.params.userId));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
+app.get("/api/username/:username/pictures", async (req, res, next) => {
+  try {
+    res.send(await fetchUserPicturesByUsername(req.params.username));
   } catch (ex) {
     next(ex);
   }
