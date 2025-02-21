@@ -23,7 +23,11 @@ function Navbar() {
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
             <Link to="/login" className="text-2xl font-bold text-green-400">
-              MyApp
+              <img
+                src="/logo.png"
+                alt="MY APP"
+                className="w-25 h-25 object-contain"
+              />
             </Link>
           </div>
 
