@@ -5,11 +5,11 @@
 /* Light Mode (default, if .light class is present) */
 
 @theme {
-  --color-primary: #ff7058; /* Warm Coral */
-  --color-secondary: #5b86a1; /* Muted Blue */
-  --color-background: #faf5f3; /* Soft Off White */
-  --color-foreground: #2d2d2d; /* Deep Charcoal */
-  --color-muted: #d8cfc7; /* Subtle Beige */
+  --color-primary: #ff7058; /* Bright Coral (Used for buttons, accents) */
+  --color-secondary: #007acc; /* Vibrant Blue (Contrasting accent) */
+  --color-background: #faf9f6; /* 	Soft Off-White (Warm, easy on the eyes) */
+  --color-foreground: #1c1c1c; /* Dark Gray-Black (For readability) */
+  --color-muted: #d8d8d8; /* 	Soft Gray (For borders, subtle elements) */
   /* Typography */
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Georgia, serif;
@@ -27,11 +27,11 @@
 /* Dark Mode (only applies when .dark class is present) */
 .dark {
   @theme {
-    --color-darkprimary: #ff7058; /* Darker Coral */
-    --color-darksecondary: #7da3c1; /* Muted Blue */
-    --color-darkbackground: #1a1a1a; /* Almost Black */
-    --color-darkforeground: #f2edeb; /* Warm White */
-    --color-darkmuted: #5c5c5c; /* Soft Gray */
+    --color-darkprimary: #ff5733; /* Fiery Red-Orange (Vibrant contrast) */
+    --color-darksecondary: #78dce8; /* 	Cyan (Contrasting cool tone) */
+    --color-darkbackground: #121212; /* 	Near-Black (Deep and rich) */
+    --color-darkforeground: #ededed; /* 	Soft White (Easier on the eyes in dark mode) */
+    --color-darkmuted: #444444; /* 	Dark Gray (For subtle UI elements) */
     --shadow-darkmd: 0px 4px 6px rgba(255, 255, 255, 0.1);
   }
 }

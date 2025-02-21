@@ -87,10 +87,10 @@ function Login({ setToken }) {
       className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center transition-all duration-500"
       style={{ backgroundImage: `url(${currentImage})` }} // Apply rotating background image
     >
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md bg-opacity-90">
+      <div className="bg-white/80 dark:bg-gray-800/70 p-6 rounded-xl shadow-md w-full max-w-md backdrop-blur-lg border border-gray-300 dark:border-gray-600 transition-all duration-500">
         {/* Login header */}
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
-          Login
+        <h2 className="text-2xl font-semibold text-center text-primary dark:text-darkprimary mb-4">
+          
         </h2>
 
         {/* Display error messages if any */}

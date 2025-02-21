@@ -4,72 +4,74 @@ import axios from "axios";
 import Form from "../components/Form";
 
 function Signup({ setToken }) {
-  // State variables to manage user input and application status
-  const [username, setUsername] = useState(""); // Stores the username input
-  const [email, setEmail] = useState(""); // Stores the email input
-  const [password, setPassword] = useState(""); // Stores the password input
-  const [confirmPassword, setConfirmPassword] = useState(""); // Stores the confirm password input
-  const [error, setError] = useState(null); // Stores error messages
-  const [loading, setLoading] = useState(false); // Tracks if the registration request is in progress
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // Function to handle user registration when the form is submitted
   async function registerUser(e) {
-    e.preventDefault(); // Prevents the default form submission behavior
+    e.preventDefault();
 
-    // Check if password and confirm password match
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
-    // Validate email format using a regex pattern
     if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
       setError("Please enter a valid email.");
       return;
     }
 
-    setError(null); // Clear previous error messages
-    setLoading(true); // Set loading state to true while processing request
+    setError(null);
+    setLoading(true);
 
     try {
-      // Send registration request to the API
       const { data } = await axios.post(
         "http://localhost:3000/api/auth/register",
-        {
-          username,
-          email,
-          password,
-        }
+        { username, email, password }
       );
 
-      // If the API response includes a user ID, registration was successful
       if (data.id) {
-        alert("Successfully signed up!"); // Notify user of successful signup
-        navigate("/login"); // Redirect user to the login page
+        alert("Successfully signed up!");
+        navigate("/login");
       }
     } catch (err) {
-      // Handle registration failure and display appropriate error message
       setError(err.response?.data?.error || "Registration failed.");
     } finally {
-      setLoading(false); // Reset loading state after request completes
+      setLoading(false);
     }
   }
 
   return (
-    <div>
-      {/* Page header */}
-      <h2 className="text-2xl font-bold text-center text-primary dark:text-darksecondary mb-6">
-        Register Here
+    <div
+      className="min-h-screen flex flex-col justify-center items-center 
+                 bg-background dark:bg-darkbackground text-foreground dark:text-darkforeground 
+                 px-6 py-12 md:py-20 animate-fadeIn"
+    >
+      {/* Page Title */}
+      <h2
+        className="text-4xl font-extrabold text-primary dark:text-darkprimary 
+                   text-center tracking-wide mb-6"
+      >
+        Create Your Account
       </h2>
 
-      {/* Display error messages if any */}
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {/* Error Message */}
+      {error && (
+        <p className="text-red-500 bg-red-100 dark:bg-red-900 text-center px-4 py-2 rounded-lg shadow-md mb-4">
+          {error}
+        </p>
+      )}
 
-      {/* Show loading indicator when request is processing */}
-      {loading && <p className="text-center">Loading...</p>}
+      {/* Loading Indicator */}
+      {loading && (
+        <p className="text-gray-500 text-center animate-pulse">Processing...</p>
+      )}
 
-      {/* Signup form component with necessary props */}
+      {/* Signup Form */}
       <Form
         parent="signup"
         submitFunction={registerUser}

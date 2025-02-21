@@ -8,7 +8,7 @@ function Upload() {
   const [message, setMessage] = useState(null);
   const [showPopup, setShowPopup] = useState(false); // pop-up modal to upload pictures
 
-  //file selection
+  // File selection
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
 
@@ -21,32 +21,6 @@ function Upload() {
     setFile(selectedFile);
     setMessage(null);
   };
-
-  // const handleUpload = async () => {
-  //   if (!file) {
-  //     setMessage("Please select an image to upload.");
-  //     return;
-  //   }
-  //   //form to send image and capture
-  //   const formData = new FormData();
-  //   console.log(file);
-  //   formData.append("file", file);
-  //   formData.append("caption", caption);
-
-  //   try {
-  //     console.log("FORMDATA", formData);
-  //     const uploadUrl = "http://localhost:3000/api/upload"; // changed to end point.
-  //     const response = await axios.post(uploadUrl, formData, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //     //success message and close modal
-  //     setMessage(response.data.message);
-  //     setShowPopup(false);
-  //   } catch (error) {
-  //     setMessage("File upload failed.");
-  //     console.error(error);
-  //   }
-  // };
 
   const handleUpload = async () => {
     if (!file) {
@@ -78,12 +52,15 @@ function Upload() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex items-center justify-center min-h-[100px]">
       <button
         onClick={() => setShowPopup(true)}
-        className="flex items-center gap-1 p-2 text-lg border border-gray-300 rounded-md hover:bg-gray-100 transition mt-5"
+        className="flex items-center gap-2 px-6 py-3 text-lg border border-gray-300 
+                   rounded-md hover:bg-gray-100 transition shadow-md 
+                   w-full md:w-auto whitespace-nowrap"
       >
-        <FaRegPlusSquare /> Upload your photo!
+        <FaRegPlusSquare className="text-2xl" />
+        Upload your photo!
       </button>
 
       {showPopup && (
