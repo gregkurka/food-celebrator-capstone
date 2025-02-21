@@ -4,12 +4,14 @@ const bcrypt = require("bcrypt");
 
 const createTables = async () => {
   const SQL = `
+    DROP TABLE IF EXISTS comments_x_pictures_x_users;
+    DROP TABLE IF EXISTS likes_x_pictures_x_users;
+    DROP TABLE IF EXISTS likes;
+    DROP TABLE IF EXISTS comments;
     DROP TABLE IF EXISTS users_x_pictures;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS pictures;
-
     CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-
     CREATE TABLE users (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         username VARCHAR(255) NOT NULL UNIQUE,
@@ -18,14 +20,12 @@ const createTables = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-
     CREATE TABLE pictures (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         URL VARCHAR(2083) NOT NULL,
         caption TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
-
     CREATE TABLE users_x_pictures (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -33,6 +33,33 @@ const createTables = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         UNIQUE(user_id, picture_id)
+    );
+    CREATE TABLE comments (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE likes (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE likes_x_pictures_x_users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        picture_id UUID NOT NULL REFERENCES pictures(id) ON DELETE CASCADE,
+        like_id UUID NOT NULL REFERENCES likes(id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, picture_id, like_id)
+    );
+    CREATE TABLE comments_x_pictures_x_users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        picture_id UUID NOT NULL REFERENCES pictures(id) ON DELETE CASCADE,
+        comment_id UUID NOT NULL REFERENCES comments(id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, picture_id, comment_id)
     );
   `;
   await client.query(SQL);
@@ -144,6 +171,84 @@ const fetchFeed = async () => {
   const response = await client.query(SQL);
   return response.rows;
 };
+//--CREATE FUNCTIONS--
+const createComment = async ({ content }) => {
+  const SQL = `
+    INSERT INTO comments (content)
+    VALUES ($1)
+    RETURNING *;
+  `;
+  const response = await client.query(SQL, [content]);
+  return response.rows[0];
+};
+
+const createLike = async () => {
+  const SQL = `
+    INSERT INTO likes DEFAULT VALUES RETURNING *;
+  `;
+  const response = await client.query(SQL);
+  return response.rows[0];
+};
+
+//--DELETE FUNCTIONS--
+const deleteComment = async (id) => {
+  const SQL = `
+    DELETE FROM comments WHERE id = $1 RETURNING *;
+  `;
+  const response = await client.query(SQL, [id]);
+  return response.rows[0];
+};
+
+const deleteLike = async (id) => {
+  const SQL = `
+    DELETE FROM likes WHERE id = $1 RETURNING *;
+  `;
+  const response = await client.query(SQL, [id]);
+  return response.rows[0];
+};
+
+//--Adds comments ids into comments_x_pictures_x_users table--
+const linkCommentPictureAndUser = async ({
+  user_id,
+  picture_id,
+  comment_id,
+}) => {
+  const SQL = `
+    INSERT INTO comments_x_pictures_x_users (user_id, picture_id, comment_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  const response = await client.query(SQL, [user_id, picture_id, comment_id]);
+  return response.rows[0];
+};
+//--Adds likes ids into likes_X_pictures_x_users table--
+const linkLikePictureAndUser = async ({ user_id, picture_id, like_id }) => {
+  const SQL = `
+    INSERT INTO likes_x_pictures_x_users (user_id, picture_id, like_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+  `;
+  const response = await client.query(SQL, [user_id, picture_id, like_id]);
+  return response.rows[0];
+};
+
+//--fetches all comments associated with a specific picture and user--
+const fetchAllLinkCommentPictureAndUser = async () => {
+  const SQL = `
+    SELECT * FROM comments_x_pictures_x_users;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
+
+//--fetches all comments associated with aspecific users and pictures--
+const fetchAllLinkLikePictureAndUser = async () => {
+  const SQL = `
+    SELECT * FROM likes_x_pictures_x_users;
+  `;
+  const response = await client.query(SQL);
+  return response.rows;
+};
 
 module.exports = {
   client,
@@ -158,5 +263,13 @@ module.exports = {
   deleteUser,
   deletePicture,
   deleteUserPictureLink,
-  fetchFeed, // <-- New export
+  fetchFeed,
+  createComment,
+  createLike,
+  deleteComment,
+  deleteLike,
+  linkCommentPictureAndUser,
+  linkLikePictureAndUser,
+  fetchAllLinkCommentPictureAndUser,
+  fetchAllLinkLikePictureAndUser, // <-- New export
 };
