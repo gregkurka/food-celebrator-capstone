@@ -32,7 +32,10 @@ function PictureFeed() {
   return (
     <div className="space-y-6">
       {posts.map((post) => (
-        <div key={post.id} className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg">
+        <div
+          key={post.id}
+          className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg"
+        >
           {/* User Info */}
           <div>
             <Link
@@ -52,8 +55,9 @@ function PictureFeed() {
           </div>
 
           {/* Post Content */}
-          <p className="mt-4 text-secondary">{post.caption}</p>
-
+          <p className="mt-4 text-secondary">
+            Uploaded on {new Date(post.created_at).toLocaleDateString()}
+          </p>
           {/* Actions (Like & Comment) */}
           <div className="mt-4 flex space-x-6">
             <button

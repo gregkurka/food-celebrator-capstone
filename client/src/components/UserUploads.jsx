@@ -41,9 +41,8 @@ function UserUploads({ user }) {
                 {post.caption || "No caption provided."}
               </p>
 
-              {/* Timestamp */}
               <p className="text-secondary dark:text-darksecondary text-sm">
-                {post.created_at}
+                Uploaded on {new Date(post.created_at).toLocaleDateString()}
               </p>
             </div>
           ))
