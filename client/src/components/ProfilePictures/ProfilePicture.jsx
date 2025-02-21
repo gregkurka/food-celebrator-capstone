@@ -1,6 +1,7 @@
 import React from "react";
 
 const profilePictures = [
+  "/basedlogo.png",
   "/coffee.png",
   "/pancakes.png",
   "/pizza.png",

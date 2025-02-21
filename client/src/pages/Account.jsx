@@ -4,18 +4,18 @@ import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 
-
 function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedPicture, setSelectedPicture] = useState("/basedlogo.png");
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Controls visibility of the selection menu
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      setLoading(false); // Ensure loading is false before redirect
+      setLoading(false);
       console.log(token);
       // navigate("/login");
       return;
@@ -27,6 +27,7 @@ function Account() {
           headers: { Authorization: token },
         });
         setUser(response.data);
+        // setSelectedPicture(response.data.profilePicture || "/basedlogo.png");
       } catch (err) {
         setError("Failed to load user data. Please log in again.");
         localStorage.removeItem("token");
@@ -57,7 +58,7 @@ function Account() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           />
           <h3 className="mt-4 text-xl font-medium text-gray-900">
-            {user?.username}
+            {user?.username.toUpperCase()}
           </h3>
 
           {/* Show profile picture selection menu only if isMenuOpen is true */}
