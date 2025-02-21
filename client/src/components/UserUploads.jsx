@@ -24,26 +24,31 @@ function UserUploads({ user }) {
       <div className="space-y-6">
         {userPosts.length > 0 ? (
           userPosts.map((post) => (
-            <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <div
+              key={post.id}
+              className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg"
+            >
               <div className="flex flex-col items-center space-y-4">
                 <img
                   src={post.url}
                   alt={post.caption || "User Upload"}
-                  className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-white-400"
+                  className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-primary"
                 />
               </div>
 
               {/* Post Caption */}
-              <p className="mt-4 text-gray-300">
+              <p className="mt-4 text-secondary dark:text-darksecondary">
                 {post.caption || "No caption provided."}
               </p>
 
               {/* Timestamp */}
-              <p className="text-gray-400 text-sm">{post.created_at}</p>
+              <p className="text-secondary dark:text-darksecondary text-sm">
+                {post.created_at}
+              </p>
             </div>
           ))
         ) : (
-          <p className="text-gray-400 text-center">
+          <p className="text-secondary dark:text-darksecondary text-center">
             No uploads yet. Try uploading a picture!
           </p>
         )}

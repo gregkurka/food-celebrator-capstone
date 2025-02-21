@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Light Mode (default, if .light class is present) */
+
+@theme {
+  --color-primary: #ff7058; /* Warm Coral */
+  --color-secondary: #5b86a1; /* Muted Blue */
+  --color-background: #faf5f3; /* Soft Off White */
+  --color-foreground: #2d2d2d; /* Deep Charcoal */
+  --color-muted: #d8cfc7; /* Subtle Beige */
+  /* Typography */
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-serif: Georgia, serif;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  /* Spacing */
+  --spacing-4: 1rem;
+  --spacing-8: 2rem;
+  /* Borders & Shadows */
+  --radius-md: 0.375rem;
+  --shadow-md: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode (only applies when .dark class is present) */
+.dark {
+  @theme {
+    --color-darkprimary: #ff7058; /* Darker Coral */
+    --color-darksecondary: #7da3c1; /* Muted Blue */
+    --color-darkbackground: #1a1a1a; /* Almost Black */
+    --color-darkforeground: #f2edeb; /* Warm White */
+    --color-darkmuted: #5c5c5c; /* Soft Gray */
+    --shadow-darkmd: 0px 4px 6px rgba(255, 255, 255, 0.1);
+  }
+}
