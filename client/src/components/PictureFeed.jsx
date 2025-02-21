@@ -53,7 +53,9 @@ function PictureFeed() {
 
           {/* Post Content */}
           <p className="mt-4 text-gray-300">{post.caption}</p>
-
+          <p className="text-gray-400 text-xs mt-2">
+            Uploaded on {new Date(post.created_at).toLocaleDateString()}
+          </p>
           {/* Actions (Like & Comment) */}
           <div className="mt-4 flex space-x-6">
             <button
