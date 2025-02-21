@@ -3,17 +3,27 @@ import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem("token")
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsAuthenticated(!!token);
+    const checkAuth = () => {
+      setIsAuthenticated(!!localStorage.getItem("token"));
+    };
+
+    // Listen for changes in localStorage (only useful for multi-tab logout)
+    window.addEventListener("storage", checkAuth);
+
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsAuthenticated(false);
+    setIsAuthenticated(false); // Manually update state
     navigate("/login");
   };
 
@@ -22,7 +32,7 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0">
-            <Link to="/login" className="text-2xl font-bold text-green-400">
+            <Link to="/feed" className="text-2xl font-bold text-green-400">
               <img
                 src="/logo.png"
                 alt="MY APP"
@@ -40,7 +50,6 @@ function Navbar() {
                 <Link to="/account" className="hover:text-green-400 transition">
                   Account
                 </Link>
-                <Link to="/user"></Link>
                 <button
                   onClick={handleLogout}
                   className="hover:text-red-400 transition"
