@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import UserPage from "./pages/UserPage";
 
 function App() {
   // State to store authentication token
@@ -70,6 +71,8 @@ function App() {
             path="/account"
             element={<Account token={token} user={user} />}
           />
+          <Route path="/user" element={<Account />} />
+          <Route path="/user/:username" element={<UserPage />} />
         </Routes>
       </main>
 

@@ -40,6 +40,7 @@ function Navbar() {
                 <Link to="/account" className="hover:text-green-400 transition">
                   Account
                 </Link>
+                <Link to="/user"></Link>
                 <button
                   onClick={handleLogout}
                   className="hover:text-red-400 transition"
