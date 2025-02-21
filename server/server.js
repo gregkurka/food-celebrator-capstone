@@ -18,6 +18,14 @@ const {
   deleteUserPictureLink,
   fetchUserPictureLinks,
   fetchFeed,
+  createComment,
+  createLike,
+  deleteComment,
+  deleteLike,
+  linkCommentPictureAndUser,
+  linkLikePictureAndUser,
+  fetchAllLinkCommentPictureAndUser,
+  fetchAllLinkLikePictureAndUser,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -224,6 +232,99 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     res.status(201).json({ message: "Upload successful", picture: newPicture });
   } catch (err) {
     next(err);
+  }
+});
+
+// Create a comment on a picture
+app.post("/api/createComment", async (req, res, next) => {
+  try {
+    const { user_id, picture_id, content } = req.body;
+    const newComment = await createComment({ content });
+    await linkCommentPictureAndUser({
+      user_id,
+      picture_id,
+      comment_id: newComment.id,
+    });
+    res.status(201).json({ message: "Comment created", comment: newComment });
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Edit a comment
+app.put("/api/editComment", async (req, res, next) => {
+  try {
+    const { comment_id, content } = req.body;
+    const SQL = `UPDATE comments SET content = $1 WHERE id = $2 RETURNING *;`;
+    const response = await client.query(SQL, [content, comment_id]);
+    res.json(response.rows[0]);
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Delete a comment
+app.delete("/api/deleteComment", async (req, res, next) => {
+  try {
+    const { comment_id } = req.body;
+    res.json(await deleteComment(comment_id));
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Create a like on a picture
+app.post("/api/createLike", async (req, res, next) => {
+  try {
+    const { user_id, picture_id } = req.body;
+    const newLike = await createLike();
+    await linkLikePictureAndUser({
+      user_id,
+      picture_id,
+      like_id: newLike.id,
+    });
+    res.status(201).json({ message: "Like added", like: newLike });
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Delete a like
+app.delete("/api/deleteLike", async (req, res, next) => {
+  try {
+    const { like_id } = req.body;
+    res.json(await deleteLike(like_id));
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Fetch all likes on a picture
+app.get("/api/:pictureId/likes", async (req, res, next) => {
+  try {
+    const pictureId = req.params.pictureId;
+    const SQL = `
+        SELECT users.id as user_id, users.username, likes_x_pictures_x_users.created_at
+        FROM likes_x_pictures_x_users
+        JOIN users ON likes_x_pictures_x_users.user_id = users.id
+        WHERE picture_id = $1;
+      `;
+    const response = await client.query(SQL, [pictureId]);
+    res.json(response.rows);
+  } catch (ex) {
+    next(ex);
+  }
+});
+// Fetch all comments on a picture
+app.get("/api/:pictureId/comments", async (req, res, next) => {
+  try {
+    const pictureId = req.params.pictureId;
+    const SQL = `
+        SELECT users.id as user_id, users.username, comments.content, comments_x_pictures_x_users.created_at
+        FROM comments_x_pictures_x_users
+        JOIN comments ON comments_x_pictures_x_users.comment_id = comments.id
+        JOIN users ON comments_x_pictures_x_users.user_id = users.id
+        WHERE picture_id = $1;
+      `;
+    const response = await client.query(SQL, [pictureId]);
+    res.json(response.rows);
+  } catch (ex) {
+    next(ex);
   }
 });
 
