@@ -1,5 +1,8 @@
 require("dotenv").config();
 const cors = require("cors");
+const imgur = require("imgur");
+const multer = require("multer");
+const axios = require("axios");
 
 const {
   client,
@@ -22,6 +25,8 @@ const port = process.env.PORT || 3000;
 const express = require("express");
 const app = express();
 app.use(express.json());
+const upload = multer();
+
 app.use(
   cors({
     origin: "http://localhost:5173", // Allow only the frontend origin
@@ -173,6 +178,75 @@ app.get("/api/feed", async (req, res, next) => {
     next(ex);
   }
 });
+
+app.post("/api/upload", upload.single("image"), async (req, res, next) => {
+  try {
+    // Ensure a file was provided
+    if (!req.file) {
+      return res.status(400).send({ error: "No image provided" });
+    }
+    // Convert the image Buffer to a base64 string
+    const base64Image = req.file.buffer.toString("base64");
+    // Upload the image to Imgur
+    const response = await axios.post(
+      "https://api.imgur.com/3/image",
+      {
+        image: base64Image,
+        type: "base64",
+      },
+      {
+        headers: {
+          Authorization: `Client-ID ${process.env.IMGUR_ACCESS_TOKEN}`,
+        },
+      }
+    );
+    // Extract the URL from the Imgur response
+    const imageUrl = response.data.data.link;
+    // Optionally, you can save the imageUrl to your database
+    // For example, using your createPicture function:
+    // const newPicture = await createPicture({ URL: imageUrl, caption: req.body.caption });
+    // res.status(201).send(newPicture);
+    res.status(201).send({ imageUrl });
+  } catch (err) {
+    next(err);
+  }
+});
+
+//--Ingur image upload--
+
+//--THIS DOES NOT WORK AT THIS TIME--
+// app.post("/api/upload", upload.single("image"), async (req, res, next) => {
+//   try {
+//     // Ensure a file was provided
+//     if (!req.file) {
+//       return res.status(400).send({ error: "No image provided" });
+//     }
+//     // Convert the image Buffer to a base64 string
+//     const base64Image = req.file.buffer.toString("base64");
+//     // Upload the image to Imgur using OAuth authentication
+//     const response = await axios.post(
+//       "https://api.imgur.com/3/image",
+//       {
+//         image: base64Image,
+//         type: "base64",
+//       },
+//       {
+//         headers: {
+//           // Use Bearer token for OAuth authentication
+//           Authorization: `Bearer ${process.env.IMGUR_SECRET}`,
+//         },
+//       }
+//     );
+//     // Extract the URL from the Imgur response
+//     const imageUrl = response.data.data.link;
+//     // Optionally, save the imageUrl to your database (e.g., using createPicture)
+//     // const newPicture = await createPicture({ URL: imageUrl, caption: req.body.caption });
+//     // res.status(201).send(newPicture);
+//     res.status(201).send({ imageUrl });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 const init = async () => {
   try {
