@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import GetFeedAll from "./ApiCalls/GetFeedAll";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
+import { Link } from "react-router-dom";
 
 function PictureFeed() {
   const [posts, setPosts] = useState([]);
@@ -10,6 +11,7 @@ function PictureFeed() {
       try {
         const data = await GetFeedAll();
         setPosts(data);
+        console.log(post);
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
@@ -32,7 +34,14 @@ function PictureFeed() {
       {posts.map((post) => (
         <div key={post.id} className="bg-gray-800 p-6 rounded-lg shadow-lg">
           {/* User Info */}
-          <p>{post.username}</p>
+          <div>
+            <Link
+              to={`/user/${post.username}`}
+              className="text-white-500 hover:underline"
+            >
+              {post.username}
+            </Link>
+          </div>
           <div className="flex flex-col items-center space-y-4">
             <img
               src={post.url}
