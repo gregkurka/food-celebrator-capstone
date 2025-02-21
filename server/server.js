@@ -17,6 +17,7 @@ const {
   deletePicture,
   deleteUserPictureLink,
   fetchUserPictureLinks,
+  fetchFeed,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -168,6 +169,14 @@ app.delete("/api/users/:userId/pictures/:pictureId", async (req, res, next) => {
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500).send({ error: err.message || err });
+});
+
+app.get("/api/feed", async (req, res, next) => {
+  try {
+    res.send(await fetchFeed());
+  } catch (ex) {
+    next(ex);
+  }
 });
 
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {

@@ -65,8 +65,4 @@ function App() {
   );
 }
 
-function ProtectedRoute({ token, children }) {
-  return token ? children : <Navigate to="/login" />;
-}
-
 export default App;

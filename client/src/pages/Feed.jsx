@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Upload from "../components/Upload";
 import PictureFeed from "../components/PictureFeed";
+import Search from "../components/Search";
 
 function Feed() {
   return (
@@ -11,6 +12,7 @@ function Feed() {
         <PictureFeed />
       </div>
       <Upload />
+      <Search />
     </div>
   );
 }
