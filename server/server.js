@@ -179,6 +179,8 @@ app.get("/api/feed", async (req, res, next) => {
   }
 });
 
+//--Ingur image upload--
+
 // Replace the existing GET /api/upload endpoint with the following POST endpoint:
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
   try {
@@ -224,42 +226,6 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     next(err);
   }
 });
-
-//--Ingur image upload--
-
-//--THIS DOES NOT WORK AT THIS TIME--
-// app.post("/api/upload", upload.single("image"), async (req, res, next) => {
-//   try {
-//     // Ensure a file was provided
-//     if (!req.file) {
-//       return res.status(400).send({ error: "No image provided" });
-//     }
-//     // Convert the image Buffer to a base64 string
-//     const base64Image = req.file.buffer.toString("base64");
-//     // Upload the image to Imgur using OAuth authentication
-//     const response = await axios.post(
-//       "https://api.imgur.com/3/image",
-//       {
-//         image: base64Image,
-//         type: "base64",
-//       },
-//       {
-//         headers: {
-//           // Use Bearer token for OAuth authentication
-//           Authorization: `Bearer ${process.env.IMGUR_SECRET}`,
-//         },
-//       }
-//     );
-//     // Extract the URL from the Imgur response
-//     const imageUrl = response.data.data.link;
-//     // Optionally, save the imageUrl to your database (e.g., using createPicture)
-//     // const newPicture = await createPicture({ URL: imageUrl, caption: req.body.caption });
-//     // res.status(201).send(newPicture);
-//     res.status(201).send({ imageUrl });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 const init = async () => {
   try {
