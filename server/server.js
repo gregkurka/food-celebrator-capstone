@@ -179,16 +179,29 @@ app.get("/api/feed", async (req, res, next) => {
   }
 });
 
+// Replace the existing GET /api/upload endpoint with the following POST endpoint:
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
   try {
     // Ensure a file was provided
     if (!req.file) {
-      return res.status(400).send({ error: "No image provided" });
+      return res.status(400).json({ error: "No image provided" });
     }
-    // Convert the image Buffer to a base64 string
+    // Extract token from Authorization header
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
+    }
+    // Find user by token
+    let user;
+    try {
+      user = await findUserByToken(token);
+    } catch (err) {
+      return res.status(401).json({ error: "Unauthorized: Invalid token" });
+    }
+    // Convert the image buffer to a base64 string
     const base64Image = req.file.buffer.toString("base64");
     // Upload the image to Imgur
-    const response = await axios.post(
+    const imgurResponse = await axios.post(
       "https://api.imgur.com/3/image",
       {
         image: base64Image,
@@ -200,13 +213,13 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
         },
       }
     );
-    // Extract the URL from the Imgur response
-    const imageUrl = response.data.data.link;
-    // Optionally, you can save the imageUrl to your database
-    // For example, using your createPicture function:
-    // const newPicture = await createPicture({ URL: imageUrl, caption: req.body.caption });
-    // res.status(201).send(newPicture);
-    res.status(201).send({ imageUrl });
+    const imageUrl = imgurResponse.data.data.link;
+    // Create a picture in the database using the returned URL and the caption from the request
+    const caption = req.body.caption || "";
+    const newPicture = await createPicture({ URL: imageUrl, caption });
+    // Link the picture to the authenticated user
+    await linkUserToPicture({ user_id: user.id, picture_id: newPicture.id });
+    res.status(201).json({ message: "Upload successful", picture: newPicture });
   } catch (err) {
     next(err);
   }

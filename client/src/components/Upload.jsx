@@ -22,22 +22,53 @@ function Upload() {
     setMessage(null);
   };
 
+  // const handleUpload = async () => {
+  //   if (!file) {
+  //     setMessage("Please select an image to upload.");
+  //     return;
+  //   }
+  //   //form to send image and capture
+  //   const formData = new FormData();
+  //   console.log(file);
+  //   formData.append("file", file);
+  //   formData.append("caption", caption);
+
+  //   try {
+  //     console.log("FORMDATA", formData);
+  //     const uploadUrl = "http://localhost:3000/api/upload"; // changed to end point.
+  //     const response = await axios.post(uploadUrl, formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //     //success message and close modal
+  //     setMessage(response.data.message);
+  //     setShowPopup(false);
+  //   } catch (error) {
+  //     setMessage("File upload failed.");
+  //     console.error(error);
+  //   }
+  // };
+
   const handleUpload = async () => {
     if (!file) {
       setMessage("Please select an image to upload.");
       return;
     }
-    //form to send image and capture
+    const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+    if (!token) {
+      setMessage("User is not authenticated.");
+      return;
+    }
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("image", file);
     formData.append("caption", caption);
-
     try {
-      const uploadUrl = "YOUR_UPLOAD_URL"; // Replace with your actual upload URL
+      const uploadUrl = "http://localhost:3000/api/upload";
       const response = await axios.post(uploadUrl, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // Send the token in the request header
+        },
       });
-      //success message and close modal
       setMessage(response.data.message);
       setShowPopup(false);
     } catch (error) {
