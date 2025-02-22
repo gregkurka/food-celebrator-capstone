@@ -1,13 +1,12 @@
-import React from 'react'
-import Navbar from './Navbar'
+import React from "react";
+import Navbar from "./Navbar";
 
-function Header() {
+function Header({ token, handleLogout }) {
   return (
     <div>
-        <Navbar></Navbar>
-
-        </div>
-  )
+      <Navbar token={token} handleLogout={handleLogout} />
+    </div>
+  );
 }
 
-export default Header
+export default Header;
