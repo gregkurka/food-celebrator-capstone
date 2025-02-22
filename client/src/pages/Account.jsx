@@ -79,7 +79,7 @@ function Account() {
 
         {/* Profile Info */}
         <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
-          Welcome back, {user?.username}!
+          Welcome back, {user?.username.toUpperCase()}!
         </p>
       </div>
 
