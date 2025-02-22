@@ -44,7 +44,7 @@ function Account() {
 
   return (
     <div
-      className="min-h-screen bg-background dark:bg-darkbackground text-foreground dark:text-darkforeground 
+      className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground 
                  flex flex-col items-center px-6 py-16 md:py-20 animate-fadeIn"
     >
       {/* Profile Card */}

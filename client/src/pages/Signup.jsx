@@ -48,7 +48,7 @@ function Signup({ setToken }) {
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center 
-                 bg-background dark:bg-darkbackground text-foreground dark:text-darkforeground 
+                 backgroundcolor text-foreground dark:text-darkforeground 
                  px-6 py-12 md:py-20 animate-fadeIn"
     >
       {/* Page Title */}

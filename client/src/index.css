@@ -10,6 +10,8 @@
   --color-background: #faf9f6; /* 	Soft Off-White (Warm, easy on the eyes) */
   --color-foreground: #1c1c1c; /* Dark Gray-Black (For readability) */
   --color-muted: #d8d8d8; /* 	Soft Gray (For borders, subtle elements) */
+  --color-backgroundgradient: #FFB077; /* 	Dark Coral */
+  --color-darkbackgroundgradient: #C4421A; /* 	Dark Coral */
   /* Typography */
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Georgia, serif;
@@ -34,4 +36,10 @@
     --color-darkmuted: #444444; /* 	Dark Gray (For subtle UI elements) */
     --shadow-darkmd: 0px 4px 6px rgba(255, 255, 255, 0.1);
   }
+}
+
+@layer background {
+    .backgroundcolor{
+        @apply bg-gradient-to-br from-gray-50 to-backgroundgradient dark:from-gray-900 dark:to-darkbackgroundgradient
+    }
 }
