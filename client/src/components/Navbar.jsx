@@ -10,30 +10,30 @@ function Navbar({ token, handleLogout }) {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo & Branding */}
         <div className="flex items-center space-x-3">
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/Feed" className="flex items-center space-x-2">
             <img
-              src="/logo.png"
+              src="/logonowords.png"
               alt="Library Logo"
               className="w-10 h-10 object-contain"
             />
             <span className="text-2xl font-bold tracking-tight text-primary dark:text-darkprimary">
-              BookBuddy
+              Food Celebrator
             </span>
           </Link>
         </div>
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-8 items-center">
-          <Link
-            to="/"
-            className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
-          >
-            Home
-          </Link>
           {token ? (
             <>
               <Link
-                to="/me"
+                to="/feed"
+                className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+              >
+                Feed
+              </Link>
+              <Link
+                to="/account"
                 className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
               >
                 My Account
@@ -48,7 +48,7 @@ function Navbar({ token, handleLogout }) {
           ) : (
             <>
               <Link
-                to="/register"
+                to="/signup"
                 className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
               >
                 Register
@@ -81,16 +81,16 @@ function Navbar({ token, handleLogout }) {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden bg-background dark:bg-darkbackground p-4 space-y-3 text-center">
-          <Link
-            to="/"
-            className="block hover:text-primary dark:hover:text-darkprimary"
-          >
-            Home
-          </Link>
           {token ? (
             <>
               <Link
-                to="/me"
+                to="/feed"
+                className="block hover:text-primary dark:hover:text-darkprimary"
+              >
+                Feed
+              </Link>
+              <Link
+                to="/account"
                 className="block hover:text-primary dark:hover:text-darkprimary"
               >
                 My Account
@@ -105,7 +105,7 @@ function Navbar({ token, handleLogout }) {
           ) : (
             <>
               <Link
-                to="/register"
+                to="/signup"
                 className="block hover:text-primary dark:hover:text-darkprimary"
               >
                 Register
