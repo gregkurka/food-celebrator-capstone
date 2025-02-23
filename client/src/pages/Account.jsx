@@ -49,8 +49,8 @@ function Account() {
     >
       {/* Profile Card */}
       <div
-        className="bg-muted dark:bg-darkmuted shadow-xl rounded-xl p-8 w-full max-w-lg text-center 
-                      flex flex-col items-center border border-gray-200 dark:border-gray-600"
+        className="bg-muted dark:bg-darkmuted shadow-xl rounded-xl p-8 w-full max-w-3xl text-center 
+            flex flex-col items-center border border-gray-200 dark:border-gray-600"
       >
         {/* Profile Picture */}
         <div className="relative">

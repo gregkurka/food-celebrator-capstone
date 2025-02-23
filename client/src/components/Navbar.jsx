@@ -10,10 +10,10 @@ function Navbar({ token, handleLogout }) {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo & Branding */}
         <div className="flex items-center space-x-3">
-          <Link to="/Feed" className="flex items-center space-x-2">
+          <Link to="/feed" className="flex items-center space-x-2">
             <img
               src="/logonowords.png"
-              alt="Library Logo"
+              alt="AppLogo"
               className="w-10 h-10 object-contain"
             />
             <span className="text-2xl font-bold tracking-tight text-primary dark:text-darkprimary">
@@ -24,6 +24,12 @@ function Navbar({ token, handleLogout }) {
 
         {/* Desktop Navigation Links */}
         <div className="hidden md:flex space-x-8 items-center">
+          <Link
+            to="/"
+            className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+          >
+            Home
+          </Link>
           {token ? (
             <>
               <Link
@@ -51,7 +57,7 @@ function Navbar({ token, handleLogout }) {
                 to="/signup"
                 className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
               >
-                Register
+                Sign Up
               </Link>
               <Link
                 to="/login"
