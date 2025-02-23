@@ -6,6 +6,7 @@ function Upload() {
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState("");
   const [message, setMessage] = useState(null);
+  const [uploading, setUploading] = useState(false);
   const [showPopup, setShowPopup] = useState(false); // pop-up modal to upload pictures
 
   // File selection
@@ -35,6 +36,11 @@ function Upload() {
     const formData = new FormData();
     formData.append("image", file);
     formData.append("caption", caption);
+
+    // Set "Uploading..." state
+    setUploading(true);
+    setMessage("Uploading...");
+
     try {
       const uploadUrl = "http://localhost:3000/api/upload";
       const response = await axios.post(uploadUrl, formData, {
@@ -43,11 +49,26 @@ function Upload() {
           Authorization: `Bearer ${token}`, // Send the token in the request header
         },
       });
+
+      // Console log the detailed messages array from the response
+      if (response.data.logs) {
+        console.log("Upload logs:", response.data.logs);
+      }
+
+      // Show success message and hide the popup
       setMessage(response.data.message);
       setShowPopup(false);
     } catch (error) {
-      setMessage("File upload failed.");
+      // If error response contains logs, console log them
+      if (error.response && error.response.data && error.response.data.logs) {
+        console.log("Upload error logs:", error.response.data.logs);
+        setMessage(error.response.data.error);
+      } else {
+        setMessage("File upload failed.");
+      }
       console.error(error);
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -83,12 +104,14 @@ function Upload() {
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleUpload}
+                disabled={uploading}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
               >
-                Upload
+                {uploading ? "Uploading..." : "Upload"}
               </button>
               <button
                 onClick={() => setShowPopup(false)}
+                disabled={uploading}
                 className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
               >
                 Cancel

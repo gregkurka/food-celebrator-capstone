@@ -36,6 +36,11 @@ const app = express();
 app.use(express.json());
 const upload = multer();
 
+//google vision imports
+const { ImageAnnotatorClient } = require("@google-cloud/vision");
+const visionClient = new ImageAnnotatorClient();
+const ALLOWED_LABELS = require("./allowedLabels");
+
 app.use(
   cors({
     origin: "http://localhost:5173", // Allow only the frontend origin
@@ -198,49 +203,151 @@ app.get("/api/feed", async (req, res, next) => {
 
 //--Ingur image upload--
 
-// Replace the existing GET /api/upload endpoint with the following POST endpoint:
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
+  // We'll collect logs here instead of console.log
+  const messages = [];
+
   try {
-    // Ensure a file was provided
+    // 1) Ensure a file was provided
     if (!req.file) {
-      return res.status(400).json({ error: "No image provided" });
+      messages.push("No image provided.");
+      return res.status(400).json({
+        error: "No image provided",
+        logs: messages,
+      });
     }
-    // Extract token from Authorization header
+
+    // 2) Extract token from Authorization header
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
-      return res.status(401).json({ error: "Unauthorized: No token provided" });
+      messages.push("Unauthorized: No token provided.");
+      return res.status(401).json({
+        error: "Unauthorized: No token provided",
+        logs: messages,
+      });
     }
-    // Find user by token
+
+    // 3) Find user by token
     let user;
     try {
       user = await findUserByToken(token);
     } catch (err) {
-      return res.status(401).json({ error: "Unauthorized: Invalid token" });
+      messages.push("Unauthorized: Invalid token.");
+      return res.status(401).json({
+        error: "Unauthorized: Invalid token",
+        logs: messages,
+      });
     }
-    // Convert the image buffer to a base64 string
+
+    // 4) Face Detection: Reject if any face is detected
+    const [faceResult] = await visionClient.faceDetection(req.file.buffer);
+    if (faceResult.faceAnnotations && faceResult.faceAnnotations.length > 0) {
+      messages.push("Face detected, rejecting image.");
+      return res.status(400).json({
+        error: "This image contains a person (face detected).",
+        logs: messages,
+      });
+    }
+
+    // 5) Object Localization: Reject if any 'person' object is detected
+    const [objectResult] = await visionClient.objectLocalization(
+      req.file.buffer
+    );
+    const personDetected = objectResult.localizedObjectAnnotations.some(
+      (obj) => obj.name.toLowerCase() === "person"
+    );
+    if (personDetected) {
+      messages.push("Person object detected, rejecting image.");
+      return res.status(400).json({
+        error: "This image contains a person (object detected).",
+        logs: messages,
+      });
+    }
+
+    // 6) Label Detection: Check for allowed food-related labels
+    const [visionResult] = await visionClient.labelDetection(req.file.buffer);
+
+    // Extract labels with confidence score filtering (0.80+)
+    const MIN_CONFIDENCE = 0.8;
+    const detectedLabels = visionResult.labelAnnotations
+      .filter((label) => label.score >= MIN_CONFIDENCE)
+      .map((label) => label.description.toLowerCase());
+
+    // For each label, determine if it is allowed or not and push a log
+    detectedLabels.forEach((label) => {
+      const isAllowed = ALLOWED_LABELS.some((allowed) =>
+        label.includes(allowed)
+      );
+      messages.push(
+        `Detected label: "${label}" - ${isAllowed ? "PASSED" : "REJECTED"}`
+      );
+    });
+
+    // Count how many detected labels match our allowed list
+    const allowedMatches = detectedLabels.filter((label) =>
+      ALLOWED_LABELS.some((allowed) => label.includes(allowed))
+    );
+
+    // Calculate ratio of allowed labels to total detected labels
+    const ratio = allowedMatches.length / (detectedLabels.length || 1);
+
+    // Stricter check: require at least 60% of high-confidence labels be allowed
+    // and at least 2 allowed labels overall.
+    if (ratio < 0.6 || allowedMatches.length < 2) {
+      messages.push(
+        `Upload rejected. Ratio: ${ratio.toFixed(2)}; Allowed matches: ${
+          allowedMatches.length
+        }`
+      );
+      return res.status(400).json({
+        error: "This image contains disallowed items.",
+        logs: messages,
+      });
+    }
+
+    messages.push(
+      `Upload accepted. Ratio: ${ratio.toFixed(2)}; Allowed matches: ${
+        allowedMatches.length
+      }`
+    );
+
+    // 7) Convert the image buffer to a base64 string
     const base64Image = req.file.buffer.toString("base64");
-    // Upload the image to Imgur
+
+    // 8) Upload the image to Imgur
     const imgurResponse = await axios.post(
       "https://api.imgur.com/3/image",
-      {
-        image: base64Image,
-        type: "base64",
-      },
+      { image: base64Image, type: "base64" },
       {
         headers: {
           Authorization: `Client-ID ${process.env.IMGUR_ACCESS_TOKEN}`,
         },
       }
     );
+
     const imageUrl = imgurResponse.data.data.link;
-    // Create a picture in the database using the returned URL and the caption from the request
+
+    // 9) Create a picture in the database using the returned URL and caption
     const caption = req.body.caption || "";
     const newPicture = await createPicture({ URL: imageUrl, caption });
-    // Link the picture to the authenticated user
+
+    // 10) Link the picture to the authenticated user
     await linkUserToPicture({ user_id: user.id, picture_id: newPicture.id });
-    res.status(201).json({ message: "Upload successful", picture: newPicture });
+
+    // 11) Respond with success, including logs
+    return res.status(201).json({
+      message: "Upload successful",
+      picture: newPicture,
+      logs: messages,
+    });
   } catch (err) {
-    next(err);
+    // If something unexpected happens, log it and return a server error
+    messages.push(`Unexpected error: ${err.message}`);
+    return next({
+      status: 500,
+      message: "Internal server error",
+      logs: messages,
+    });
   }
 });
 
