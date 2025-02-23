@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Form from "../components/Form";
@@ -44,46 +44,73 @@ function Signup({ setToken }) {
       setLoading(false);
     }
   }
+  const images = [
+    "/basedlogo.png",
+    "/coffee.png",
+    "/pancakes.png",
+    "/pizza.png",
+    "/salad.png",
+    "/steak.jpg",
+  ];
+
+  const [currentImage, setCurrentImage] = useState(images[0]); // Sets initial background
+
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      index = (index + 1) % images.length; // Loops through the images array
+      setCurrentImage(images[index]); // Updates background
+    }, 5000); // Runs every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, []);
 
   return (
     <div
       className="min-h-screen flex flex-col justify-center items-center 
-                 backgroundcolor text-foreground dark:text-darkforeground 
-                 px-6 py-12 md:py-20 animate-fadeIn"
+                 text-foreground dark:text-darkforeground 
+                 px-6 py-12 md:py-20 animate-fadeIn transition-all duration-700"
+      style={{
+        backgroundImage: `url(${currentImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      {/* Page Title */}
-      <h2
-        className="text-4xl font-extrabold text-primary dark:text-darkprimary 
-                   text-center tracking-wide mb-6"
-      >
-        Create Your Account
-      </h2>
+      <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl shadow-md backdrop-blur-lg">
+        <h1 className="text-3xl font-bold text-center text-primary dark:text-darkprimary">
+          Sign Up
+        </h1>
 
-      {/* Error Message */}
-      {error && (
-        <p className="text-red-500 bg-red-100 dark:bg-red-900 text-center px-4 py-2 rounded-lg shadow-md mb-4">
-          {error}
-        </p>
-      )}
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-500 bg-red-100 dark:bg-red-900 text-center px-4 py-2 rounded-lg shadow-md mt-4">
+            {error}
+          </p>
+        )}
 
-      {/* Loading Indicator */}
-      {loading && (
-        <p className="text-gray-500 text-center animate-pulse">Processing...</p>
-      )}
+        {/* Loading Indicator */}
+        {loading && (
+          <p className="text-gray-500 text-center animate-pulse mt-4">
+            Processing...
+          </p>
+        )}
 
-      {/* Signup Form */}
-      <Form
-        parent="signup"
-        submitFunction={registerUser}
-        username={username}
-        setUsername={setUsername}
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        confirmPassword={confirmPassword}
-        setConfirmPassword={setConfirmPassword}
-      />
+        {/* Signup Form */}
+        <div className="mt-6">
+          <Form
+            parent="signup"
+            submitFunction={registerUser}
+            username={username}
+            setUsername={setUsername}
+            email={email}
+            setEmail={setEmail}
+            password={password}
+            setPassword={setPassword}
+            confirmPassword={confirmPassword}
+            setConfirmPassword={setConfirmPassword}
+          />
+        </div>
+      </div>
     </div>
   );
 }
