@@ -59,7 +59,7 @@ function MobileNavbar({ token, handleLogout }) {
                 isDarkMode ? "/icons/homeIconDark.png" : "/icons/homeIcon.png"
               }
               alt="Home Icon"
-              className="w-6 h-6"
+              className="w-6.5 h-5"
             />
             <span>Home</span>
           </Link>
@@ -77,7 +77,7 @@ function MobileNavbar({ token, handleLogout }) {
                       : "/icons/feedIcon.png"
                   }
                   alt="Feed Icon"
-                  className="w-6 h-6"
+                  className="w-8 h-8"
                 />
                 <span>Feed</span>
               </Link>
@@ -93,7 +93,7 @@ function MobileNavbar({ token, handleLogout }) {
                       : "/icons/accountIcon.png"
                   }
                   alt="Account Icon"
-                  className="w-6 h-6"
+                  className="w-5 h-5"
                 />
                 <span>My Account</span>
               </Link>

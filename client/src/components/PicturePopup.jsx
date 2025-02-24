@@ -5,19 +5,26 @@ function PicturePopup({ show, onClose, children }) {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
       onClick={onClose} // Close when clicking outside
     >
       <div
-        className="bg-white p-6 rounded-lg shadow-lg text-center w-96 text-black"
+        className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl text-center 
+                   border border-gray-300 dark:border-gray-700 
+                   text-gray-900 dark:text-gray-100
+                   w-11/12 max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        {children}
+        {/* Popup Content */}
+        <div className="space-y-4">{children}</div>
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+          className="mt-4 px-6 py-3 font-semibold rounded-lg shadow-md transition 
+                     border border-gray-400 dark:border-gray-600
+                     bg-primary text-white dark:bg-darkprimary dark:text-white 
+                     hover:bg-opacity-80 dark:hover:bg-opacity-80"
         >
           Close
         </button>
@@ -25,4 +32,5 @@ function PicturePopup({ show, onClose, children }) {
     </div>
   );
 }
+
 export default PicturePopup;
