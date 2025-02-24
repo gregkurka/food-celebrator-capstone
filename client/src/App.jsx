@@ -72,7 +72,7 @@ function App() {
               path="/signup"
               element={<Signup setToken={setToken} setUser={setUser} />}
             />
-            <Route path="/feed" element={<Feed />} />
+           <Route path="/feed" element={<Feed user={user} />} />
             <Route
               path="/account"
               element={<Account token={token} user={user} />}
@@ -84,7 +84,6 @@ function App() {
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
-
         <Footer />
       </div>
     </div>

@@ -27,6 +27,8 @@ const {
   fetchAllLinkCommentPictureAndUser,
   fetchAllLinkLikePictureAndUser,
   fetchUserPicturesByUsername,
+  fetchPictureById,
+  fetchPictureByUsernameAndId,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -135,6 +137,14 @@ app.get("/api/pictures", async (req, res, next) => {
   }
 });
 
+app.get("/api/pictures/:pictureId", async (req, res, next) => {
+  try {
+    res.send(await fetchPictureById(req.params.pictureId));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 app.get("/api/users/:userId/pictures", async (req, res, next) => {
   try {
     res.send(await fetchUserPictures(req.params.userId));
@@ -150,6 +160,22 @@ app.get("/api/username/:username/pictures", async (req, res, next) => {
     next(ex);
   }
 });
+
+app.get(
+  "/api/username/:username/pictures/:pictureid",
+  async (req, res, next) => {
+    try {
+      res.send(
+        await fetchPictureByUsernameAndId({
+          username: req.params.username,
+          picture_id: req.params.pictureid,
+        })
+      );
+    } catch (ex) {
+      next(ex);
+    }
+  }
+);
 
 app.get("/api/users_x_pictures", async (req, res, next) => {
   try {
@@ -415,11 +441,15 @@ app.get("/api/:pictureId/likes", async (req, res, next) => {
   try {
     const pictureId = req.params.pictureId;
     const SQL = `
-        SELECT users.id as user_id, users.username, likes_x_pictures_x_users.created_at
-        FROM likes_x_pictures_x_users
-        JOIN users ON likes_x_pictures_x_users.user_id = users.id
-        WHERE picture_id = $1;
-      `;
+      SELECT 
+        users.id AS user_id, 
+        users.username, 
+        likes_x_pictures_x_users.like_id,
+        likes_x_pictures_x_users.created_at
+      FROM likes_x_pictures_x_users
+      JOIN users ON likes_x_pictures_x_users.user_id = users.id
+      WHERE picture_id = $1;
+`;
     const response = await client.query(SQL, [pictureId]);
     res.json(response.rows);
   } catch (ex) {
@@ -431,7 +461,11 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
   try {
     const pictureId = req.params.pictureId;
     const SQL = `
-        SELECT users.id as user_id, users.username, comments.content, comments_x_pictures_x_users.created_at
+        SELECT users.id AS user_id, 
+        users.username, 
+        comments.content, 
+        comments_x_pictures_x_users.comment_id,
+        comments_x_pictures_x_users.created_at
         FROM comments_x_pictures_x_users
         JOIN comments ON comments_x_pictures_x_users.comment_id = comments.id
         JOIN users ON comments_x_pictures_x_users.user_id = users.id

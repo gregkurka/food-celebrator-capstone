@@ -3,8 +3,9 @@ import GetFeedAll from "./ApiCalls/GetFeedAll";
 import { Link } from "react-router-dom";
 import PicturePopup from "./PicturePopup";
 import SinglePhotoView from "./SinglePhotoView";
+import Likes from "./Likes";
 
-function PictureFeed() {
+function PictureFeed({ user }) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -61,12 +62,11 @@ function PictureFeed() {
           <p className="px-2 text-xs text-muted dark:text-darkmuted">
             {new Date(post.created_at).toLocaleDateString()}
           </p>
+                 <div className="mt-4 flex space-x-6">
+            <Likes post={post} setPosts={setPosts} user={user} />
 
-          {/* Actions (Like & Comment) */}
-          <div className="px-2 mt-2 flex space-x-6 text-lg">
-            <button className="flex items-center space-x-2 text-red-400 hover:text-red-300 transition">
-              ❤️ <span>{post.likes}</span>
-            </button>
+            {/* Actions: Comment */}
+
             <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition">
               💬 <span>{post.comments}</span>
             </button>
