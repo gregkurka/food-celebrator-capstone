@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import GetFeedAll from "./ApiCalls/GetFeedAll";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import { Link } from "react-router-dom";
+import PicturePopup from "./PicturePopup";
+import SinglePhotoView from "./SinglePhotoView";
 
 function PictureFeed() {
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await GetFeedAll();
         setPosts(data);
-        console.log(post);
+        console.log("LOOKATME", data);
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
@@ -47,6 +50,7 @@ function PictureFeed() {
           </div>
           <div className="flex flex-col items-center space-y-4">
             <img
+              onClick={() => setSelectedPost(post)} // Set the clicked post
               src={post.url}
               alt={post.username}
               className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-primary"
@@ -69,6 +73,19 @@ function PictureFeed() {
               💬 <span>{post.comments}</span>
             </button>
           </div>
+          {selectedPost && (
+            <PicturePopup
+              show={!!selectedPost} // Boolean check
+              onClose={() => setSelectedPost(null)} // Close modal
+            >
+              <SinglePhotoView
+                picture={selectedPost.url}
+                photoId={selectedPost.picture_id}
+                uploadUserId={selectedPost.user_id}
+                setIsOpen={() => setSelectedPost(null)}
+              />
+            </PicturePopup>
+          )}
         </div>
       ))}
     </div>

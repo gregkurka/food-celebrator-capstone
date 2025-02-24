@@ -12,7 +12,7 @@ function Account() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigate = useNavigate();
-
+  localStorage.userId = user?.id || "";
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -43,10 +43,7 @@ function Account() {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div
-      className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground 
-                 flex flex-col items-center px-6 py-16 md:py-20 animate-fadeIn"
-    >
+    <div className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground flex flex-col items-center px-6 py-16 md:py-20 animate-fadeIn">
       {/* Profile Card */}
       <div
         className="bg-muted dark:bg-darkmuted shadow-xl rounded-xl p-8 w-full max-w-3xl text-center 

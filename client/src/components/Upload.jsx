@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaRegPlusSquare } from "react-icons/fa"; // plus icon for uploading pics
+import PicturePopup from "./PicturePopup";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -12,6 +13,7 @@ function Upload() {
   // File selection
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
+    console.log("YIKES", selectedFile);
 
     if (selectedFile && !selectedFile.type.startsWith("image/")) {
       setMessage("Only image files (JPG, PNG, GIF) are allowed.");
@@ -72,6 +74,49 @@ function Upload() {
     }
   };
 
+  const contentToShow = (
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-black/50"
+      onClick={() => setShowPopup(false)}
+    >
+      <div
+        className="bg-white p-6 rounded-lg shadow-lg text-center w-96 text-black"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h2 className="text-xl font-bold mb-4">Upload your photo</h2>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="mb-2 w-full border p-2 file:font-bold"
+        />
+        <input
+          type="text"
+          placeholder="Enter a caption for your photo"
+          value={caption}
+          onChange={(e) => setCaption(e.target.value)}
+          className="mb-4 w-full border p-2"
+        />
+        <div className="flex justify-center gap-4">
+          <button
+            onClick={handleUpload}
+            disabled={uploading}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          >
+            {uploading ? "Uploading..." : "Upload"}
+          </button>
+          <button
+            onClick={() => setShowPopup(false)}
+            disabled={uploading}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+          >
+            Cancel
+          </button>
+        </div>
+        {message && <p className="mt-4 text-red-500">{message}</p>}
+      </div>
+    </div>
+  );
   return (
     <div className="flex items-center justify-center min-h-[100px]">
       <button
@@ -83,10 +128,20 @@ function Upload() {
         <FaRegPlusSquare className="text-2xl" />
         Upload your photo!
       </button>
-
-      {showPopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center w-96 text-black">
+      <PicturePopup
+        show={showPopup}
+        onClose={setShowPopup}
+        children={contentToShow}
+      />
+      {/* {showPopup && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black/50"
+          onClick={() => setShowPopup(false)} // Close when clicking outside
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg text-center w-96 text-black"
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+          >
             <h2 className="text-xl font-bold mb-4">Upload your photo</h2>
             <input
               type="file"
@@ -120,7 +175,7 @@ function Upload() {
             {message && <p className="mt-4 text-red-500">{message}</p>}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

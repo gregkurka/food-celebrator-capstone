@@ -8,50 +8,51 @@ function UserUploads({ user }) {
     const fetchUserPictures = async () => {
       try {
         const data = await GetPictureByUser(user.id);
-        setUserPosts(data);
-        console.log(data);
+        // Sort images by `created_at` (most recent first)
+        const sortedData = data.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        setUserPosts(sortedData);
       } catch (error) {
-        console.error("Failed to fetch feed data:", error);
+        console.error("Failed to fetch user uploads:", error);
       }
     };
 
     fetchUserPictures();
-  }, []);
+  }, [user.id]);
 
   return (
-    <div>
-      <h3>Your Picture Uploads:</h3>
-      <div className="space-y-6">
-        {userPosts.length > 0 ? (
-          userPosts.map((post) => (
+    <div className="max-w-6xl mx-auto p-6">
+      <h3 className="text-2xl font-bold mb-6">Your Picture Uploads</h3>
+
+      {userPosts.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg gap-3">
+          {userPosts.map((post) => (
             <div
               key={post.id}
-              className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg"
+              className="relative group overflow-hidden rounded-lg shadow-md"
             >
-              <div className="flex flex-col items-center space-y-4">
-                <img
-                  src={post.url}
-                  alt={post.caption || "User Upload"}
-                  className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-primary"
-                />
+              <img
+                src={post.url}
+                alt={post.caption || "User Upload"}
+                className="w-full h-56 md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+              />
+              <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-white text-sm">
+                  {post.caption || "No caption provided."}
+                </p>
+                <p className="text-gray-300 text-xs">
+                  Uploaded on {new Date(post.created_at).toLocaleDateString()}
+                </p>
               </div>
-
-              {/* Post Caption */}
-              <p className="mt-4 text-secondary dark:text-darksecondary">
-                {post.caption || "No caption provided."}
-              </p>
-
-              <p className="text-secondary dark:text-darksecondary text-sm">
-                Uploaded on {new Date(post.created_at).toLocaleDateString()}
-              </p>
             </div>
-          ))
-        ) : (
-          <p className="text-secondary dark:text-darksecondary text-center">
-            No uploads yet. Try uploading a picture!
-          </p>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-500">
+          No uploads yet. Try uploading a picture!
+        </p>
+      )}
     </div>
   );
 }
