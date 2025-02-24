@@ -7,7 +7,6 @@ export default function SinglePhotoView({
   setIsOpen,
   picture,
 }) {
-  //   const [photo, setPhoto] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
@@ -15,15 +14,12 @@ export default function SinglePhotoView({
 
   const API_URL = "http://localhost:3000/api"; // Adjust as needed
 
-  // Fetch photo and comments
   useEffect(() => {
     const fetchData = async () => {
-      // If we get new photo call by id delete picture from props and use this data instead: photo api call
       try {
         const { data: commentsData } = await axios.get(
           `${API_URL}/${photoId}/comments`
         );
-        // setPhoto(photoData);
         setComments(commentsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -31,11 +27,10 @@ export default function SinglePhotoView({
         setLoading(false);
       }
     };
-    // fetchData();
-    setLoading(false); //Delete later. After seeding comments.
+
+    fetchData();
   }, [photoId]);
 
-  // Handle new comment submission
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
@@ -55,23 +50,21 @@ export default function SinglePhotoView({
       setPosting(false);
     }
   };
-  console.log("I AM LEG", picture);
+
   if (loading) return <p className="text-center text-gray-400">Loading...</p>;
   if (!picture)
     return <p className="text-center text-red-500">Photo not found.</p>;
 
   return (
-    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div
+      className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg overflow-hidden 
+                 w-11/12 max-w-md md:max-w-lg lg:max-w-3xl xl:max-w-5xl"
+    >
       {/* Photo Section */}
-      <img src={picture} className="w-full" />
-
-      {/* Photo Caption
-      <div className="p-4">
-        <p className="text-gray-800 font-semibold">{photo.caption}</p>
-      </div> */}
+      <img src={picture} className="w-full object-cover rounded-t-lg" />
 
       {/* Comments Section */}
-      <div className="max-h-60 overflow-y-auto p-4 space-y-3 border-t">
+      <div className="max-h-80 overflow-y-auto p-4 space-y-3 border-t">
         {comments.map((comment) => (
           <Comment
             key={comment.id}
@@ -93,8 +86,8 @@ export default function SinglePhotoView({
         <button
           type="submit"
           className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
-             bg-primary text-font border-1 border-primary hover:bg-primary/80 
-             dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
+                     bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
+                     dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
           disabled={posting}
         >
           {posting ? "Posting..." : "Post"}
@@ -111,13 +104,13 @@ const Comment = ({ text, user }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="text-gray-700">
+    <div className="text-gray-700 dark:text-gray-300">
       <span className="font-semibold">{user}:</span>{" "}
       {isLong && !expanded ? words.slice(0, 10).join(" ") + "..." : text}
       {isLong && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-blue-500 ml-2"
+          className="text-blue-500 dark:text-blue-400 ml-2"
         >
           {expanded ? "Show Less" : "Read More"}
         </button>
