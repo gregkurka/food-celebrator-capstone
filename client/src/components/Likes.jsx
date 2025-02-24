@@ -1,14 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 const URL = "http://localhost:3000/api";
 
 const Likes = ({ post, setPosts, user }) => {
-  const [hasLiked, setHasLiked] = useState(post.hasLiked || false);
-  const [likeId, setLikeId] = useState(post.likeId || null);
-  const [likesCount, setLikesCount] = useState(post.likes || 0);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likeId, setLikeId] = useState(null);
+  const [likesCount, setLikesCount] = useState(0);
 
-  console.log(user);
-  console.log(post);
+  //Gets all the likes data
+  const fetchLikeData = async () => {
+    try {
+      const response = await axios.get(`${URL}/${post.picture_id}/likes`);
+      setLikesCount(response.data.length); // Count total likes
+      // console.log(response.data); // logs array(user_id, username, like_id, created_at)
+
+      // Did the logged-in user liked this post?
+      const userLike = response.data.find((like) => like.user_id === user.id);
+
+      if (userLike) {
+        setHasLiked(true);
+        // console.log(userLike.like_id); //logs all the likeIds
+        setLikeId(userLike.like_id);
+      } else {
+        setHasLiked(false);
+        setLikeId(null);
+      }
+    } catch (err) {
+      console.error("Error fetching like data:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchLikeData();
+  }, [post.picture_id]);
 
   const handleLikeToggle = async () => {
     try {
@@ -21,24 +46,23 @@ const Likes = ({ post, setPosts, user }) => {
           picture_id: post.picture_id,
         });
 
-        console.log("Like", response.data);
+        // console.log("Like added:", response.data);
+        // console.log(response.data.like.id); //logs out the likeId
         setLikeId(response.data.like.id);
 
-        // Update global state
         setPosts((prevPosts) =>
           prevPosts.map((p) =>
             p.picture_id === post.picture_id
-              ? {
-                  ...p,
-                  likes: p.likes + 1,
-                  hasLiked: true,
-                  likeId: response.data.like.id,
-                }
+              ? { ...p, hasLiked: true, likeId: response.data.like.id }
               : p
           )
         );
       } else {
-        // Optimistically update UI
+        if (!likeId) {
+          console.error("Can't delete — likeId is null");
+          return;
+        }
+
         setLikesCount((prev) => prev - 1);
         setHasLiked(false);
 
@@ -48,15 +72,19 @@ const Likes = ({ post, setPosts, user }) => {
 
         console.log("Like removed");
 
-        // Update global state
         setPosts((prevPosts) =>
           prevPosts.map((p) =>
             p.picture_id === post.picture_id
-              ? { ...p, likes: p.likes - 1, hasLiked: false, likeId: null }
+              ? { ...p, hasLiked: false, likeId: null }
               : p
           )
         );
+
+        // After unliking, clear stored likeId
+        setLikeId(null);
       }
+
+      fetchLikeData();
     } catch (error) {
       console.error("Failed to toggle like:", error);
 
@@ -72,7 +100,7 @@ const Likes = ({ post, setPosts, user }) => {
       className={`flex items-center space-x-2 transition ${
         hasLiked
           ? "text-red-400 hover:text-red-300"
-          : "text-red-400 hover:text-red-300"
+          : "text-gray-500 hover:text-gray-400"
       }`}
     >
       {hasLiked ? "❤️" : "♡"} <span>{likesCount}</span>
