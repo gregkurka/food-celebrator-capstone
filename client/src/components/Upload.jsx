@@ -22,32 +22,6 @@ function Upload() {
     setMessage(null);
   };
 
-  // const handleUpload = async () => {
-  //   if (!file) {
-  //     setMessage("Please select an image to upload.");
-  //     return;
-  //   }
-  //   //form to send image and capture
-  //   const formData = new FormData();
-  //   console.log(file);
-  //   formData.append("file", file);
-  //   formData.append("caption", caption);
-
-  //   try {
-  //     console.log("FORMDATA", formData);
-  //     const uploadUrl = "http://localhost:3000/api/upload"; // changed to end point.
-  //     const response = await axios.post(uploadUrl, formData, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //     //success message and close modal
-  //     setMessage(response.data.message);
-  //     setShowPopup(false);
-  //   } catch (error) {
-  //     setMessage("File upload failed.");
-  //     console.error(error);
-  //   }
-  // };
-
   const handleUpload = async () => {
     if (!file) {
       setMessage("Please select an image to upload.");
