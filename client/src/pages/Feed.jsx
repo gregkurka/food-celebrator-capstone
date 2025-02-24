@@ -31,7 +31,7 @@ function Feed({ user }) {
         </div>
       </div>
 
-      {/* Picture Feed Section */}
+      {/* Picture Feed Section with Hover Effects */}
       <div className="w-full max-w-3xl mt-8 space-y-6">
         <PictureFeed user={user} />
       </div>
