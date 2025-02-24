@@ -441,11 +441,15 @@ app.get("/api/:pictureId/likes", async (req, res, next) => {
   try {
     const pictureId = req.params.pictureId;
     const SQL = `
-        SELECT users.id as user_id, users.username, likes_x_pictures_x_users.created_at
-        FROM likes_x_pictures_x_users
-        JOIN users ON likes_x_pictures_x_users.user_id = users.id
-        WHERE picture_id = $1;
-      `;
+      SELECT 
+        users.id AS user_id, 
+        users.username, 
+        likes_x_pictures_x_users.like_id,
+        likes_x_pictures_x_users.created_at
+      FROM likes_x_pictures_x_users
+      JOIN users ON likes_x_pictures_x_users.user_id = users.id
+      WHERE picture_id = $1;
+`;
     const response = await client.query(SQL, [pictureId]);
     res.json(response.rows);
   } catch (ex) {
