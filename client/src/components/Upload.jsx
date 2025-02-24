@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaRegPlusSquare } from "react-icons/fa"; // plus icon for uploading pics
 import PicturePopup from "./PicturePopup";
+import { ClipLoader, MoonLoader } from "react-spinners";
 
 function Upload() {
   const [file, setFile] = useState(null);
@@ -101,9 +102,13 @@ function Upload() {
           <button
             onClick={handleUpload}
             disabled={uploading}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition flex justify-center items-center"
           >
-            {uploading ? "Uploading..." : "Upload"}
+            {uploading ? (
+              <MoonLoader speedMultiplier={1.25} size={20} color="#fff" />
+            ) : (
+              "Upload"
+            )}
           </button>
           <button
             onClick={() => setShowPopup(false)}
