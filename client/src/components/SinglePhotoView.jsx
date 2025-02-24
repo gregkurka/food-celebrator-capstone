@@ -16,6 +16,7 @@ export default function SinglePhotoView({
 
   useEffect(() => {
     const fetchData = async () => {
+      // If we get new photo call by id delete picture from props and use this data instead: photo api call
       try {
         const { data: commentsData } = await axios.get(
           `${API_URL}/${photoId}/comments`
