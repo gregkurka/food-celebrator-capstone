@@ -13,11 +13,11 @@ function Login({ setToken }) {
 
   // List of background images that will be rotated in the UI
   const images = [
-    "../../public/demophotos/picture1.png",
-    "../../public/demophotos/picture2.png",
-    "../../public/demophotos/picture3.png",
-    "../../public/demophotos/picture4.png",
-    "../../public/demophotos/picture5.png",
+    "/demophotos/picture1.png",
+    "/demophotos/picture2.png",
+    "/demophotos/picture3.png",
+    "/demophotos/picture4.png",
+    "/demophotos/picture5.png",
   ];
   const [currentImage, setCurrentImage] = useState(images[0]); // Sets the initial background image
 

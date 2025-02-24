@@ -14,7 +14,6 @@ function PictureFeed({ user }) {
       try {
         const data = await GetFeedAll();
         setPosts(data);
-        console.log("LOOKATME", data);
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
@@ -42,14 +41,22 @@ function PictureFeed({ user }) {
             </Link>
           </div>
 
-          {/* Image */}
-          <div className="mt-2">
+          {/* Image Container with Hover Effect */}
+          <div className="relative mt-2 group">
+            {/* Image (No Scaling on Hover) */}
             <img
               onClick={() => setSelectedPost(post)}
               src={post.url}
               alt={post.caption}
               className="w-full rounded-lg object-cover"
             />
+
+            {/* Translucent Hover Overlay (Fixed Size) */}
+            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+              <div className="bg-white/80 text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg backdrop-blur-md">
+                <span className="text-2xl">💬</span>
+              </div>
+            </div>
           </div>
 
           {/* Caption & Upload Date */}
@@ -62,13 +69,14 @@ function PictureFeed({ user }) {
           <p className="px-2 text-xs text-muted dark:text-darkmuted">
             {new Date(post.created_at).toLocaleDateString()}
           </p>
-                 <div className="mt-4 flex space-x-6">
+
+          {/* Actions: Like & Comment */}
+          <div className="mt-4 flex space-x-6">
             <Likes post={post} setPosts={setPosts} user={user} />
 
-            {/* Actions: Comment */}
-
-            <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition">
-              💬 <span>{post.comments}</span>
+            {/* Enlarged Comment Bubble */}
+            <button className="text-2xl text-blue-400 hover:text-blue-300 transition">
+              💬
             </button>
           </div>
 
