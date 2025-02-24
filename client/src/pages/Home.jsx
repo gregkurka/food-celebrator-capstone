@@ -4,65 +4,114 @@ import VideoDisplayer from "../components/VideoDisplayer";
 
 function Home() {
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   const images = [
-    "/basedlogo.png",
-    "/coffee.png",
-    "/pancakes.png",
-    "/pizza.png",
-    "/salad.png",
-    "/steak.jpg",
+    "/demophotos/picture1.png",
+    "/demophotos/picture2.png",
+    "/demophotos/picture3.png",
+    "/demophotos/picture4.png",
+    "/demophotos/picture5.png",
   ];
 
-  const [currentImage, setCurrentImage] = useState(images[0]); // Sets initial background
+  const [currentImage, setCurrentImage] = useState(images[0]);
 
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      index = (index + 1) % images.length; // Loops through the images array
-      setCurrentImage(images[index]); // Updates background
-    }, 5000); // Runs every 5 seconds
+      index = (index + 1) % images.length;
+      setCurrentImage(images[index]);
+    }, 5000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-16 md:py-20 bg-cover bg-center transition-all duration-700"
+      className="min-h-screen flex flex-col items-center justify-center text-center 
+                 px-4 py-8 sm:py-12 md:py-16 lg:py-20 transition-all duration-700"
       style={{
         backgroundImage: `url(${currentImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="flex flex-col items-center w-full max-w-4xl bg-white/80 dark:bg-gray-800/70 p-6 rounded-xl shadow-md backdrop-blur-lg">
-        <h1 className="text-5xl font-bold text-primary dark:text-darkprimary tracking-tight">
+      {/* Container for content with responsive width */}
+      <div
+        className="flex flex-col items-center w-full max-w-lg sm:max-w-xl md:max-w-4xl 
+                      bg-white/80 dark:bg-gray-800/70 p-6 sm:p-8 rounded-xl shadow-md backdrop-blur-lg"
+      >
+        {/* Title with dynamic text sizes */}
+        <h1
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-wide 
+                     text-font dark:text-darkfont my-6 sm:my-8 text-center animate-fadeIn"
+        >
           FOOD CELEBRATOR
         </h1>
 
         {/* Video Component */}
-        <div className="w-full max-w-3xl mt-8 flex justify-center">
+        <div className="w-full max-w-lg sm:max-w-2xl mt-6 flex justify-center">
           <VideoDisplayer />
         </div>
 
-        <h2 className="text-2xl mt-6 text-secondary dark:text-darksecondary">
+        <h2 className="text-lg sm:text-xl mt-4 sm:mt-6 text-font dark:text-darkfont">
           Savor Every Bite, Celebrate Every Flavor!
         </h2>
 
-        {/* Signup & Login Buttons */}
-        <div className="flex space-x-6 mt-8">
-          <button
-            onClick={() => navigate("/signup")}
-            className="px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 bg-gradient-to-r from-blue-500 to-blue-700 text-white hover:from-blue-600 hover:to-blue-800 dark:from-blue-400 dark:to-blue-600 dark:hover:from-blue-500 dark:hover:to-blue-700 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          >
-            Sign Up
-          </button>
-          <button
-            onClick={() => navigate("/login")}
-            className="px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 bg-gradient-to-r from-gray-600 to-gray-800 text-white hover:from-gray-700 hover:to-gray-900 dark:from-gray-500 dark:to-gray-700 dark:hover:from-gray-600 dark:hover:to-gray-800 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          >
-            Login
-          </button>
+        {/* Conditional Buttons - Wrap on small screens */}
+        <div
+          className="flex flex-col sm:flex-row justify-center items-center 
+                        space-y-4 sm:space-y-0 sm:space-x-4 mt-8 w-full"
+        >
+          {isLoggedIn ? (
+            <>
+              <button
+                onClick={() => navigate("/feed")}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
+                           transition-all duration-300 w-full sm:w-auto buttongradients"
+              >
+                Feed
+              </button>
+              <button
+                onClick={() => navigate("/account")}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
+                           transition-all duration-300 w-full sm:w-auto buttongradients"
+              >
+                Account
+              </button>
+              <button
+                onClick={handleLogout}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
+                           transition-all duration-300 w-full sm:w-auto bg-red-500 hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => navigate("/signup")}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
+                           transition-all duration-300 w-full sm:w-auto buttongradients"
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => navigate("/login")}
+                className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
+                           transition-all duration-300 w-full sm:w-auto buttongradients"
+              >
+                Login
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

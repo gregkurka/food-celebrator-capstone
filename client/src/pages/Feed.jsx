@@ -6,29 +6,27 @@ import Search from "../components/Search";
 function Feed({ user }) {
   return (
     <div
-      className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground 
-                 flex flex-col items-center px-6 py-16 md:py-20"
+      className="backgroundcolor text-font dark:text-darkfont 
+                 flex flex-col items-center px-6 py-6 md:py-16"
     >
       {/* Page Title */}
       <h1
-        className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary dark:text-darkprimary 
-                   mb-6 mt-6 md:mt-10 animate-fadeIn text-center"
+        className="text-5xl md:text-6xl font-extrabold tracking-wide 
+             text-font dark:text-darkfont 
+             my-8 text-center animate-fadeIn"
       >
-        Community Feed
+        Taste Feed
       </h1>
 
       {/* Search Bar & Upload Button - Left-Aligned Search Bar */}
-      <div
-        className="w-full max-w-3xl flex flex-col md:flex-row items-center md:items-center 
-                      md:justify-between space-y-4 md:space-y-0"
-      >
+      <div className="w-full max-w-3xl flex flex-col items-center">
         {/* Search Bar (Shifted Left) */}
         <div className="w-full md:flex-1 flex self-start">
           <Search />
         </div>
 
         {/* Upload Button (Remains Right-Aligned) */}
-        <div className="w-full md:w-auto flex items-center justify-center md:justify-end">
+        <div className="w-full md:w-auto flex items-center justify-center">
           <Upload />
         </div>
       </div>

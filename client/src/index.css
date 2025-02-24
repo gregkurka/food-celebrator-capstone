@@ -5,13 +5,14 @@
 /* Light Mode (default, if .light class is present) */
 
 @theme {
-  --color-primary: #ff7058; /* Bright Coral (Used for buttons, accents) */
-  --color-secondary: #007acc; /* Vibrant Blue (Contrasting accent) */
-  --color-background: #faf9f6; /* 	Soft Off-White (Warm, easy on the eyes) */
-  --color-foreground: #1c1c1c; /* Dark Gray-Black (For readability) */
-  --color-muted: #d8d8d8; /* 	Soft Gray (For borders, subtle elements) */
-  --color-backgroundgradient: #FFB077; /* 	Dark Coral */
-  --color-darkbackgroundgradient: #C4421A; /* 	Dark Coral */
+  --color-font: #000000; /* Black (For text) */
+  --color-primary: #405162; /* (Refined charcoal blue, professional) */
+  --color-primaryhue: #2b3945; /* (Refined charcoal blue, professional) */
+  --color-secondary: #6b778d; /* (Balanced steel blue-gray, softer contrast) */
+  --color-secondaryhue: #535d70; /* (Balanced steel blue-gray, softer contrast) */
+  --color-background: #f4f6f8; /* 	(Ultra-light gray, not harsh white) */
+  --color-foreground: #10151a; /* (Dark steely gray for text contrast) */
+  --color-muted: #cbd2d9; /* 	(Neutral light gray for dividers, UI elements) */
   /* Typography */
   --font-sans: Inter, system-ui, sans-serif;
   --font-serif: Georgia, serif;
@@ -29,17 +30,30 @@
 /* Dark Mode (only applies when .dark class is present) */
 .dark {
   @theme {
-    --color-darkprimary: #ff5733; /* Fiery Red-Orange (Vibrant contrast) */
-    --color-darksecondary: #78dce8; /* 	Cyan (Contrasting cool tone) */
-    --color-darkbackground: #121212; /* 	Near-Black (Deep and rich) */
-    --color-darkforeground: #ededed; /* 	Soft White (Easier on the eyes in dark mode) */
-    --color-darkmuted: #444444; /* 	Dark Gray (For subtle UI elements) */
+    --color-darkfont: #ffffff; /* White (For text) */
+    --color-darkprimary: #708090; /* (Slate Gray, classy and modern) */
+    --color-darksecondary: #4a6378; /* (Muted steel blue, adds depth) */
+    --color-darkbackground: #121820; /* (Deep, near-black with a blue hue) */
+    --color-darkforeground: #e3e6eb; /* (Soft off-white for contrast) */
+    --color-darkforegroundhue: #c3c8d0; /* (Soft off-white for contrast) */
+    --color-darkmuted: #374151; /* (Darker gray-blue for UI elements) */
+    --color-darkbackgroundgrade: #708090; /* (Storm blue) */
+    --color-darkbackgroundgradehue: #5a6878; /* (Storm blue) */
     --shadow-darkmd: 0px 4px 6px rgba(255, 255, 255, 0.1);
   }
 }
 
 @layer background {
-    .backgroundcolor{
-        @apply bg-gradient-to-br from-gray-50 to-backgroundgradient dark:from-gray-900 dark:to-darkbackgroundgradient
-    }
+  .backgroundcolor {
+    @apply bg-linear-to-b from-blue-50 to-blue-200 dark:from-gray-800 dark:to-darkbackgroundgrade;
+  }
+}
+
+@layer buttongradients {
+  .buttongradients {
+    @apply text-darkfont dark:text-font bg-gradient-to-r 
+    from-primary to-secondary  hover:from-primaryhue hover:to-secondaryhue 
+    dark:from-darkforeground dark:to-darkbackgroundgrade dark:hover:from-darkforegroundhue dark:hover:to-darkbackgroundgradehue 
+    shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+  }
 }
