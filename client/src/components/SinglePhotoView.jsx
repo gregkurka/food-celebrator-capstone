@@ -7,7 +7,7 @@ export default function SinglePhotoView({
   setIsOpen,
   picture,
 }) {
-  const [photo, setPhoto] = useState(null);
+  //   const [photo, setPhoto] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
@@ -23,7 +23,7 @@ export default function SinglePhotoView({
         const { data: commentsData } = await axios.get(
           `${API_URL}/${photoId}/comments`
         );
-        setPhoto(photoData);
+        // setPhoto(photoData);
         setComments(commentsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -73,7 +73,11 @@ export default function SinglePhotoView({
       {/* Comments Section */}
       <div className="max-h-60 overflow-y-auto p-4 space-y-3 border-t">
         {comments.map((comment) => (
-          <Comment key={comment.id} text={comment.text} user={comment.user} />
+          <Comment
+            key={comment.id}
+            text={comment.content}
+            user={comment.username}
+          />
         ))}
       </div>
 
