@@ -27,6 +27,8 @@ const {
   fetchAllLinkCommentPictureAndUser,
   fetchAllLinkLikePictureAndUser,
   fetchUserPicturesByUsername,
+  fetchPictureById,
+  fetchPictureByUsernameAndId,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -135,6 +137,14 @@ app.get("/api/pictures", async (req, res, next) => {
   }
 });
 
+app.get("/api/pictures/:pictureId", async (req, res, next) => {
+  try {
+    res.send(await fetchPictureById(req.params.pictureId));
+  } catch (ex) {
+    next(ex);
+  }
+});
+
 app.get("/api/users/:userId/pictures", async (req, res, next) => {
   try {
     res.send(await fetchUserPictures(req.params.userId));
@@ -150,6 +160,22 @@ app.get("/api/username/:username/pictures", async (req, res, next) => {
     next(ex);
   }
 });
+
+app.get(
+  "/api/username/:username/pictures/:pictureid",
+  async (req, res, next) => {
+    try {
+      res.send(
+        await fetchPictureByUsernameAndId({
+          username: req.params.username,
+          picture_id: req.params.pictureid,
+        })
+      );
+    } catch (ex) {
+      next(ex);
+    }
+  }
+);
 
 app.get("/api/users_x_pictures", async (req, res, next) => {
   try {
