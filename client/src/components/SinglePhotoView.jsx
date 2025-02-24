@@ -42,12 +42,11 @@ export default function SinglePhotoView({
 
     setPosting(true);
     try {
-      const response = await axios.post(
-        `${API_URL}/photos/${photoId}/comments`,
-        {
-          text: newComment,
-        }
-      );
+      const response = await axios.post(`${API_URL}/createComment`, {
+        user_id: uploadUserId,
+        picture_id: photoId,
+        content: newComment,
+      });
       setComments([response.data, ...comments]); // Add new comment to the top
       setNewComment("");
     } catch (error) {
