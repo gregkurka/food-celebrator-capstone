@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import PicturePopup from "../components/PicturePopup";
+import SinglePhotoView from "../components/SinglePhotoView";
 
 const URL = "http://localhost:3000/api";
 
@@ -8,6 +10,7 @@ function UserPage() {
   const { username } = useParams();
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -42,7 +45,7 @@ function UserPage() {
         </div>
 
         {/* Username */}
-        <h3 className="mt-4 text-3xl font-bold text-primary dark:text-darkprimary tracking-wide">
+        <h3 className="mt-4 text-3xl font-bold text-font dark:text-darkfont tracking-wide">
           @{username}
         </h3>
 
@@ -75,18 +78,21 @@ function UserPage() {
                     className="w-full h-auto object-cover rounded-lg border-2 border-gray-700"
                   />
 
-                  {/* Hover Overlay (Now Only Covers Image) */}
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                  {/* Hover Overlay (Triggers Comment Modal) */}
+                  <div
+                    className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg cursor-pointer"
+                    onClick={() => setSelectedPost(post)} // Open comments modal
+                  >
                     <span className="text-white text-3xl">💬</span>
                   </div>
                 </div>
 
                 {/* Caption & Info */}
                 <div className="mt-2 p-4 bg-muted dark:bg-darkmuted rounded-lg shadow-md">
-                  <p className="text-gray-300 text-sm truncate">
+                  <p className="text-font dark:text-darkfont text-sm truncate">
                     {post.picture_caption || "No caption provided."}
                   </p>
-                  <p className="text-gray-400 text-xs mt-1">
+                  <p className="text-font dark:text-darkfont text-xs mt-1">
                     Uploaded on{" "}
                     {new Date(post.picture_createdat).toLocaleDateString()}
                   </p>
@@ -94,7 +100,12 @@ function UserPage() {
                     <button className="flex items-center space-x-2 hover:text-green-300 transition">
                       ❤️ <span>{post.likes}</span>
                     </button>
-                    <button className="flex items-center space-x-2 hover:text-blue-300 transition">
+
+                    {/* Comment Button (Also Opens Comments) */}
+                    <button
+                      className="flex items-center space-x-2 hover:text-blue-300 transition"
+                      onClick={() => setSelectedPost(post)}
+                    >
                       💬 <span>{post.comments}</span>
                     </button>
                   </div>
@@ -104,6 +115,21 @@ function UserPage() {
           </div>
         )}
       </div>
+
+      {/* Full Image Popup (Comment Section Included) */}
+      {selectedPost && (
+        <PicturePopup
+          show={!!selectedPost}
+          onClose={() => setSelectedPost(null)}
+        >
+          <SinglePhotoView
+            picture={selectedPost.picture_url}
+            photoId={selectedPost.picture_id}
+            uploadUserId={selectedPost.user_id}
+            setIsOpen={() => setSelectedPost(null)}
+          />
+        </PicturePopup>
+      )}
     </div>
   );
 }
