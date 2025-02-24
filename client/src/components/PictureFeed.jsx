@@ -41,20 +41,22 @@ function PictureFeed({ user }) {
             </Link>
           </div>
 
-          {/* Image Container with Hover Effect */}
+          {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
           <div className="relative mt-2 group">
             {/* Image (No Scaling on Hover) */}
-            <img
-              onClick={() => setSelectedPost(post)}
-              src={post.url}
-              alt={post.caption}
-              className="w-full rounded-lg object-cover"
-            />
+            <div className="relative">
+              <img
+                onClick={() => setSelectedPost(post)}
+                src={post.url}
+                alt={post.caption}
+                className="w-full rounded-lg object-cover"
+              />
 
-            {/* Translucent Hover Overlay (Fixed Size) */}
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-              <div className="bg-white/80 text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg backdrop-blur-md">
-                <span className="text-2xl">💬</span>
+              {/* Translucent Hover Overlay (Only Covers Image) */}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                <div className="bg-white/80 text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg backdrop-blur-md">
+                  <span className="text-2xl">💬</span>
+                </div>
               </div>
             </div>
           </div>

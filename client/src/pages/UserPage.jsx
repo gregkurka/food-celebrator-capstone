@@ -65,20 +65,20 @@ function UserPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
             {userData.map((post) => (
-              <div
-                key={post.picture_id}
-                className="relative overflow-hidden rounded-lg shadow-lg group"
-              >
-                {/* Image */}
-                <img
-                  src={post.picture_url}
-                  alt={post.picture_caption || "User Upload"}
-                  className="w-full h-auto object-cover rounded-lg border-2 border-gray-700 transform transition-transform duration-300 group-hover:scale-105"
-                />
+              <div key={post.picture_id} className="rounded-lg shadow-lg">
+                {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
+                <div className="relative group">
+                  {/* Image (No Scaling on Hover) */}
+                  <img
+                    src={post.picture_url}
+                    alt={post.picture_caption || "User Upload"}
+                    className="w-full h-auto object-cover rounded-lg border-2 border-gray-700"
+                  />
 
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-white text-3xl">💬</span>
+                  {/* Hover Overlay (Now Only Covers Image) */}
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                    <span className="text-white text-3xl">💬</span>
+                  </div>
                 </div>
 
                 {/* Caption & Info */}
