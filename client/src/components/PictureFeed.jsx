@@ -44,31 +44,31 @@ function PictureFeed({ user }) {
           {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
           <div className="relative mt-2 group">
             {/* Image (No Scaling on Hover) */}
-            <div className="relative">
-              <img
-                onClick={() => setSelectedPost(post)}
-                src={post.url}
-                alt={post.caption}
-                className="w-full rounded-lg object-cover"
-              />
+            <img
+              src={post.url}
+              alt={post.caption}
+              className="w-full rounded-lg object-cover"
+            />
 
-              {/* Translucent Hover Overlay (Only Covers Image) */}
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                <div className="bg-white/80 text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg backdrop-blur-md">
-                  <span className="text-2xl">💬</span>
-                </div>
+            {/* Translucent Hover Overlay (Triggers Comment Modal) */}
+            <div
+              className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg cursor-pointer"
+              onClick={() => setSelectedPost(post)} // Open comment modal
+            >
+              <div className=" text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg ">
+                <span className="text-4xl">💬</span>
               </div>
             </div>
           </div>
 
           {/* Caption & Upload Date */}
           {post.caption && (
-            <p className="px-2 text-sm text-foreground dark:text-darkforeground mt-2">
+            <p className="px-2 text-sm text-font dark:text-darkfont dark:text-darkforeground mt-2">
               <span className="font-semibold">{post.username}</span>{" "}
               {post.caption}
             </p>
           )}
-          <p className="px-2 text-xs text-muted dark:text-darkmuted">
+          <p className="px-2 text-xs text-font dark:text-darkfont">
             {new Date(post.created_at).toLocaleDateString()}
           </p>
 
@@ -76,13 +76,16 @@ function PictureFeed({ user }) {
           <div className="mt-4 flex space-x-6">
             <Likes post={post} setPosts={setPosts} user={user} />
 
-            {/* Enlarged Comment Bubble */}
-            <button className="text-2xl text-blue-400 hover:text-blue-300 transition">
+            {/* Comment Button (Also Opens Comments) */}
+            <button
+              className="text-2xl text-blue-400 hover:text-blue-300 transition"
+              onClick={() => setSelectedPost(post)}
+            >
               💬
             </button>
           </div>
 
-          {/* Full Image Popup */}
+          {/* Full Image Popup (Comment Section Included) */}
           {selectedPost && (
             <PicturePopup
               show={!!selectedPost}

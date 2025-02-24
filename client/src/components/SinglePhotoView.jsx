@@ -92,7 +92,9 @@ export default function SinglePhotoView({
         />
         <button
           type="submit"
-          className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
+             bg-primary text-font border-1 border-primary hover:bg-primary/80 
+             dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
           disabled={posting}
         >
           {posting ? "Posting..." : "Post"}

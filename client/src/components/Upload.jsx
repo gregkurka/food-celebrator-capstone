@@ -131,8 +131,10 @@ function Upload() {
       <button
         onClick={() => setShowPopup(true)}
         className="flex items-center gap-2 px-6 py-3 text-lg border border-gray-300 
-                   rounded-md hover:bg-gray-100 transition shadow-md 
-                   w-full md:w-auto whitespace-nowrap"
+             rounded-md transition shadow-md 
+             w-full md:w-auto whitespace-nowrap
+             bg-white text-gray-900 dark:bg-gray-700 dark:text-white
+             hover:bg-gray-200 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white"
       >
         <FaRegPlusSquare className="text-2xl" />
         Upload your photo!
