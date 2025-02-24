@@ -1,106 +1,126 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import DarkModeToggle from "./DarkModeToggle"; // Dark mode toggle component
 
-function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
-  );
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAuth = () => {
-      setIsAuthenticated(!!localStorage.getItem("token"));
-    };
-
-    // Listen for changes in localStorage (only useful for multi-tab logout)
-    window.addEventListener("storage", checkAuth);
-
-    return () => {
-      window.removeEventListener("storage", checkAuth);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsAuthenticated(false); // Manually update state
-    navigate("/login");
-  };
+function Navbar({ token, handleLogout }) {
+  const [isOpen, setIsOpen] = useState(false); // Fix missing state for mobile menu
 
   return (
-    <nav className="bg-gray-900 text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0">
-            <Link to="/feed" className="text-2xl font-bold text-green-400">
-              <img
-                src="/logo.png"
-                alt="MY APP"
-                className="w-25 h-25 object-contain"
-              />
-            </Link>
-          </div>
-
-          <div className="hidden md:flex space-x-6">
-            {isAuthenticated ? (
-              <>
-                <Link to="/feed" className="hover:text-green-400 transition">
-                  Feed
-                </Link>
-                <Link to="/account" className="hover:text-green-400 transition">
-                  Account
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="hover:text-red-400 transition"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className="hover:text-green-400 transition">
-                  Login
-                </Link>
-                <Link to="/signup" className="hover:text-green-400 transition">
-                  Signup
-                </Link>
-              </>
-            )}
-          </div>
-
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-white focus:outline-none"
-            >
-              {isOpen ? "✖" : "☰"}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="md:hidden bg-gray-800 p-4 space-y-3 text-center">
-          <Link to="/feed" className="block hover:text-green-400">
-            Feed
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 dark:bg-darkbackground/70 backdrop-blur-md shadow-lg text-foreground dark:text-darkforeground">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        {/* Logo & Branding */}
+        <div className="flex items-center space-x-3">
+          <Link to="/feed" className="flex items-center space-x-2">
+            <img
+              src="/logonowords.png"
+              alt="AppLogo"
+              className="w-10 h-10 object-contain"
+            />
+            <span className="text-2xl font-bold tracking-tight text-primary dark:text-darkprimary">
+              Food Celebrator
+            </span>
           </Link>
-          {isAuthenticated ? (
+        </div>
+
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex space-x-8 items-center">
+          <Link
+            to="/"
+            className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+          >
+            Home
+          </Link>
+          {token ? (
             <>
-              <Link to="/account" className="block hover:text-green-400">
-                Account
+              <Link
+                to="/feed"
+                className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+              >
+                Feed
               </Link>
-              <button onClick={handleLogout} className="block text-red-400">
+              <Link
+                to="/account"
+                className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+              >
+                My Account
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="hover:text-red-400 dark:hover:text-red-500 transition font-medium"
+              >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link to="/login" className="block hover:text-green-400">
+              <Link
+                to="/signup"
+                className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+              >
+                Sign Up
+              </Link>
+              <Link
+                to="/login"
+                className="hover:text-secondary dark:hover:text-darksecondary transition font-medium"
+              >
                 Login
               </Link>
-              <Link to="/signup" className="block hover:text-green-400">
-                Signup
+            </>
+          )}
+
+          {/* Dark Mode Toggle */}
+          <DarkModeToggle />
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center">
+          <DarkModeToggle />
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="ml-4 text-foreground dark:text-darkforeground"
+          >
+            {isOpen ? "✖" : "☰"}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-background dark:bg-darkbackground p-4 space-y-3 text-center">
+          {token ? (
+            <>
+              <Link
+                to="/feed"
+                className="block hover:text-primary dark:hover:text-darkprimary"
+              >
+                Feed
+              </Link>
+              <Link
+                to="/account"
+                className="block hover:text-primary dark:hover:text-darkprimary"
+              >
+                My Account
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="block text-red-500 dark:text-red-400"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/signup"
+                className="block hover:text-primary dark:hover:text-darkprimary"
+              >
+                Register
+              </Link>
+              <Link
+                to="/login"
+                className="block hover:text-primary dark:hover:text-darkprimary"
+              >
+                Login
               </Link>
             </>
           )}

@@ -8,6 +8,7 @@ import Signup from "./pages/Signup";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import UserPage from "./pages/UserPage";
+import Home from "./pages/Home";
 
 function App() {
   // State to store authentication token
@@ -54,6 +55,8 @@ function App() {
 
       <main className="flex-grow">
         <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<Home />} />
           {/* Login page route, passing setToken and setUser as props */}
           <Route
             path="/login"

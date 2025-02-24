@@ -84,31 +84,44 @@ function Login({ setToken }) {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center transition-all duration-500"
-      style={{ backgroundImage: `url(${currentImage})` }} // Apply rotating background image
+      className="min-h-screen flex flex-col justify-center items-center 
+               text-foreground dark:text-darkforeground 
+               px-6 py-12 md:py-20 animate-fadeIn transition-all duration-700"
+      style={{
+        backgroundImage: `url(${currentImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md bg-opacity-90">
-        {/* Login header */}
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
+      <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl shadow-md backdrop-blur-lg">
+        <h1 className="text-3xl font-bold text-center text-primary dark:text-darkprimary">
           Login
-        </h2>
+        </h1>
 
-        {/* Display error messages if any */}
+        {/* Error Message */}
         {errorMessage && (
-          <p className="text-red-500 text-center">{errorMessage}</p>
+          <p className="text-red-500 bg-red-100 dark:bg-red-900 text-center px-4 py-2 rounded-lg shadow-md mt-4">
+            {errorMessage}
+          </p>
         )}
 
-        {/* Show loading indicator when request is processing */}
-        {isLoading && <p className="text-center text-gray-500">Loading...</p>}
+        {/* Loading Indicator */}
+        {isLoading && (
+          <p className="text-gray-500 text-center animate-pulse mt-4">
+            Processing...
+          </p>
+        )}
 
-        {/* Login form component */}
-        <Form
-          submitFunction={loginUser}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
+        {/* Login Form */}
+        <div className="mt-6">
+          <Form
+            submitFunction={loginUser}
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+          />
+        </div>
       </div>
     </div>
   );
