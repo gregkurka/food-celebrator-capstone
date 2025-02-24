@@ -461,7 +461,11 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
   try {
     const pictureId = req.params.pictureId;
     const SQL = `
-        SELECT users.id as user_id, users.username, comments.content, comments_x_pictures_x_users.created_at
+        SELECT users.id AS user_id, 
+        users.username, 
+        comments.content, 
+        comments_x_pictures_x_users.comment_id,
+        comments_x_pictures_x_users.created_at
         FROM comments_x_pictures_x_users
         JOIN comments ON comments_x_pictures_x_users.comment_id = comments.id
         JOIN users ON comments_x_pictures_x_users.user_id = users.id
