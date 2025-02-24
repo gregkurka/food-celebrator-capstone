@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import GetFeedAll from "./ApiCalls/GetFeedAll";
-import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import { Link } from "react-router-dom";
 import PicturePopup from "./PicturePopup";
 import SinglePhotoView from "./SinglePhotoView";
+import Likes from "./Likes";
 
-function PictureFeed() {
+function PictureFeed({ user }) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -23,60 +23,60 @@ function PictureFeed() {
     fetchData();
   }, []);
 
-  // Function to handle likes
-  //   const handleLike = (postId) => {
-  //     setPosts(
-  //       posts.map((post) =>
-  //         post.id === postId ? { ...post, likes: post.likes + 1 } : post
-  //       )
-  //     );
-  //   };
-
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col items-center space-y-8">
       {posts.map((post) => (
-        <div
-          key={post.id}
-          className="bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg"
-        >
+        <div key={post.id} className="w-full max-w-lg">
           {/* User Info */}
-          <div>
+          <div className="flex items-center space-x-2 px-2">
+            <img
+              src={post.profilePic || "/default-avatar.png"}
+              alt={`${post.username}'s profile`}
+              className="w-8 h-8 rounded-full border"
+            />
             <Link
               to={`/user/${post.username}`}
-              className="text-white-500 hover:underline"
+              className="text-sm font-semibold hover:underline"
             >
               {post.username}
             </Link>
           </div>
-          <div className="flex flex-col items-center space-y-4">
+
+          {/* Image */}
+          <div className="mt-2">
             <img
-              onClick={() => setSelectedPost(post)} // Set the clicked post
+              onClick={() => setSelectedPost(post)}
               src={post.url}
-              alt={post.username}
-              className="w-80 h-80 sm:w-100 sm:h-100 rounded-lg border-2 border-primary"
+              alt={post.caption}
+              className="w-full rounded-lg object-cover"
             />
-            {/* <h2 className="text-lg font-semibold">{post.caption}</h2> */}
           </div>
-          <p className="mt-4 text-secondary">{post.caption}</p>
-          <p className="mt-4 text-secondary">
-            Uploaded on {new Date(post.created_at).toLocaleDateString()}
+
+          {/* Caption & Upload Date */}
+          {post.caption && (
+            <p className="px-2 text-sm text-foreground dark:text-darkforeground mt-2">
+              <span className="font-semibold">{post.username}</span>{" "}
+              {post.caption}
+            </p>
+          )}
+          <p className="px-2 text-xs text-muted dark:text-darkmuted">
+            {new Date(post.created_at).toLocaleDateString()}
           </p>
-          {/* Actions (Like & Comment) */}
-          <div className="mt-4 flex space-x-6">
-            <button
-              onClick={() => handleLike(post.id)}
-              className="flex items-center space-x-2 text-green-400 hover:text-green-300 transition"
-            >
-              ❤️ <span>{post.likes}</span>
-            </button>
+                 <div className="mt-4 flex space-x-6">
+            <Likes post={post} setPosts={setPosts} user={user} />
+
+            {/* Actions: Comment */}
+
             <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition">
               💬 <span>{post.comments}</span>
             </button>
           </div>
+
+          {/* Full Image Popup */}
           {selectedPost && (
             <PicturePopup
-              show={!!selectedPost} // Boolean check
-              onClose={() => setSelectedPost(null)} // Close modal
+              show={!!selectedPost}
+              onClose={() => setSelectedPost(null)}
             >
               <SinglePhotoView
                 picture={selectedPost.url}

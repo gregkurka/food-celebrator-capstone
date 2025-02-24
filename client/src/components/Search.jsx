@@ -31,7 +31,7 @@ function Search() {
       {/* Search Bar */}
       <input
         type="text"
-        placeholder="🔍 Search by username..."
+        placeholder="🔎 Search by username..."
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
         className="w-full md:w-[50%] lg:w-[60%] px-5 py-3 rounded-lg border border-muted dark:border-darkmuted 
