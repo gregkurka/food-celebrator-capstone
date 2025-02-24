@@ -4,8 +4,9 @@ import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import { Link } from "react-router-dom";
 import PicturePopup from "./PicturePopup";
 import SinglePhotoView from "./SinglePhotoView";
+import Likes from "./Likes";
 
-function PictureFeed() {
+function PictureFeed({ user }) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
 
@@ -61,14 +62,22 @@ function PictureFeed() {
           <p className="mt-4 text-secondary">
             Uploaded on {new Date(post.created_at).toLocaleDateString()}
           </p>
-          {/* Actions (Like & Comment) */}
-          <div className="mt-4 flex space-x-6">
+          {/* Actions: Like */}
+          {/* <div className="mt-4 flex space-x-6">
             <button
               onClick={() => handleLike(post.id)}
+              // onClick={() => (
+              //   <Likes post={post} setPosts={setPosts} user={user} />
+              // )}
               className="flex items-center space-x-2 text-green-400 hover:text-green-300 transition"
             >
               ❤️ <span>{post.likes}</span>
-            </button>
+            </button> */}
+          <div className="mt-4 flex space-x-6">
+            <Likes post={post} setPosts={setPosts} user={user} />
+
+            {/* Actions: Comment */}
+
             <button className="flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition">
               💬 <span>{post.comments}</span>
             </button>

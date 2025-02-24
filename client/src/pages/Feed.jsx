@@ -3,7 +3,7 @@ import Upload from "../components/Upload";
 import PictureFeed from "../components/PictureFeed";
 import Search from "../components/Search";
 
-function Feed() {
+function Feed({ user }) {
   return (
     <div
       className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground 
@@ -35,7 +35,7 @@ function Feed() {
 
       {/* Picture Feed Section */}
       <div className="w-full max-w-3xl mt-8 space-y-6">
-        <PictureFeed />
+        <PictureFeed user={user} />
       </div>
     </div>
   );

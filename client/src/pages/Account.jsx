@@ -13,6 +13,7 @@ function Account() {
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
+  console.log(user);
   useEffect(() => {
     const token = localStorage.getItem("token");
 

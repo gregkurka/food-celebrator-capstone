@@ -71,7 +71,7 @@ function App() {
             element={<Signup setToken={setToken} setUser={setUser} />}
           />
           {/* Feed page route, accessible to all users */}
-          <Route path="/feed" element={<Feed />} />
+          <Route path="/feed" element={<Feed user={user} />} />
           {/* Account page route, passing token and user data */}
           <Route
             path="/account"
