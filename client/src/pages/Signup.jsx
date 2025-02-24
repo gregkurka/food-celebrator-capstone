@@ -45,12 +45,11 @@ function Signup({ setToken }) {
     }
   }
   const images = [
-    "/basedlogo.png",
-    "/coffee.png",
-    "/pancakes.png",
-    "/pizza.png",
-    "/salad.png",
-    "/steak.jpg",
+    "../../public/demophotos/picture1.png",
+    "../../public/demophotos/picture2.png",
+    "../../public/demophotos/picture3.png",
+    "../../public/demophotos/picture4.png",
+    "../../public/demophotos/picture5.png",
   ];
 
   const [currentImage, setCurrentImage] = useState(images[0]); // Sets initial background

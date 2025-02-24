@@ -26,7 +26,7 @@ function UserUploads({ user }) {
       <h3 className="text-2xl font-bold mb-6">Your Picture Uploads</h3>
 
       {userPosts.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg gap-3">
           {userPosts.map((post) => (
             <div
               key={post.id}
@@ -35,7 +35,7 @@ function UserUploads({ user }) {
               <img
                 src={post.url}
                 alt={post.caption || "User Upload"}
-                className="w-full h-56 md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+                className="w-full h-auto md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
               />
               <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p className="text-white text-sm">
