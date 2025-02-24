@@ -112,6 +112,14 @@ const fetchPictures = async () => {
   return response.rows;
 };
 
+const fetchPictureById = async (picture_id) => {
+  const SQL = `
+    SELECT id, URL, caption, created_at FROM pictures WHERE id = $1;
+  `;
+  const response = await client.query(SQL, [picture_id]);
+  return response.rows;
+};
+
 const fetchUserPictures = async (user_id) => {
   const SQL = `
     SELECT pictures.id, pictures.URL, pictures.caption, pictures.created_at
@@ -139,6 +147,24 @@ const fetchUserPicturesByUsername = async (username) => {
   `;
   const response = await client.query(SQL, [username]);
   return response.rows;
+};
+
+const fetchPictureByUsernameAndId = async ({ username, picture_id }) => {
+  const SQL = `
+    SELECT 
+    users.username,
+    users.id AS user_id,
+    pictures.id AS picture_id,
+    pictures.url AS picture_url,
+    pictures.caption AS picture_caption,
+    pictures.created_at AS picture_createdat
+    FROM users_x_pictures
+    JOIN users ON users_x_pictures.user_id = users.id
+    JOIN pictures ON users_x_pictures.picture_id = pictures.id
+    WHERE users.username = $1 AND pictures.id=$2;
+  `;
+  const response = await client.query(SQL, [username, picture_id]);
+  return response.rows[0];
 };
 
 const deleteUser = async (id) => {
@@ -290,5 +316,7 @@ module.exports = {
   linkLikePictureAndUser,
   fetchAllLinkCommentPictureAndUser,
   fetchAllLinkLikePictureAndUser,
-  fetchUserPicturesByUsername, // <-- New export
+  fetchUserPicturesByUsername,
+  fetchPictureById,
+  fetchPictureByUsernameAndId,
 };
