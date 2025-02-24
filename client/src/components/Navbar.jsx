@@ -51,7 +51,7 @@ function Navbar({ token, handleLogout }) {
                 isDarkMode ? "/icons/homeIconDark.png" : "/icons/homeIcon.png"
               }
               alt="Home Icon"
-              className="w-10 h-10"
+              className="w-11 h-9"
             />
           </div>
           <span className="text-left text-lg">Home</span>
@@ -70,7 +70,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/feedIcon.png"
                   }
                   alt="Feed Icon"
-                  className="w-10 h-10"
+                  className="w-30 h-13"
                 />
               </div>
               <span className="text-left text-lg">Feed</span>
@@ -87,7 +87,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/accountIcon.png"
                   }
                   alt="Account Icon"
-                  className="w-10 h-10"
+                  className="w-9 h-9"
                 />
               </div>
               <span className="text-left text-lg">Account</span>
