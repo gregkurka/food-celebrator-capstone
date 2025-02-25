@@ -23,12 +23,12 @@ function MobileNavbar({ token, handleLogout }) {
   return (
     <nav className="bg-background dark:bg-darkbackground shadow-md backdrop-blur-md">
       <div className="flex justify-between items-center px-6 py-4">
-        {/* Logo */}
+        {/* Logo (Switches for Light/Dark Mode) */}
         <Link to="/feed" className="flex items-center space-x-2">
           <img
-            src="/logo.png"
-            alt="AppLogo"
-            className="w-8 h-8 object-contain"
+            src={isDarkMode ? "/logoDark.png" : "/logo.png"}
+            alt="App Logo"
+            className="w-10 h-10 object-contain transition-all duration-300"
           />
           <span className="text-xl font-bold tracking-tight text-foreground dark:text-darkforeground">
             Food Celebrator
@@ -40,7 +40,7 @@ function MobileNavbar({ token, handleLogout }) {
           <DarkModeToggle />
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-foreground dark:text-darkforeground"
+            className="text-foreground dark:text-darkforeground text-2xl focus:outline-none"
           >
             {isOpen ? "✖" : "☰"}
           </button>
@@ -50,103 +50,44 @@ function MobileNavbar({ token, handleLogout }) {
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <div className="bg-background dark:bg-darkbackground p-4 text-center space-y-3">
-          <Link
-            to="/"
-            className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground hover:text-primary dark:hover:text-darkprimary transition"
-          >
-            <img
-              src={
-                isDarkMode ? "/icons/homeIconDark.png" : "/icons/homeIcon.png"
-              }
-              alt="Home Icon"
-              className="w-6.5 h-5"
-            />
-            <span>Home</span>
-          </Link>
+          <NavItem to="/" icon="homeIcon" text="Home" isDarkMode={isDarkMode} />
 
           {token ? (
             <>
-              <Link
+              <NavItem
                 to="/feed"
-                className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground hover:text-primary dark:hover:text-darkprimary transition"
-              >
-                <img
-                  src={
-                    isDarkMode
-                      ? "/icons/feedIconDark.png"
-                      : "/icons/feedIcon.png"
-                  }
-                  alt="Feed Icon"
-                  className="w-8 h-8"
-                />
-                <span>Feed</span>
-              </Link>
-
-              <Link
+                icon="feedIcon"
+                text="Feed"
+                isDarkMode={isDarkMode}
+              />
+              <NavItem
                 to="/account"
-                className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground hover:text-primary dark:hover:text-darkprimary transition"
-              >
-                <img
-                  src={
-                    isDarkMode
-                      ? "/icons/accountIconDark.png"
-                      : "/icons/accountIcon.png"
-                  }
-                  alt="Account Icon"
-                  className="w-5 h-5"
-                />
-                <span>My Account</span>
-              </Link>
-
+                icon="accountIcon"
+                text="My Account"
+                isDarkMode={isDarkMode}
+              />
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center space-x-2 py-2 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition"
               >
-                <img
-                  src={
-                    isDarkMode
-                      ? "/icons/logoutIconDark.png"
-                      : "/icons/logoutIcon.png"
-                  }
-                  alt="Logout Icon"
-                  className="w-6 h-6"
-                />
+                <NavIcon icon="logoutIcon" isDarkMode={isDarkMode} />
                 <span>Logout</span>
               </button>
             </>
           ) : (
             <>
-              <Link
+              <NavItem
                 to="/signup"
-                className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground hover:text-primary dark:hover:text-darkprimary transition"
-              >
-                <img
-                  src={
-                    isDarkMode
-                      ? "/icons/signupIconDark.png"
-                      : "/icons/signupIcon.png"
-                  }
-                  alt="Signup Icon"
-                  className="w-6 h-6"
-                />
-                <span>Sign Up</span>
-              </Link>
-
-              <Link
+                icon="signupIcon"
+                text="Sign Up"
+                isDarkMode={isDarkMode}
+              />
+              <NavItem
                 to="/login"
-                className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground hover:text-primary dark:hover:text-darkprimary transition"
-              >
-                <img
-                  src={
-                    isDarkMode
-                      ? "/icons/loginIconDark.png"
-                      : "/icons/loginIcon.png"
-                  }
-                  alt="Login Icon"
-                  className="w-6 h-6"
-                />
-                <span>Login</span>
-              </Link>
+                icon="loginIcon"
+                text="Login"
+                isDarkMode={isDarkMode}
+              />
             </>
           )}
         </div>
@@ -154,5 +95,26 @@ function MobileNavbar({ token, handleLogout }) {
     </nav>
   );
 }
+
+// Reusable Nav Item Component
+const NavItem = ({ to, icon, text, isDarkMode }) => (
+  <Link
+    to={to}
+    className="flex items-center justify-center space-x-2 py-2 text-foreground dark:text-darkforeground 
+               hover:text-primary dark:hover:text-darkprimary transition"
+  >
+    <NavIcon icon={icon} isDarkMode={isDarkMode} />
+    <span>{text}</span>
+  </Link>
+);
+
+// Reusable Nav Icon Component
+const NavIcon = ({ icon, isDarkMode }) => (
+  <img
+    src={isDarkMode ? `/icons/${icon}Dark.png` : `/icons/${icon}.png`}
+    alt={`${icon} icon`}
+    className="w-6 h-6 object-contain"
+  />
+);
 
 export default MobileNavbar;
