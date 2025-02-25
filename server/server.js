@@ -47,8 +47,6 @@ app.use(
   cors({
     origin: process.env.FRONTEND_URL || "http://localhost:5173", // Allow Render frontend
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
 );
 
