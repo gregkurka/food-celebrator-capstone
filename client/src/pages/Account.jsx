@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
+import Upload from "../components/Upload";
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -83,6 +84,9 @@ function Account() {
 
       {/* User Uploads Section */}
       <div className="w-full max-w-3xl mt-10 space-y-6">
+        <div>
+          <Upload />
+        </div>
         <UserUploads user={user} />
       </div>
     </div>
