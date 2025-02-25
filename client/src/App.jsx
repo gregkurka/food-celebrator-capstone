@@ -28,9 +28,12 @@ function App() {
 
   const verifyToken = useCallback(async (token) => {
     try {
-      const response = await axios.get("http://localhost:3000/api/auth/me", {
-        headers: { Authorization: token },
-      });
+      const response = await axios.get(
+        "https://food-celebrator.onrender.com/api/auth/me",
+        {
+          headers: { Authorization: token },
+        }
+      );
       setToken(token);
       setUser(response.data);
     } catch (error) {
@@ -72,7 +75,7 @@ function App() {
               path="/signup"
               element={<Signup setToken={setToken} setUser={setUser} />}
             />
-           <Route path="/feed" element={<Feed user={user} />} />
+            <Route path="/feed" element={<Feed user={user} />} />
             <Route
               path="/account"
               element={<Account token={token} user={user} />}

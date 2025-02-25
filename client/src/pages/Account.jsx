@@ -26,9 +26,12 @@ function Account() {
 
     async function fetchUserData() {
       try {
-        const response = await axios.get("http://localhost:3000/api/auth/me", {
-          headers: { Authorization: token },
-        });
+        const response = await axios.get(
+          "https://food-celebrator.onrender.com/api/auth/me",
+          {
+            headers: { Authorization: token },
+          }
+        );
         setUser(response.data);
       } catch (err) {
         setError("Failed to load user data. Please log in again.");

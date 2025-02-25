@@ -30,7 +30,7 @@ function Signup({ setToken }) {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/auth/register",
+        "https://food-celebrator.onrender.com/api/auth/register",
         { username, email, password }
       );
 

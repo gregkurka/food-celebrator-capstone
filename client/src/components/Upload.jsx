@@ -46,7 +46,7 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
     setMessage("Uploading...");
 
     try {
-      const uploadUrl = "http://localhost:3000/api/upload";
+      const uploadUrl = "https://food-celebrator.onrender.com/api/upload";
       const response = await axios.post(uploadUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",

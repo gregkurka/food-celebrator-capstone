@@ -4,7 +4,7 @@ import axios from "axios";
 import PicturePopup from "../components/PicturePopup";
 import SinglePhotoView from "../components/SinglePhotoView";
 
-const URL = "http://localhost:3000/api";
+const URL = "https://food-celebrator.onrender.com/api";
 
 function UserPage() {
   const { username } = useParams();

@@ -12,7 +12,7 @@ export default function SinglePhotoView({
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
 
-  const API_URL = "http://localhost:3000/api"; // Adjust as needed
+  const API_URL = "https://food-celebrator.onrender.com/api"; // Adjust as needed
 
   useEffect(() => {
     const fetchData = async () => {
