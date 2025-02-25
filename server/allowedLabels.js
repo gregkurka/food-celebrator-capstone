@@ -785,6 +785,8 @@ const ALLOWED_LABELS = [
   "apple",
   "pupcup",
   "pup-cup",
+  "duck",
+  "rubber duck",
 ];
 
 module.exports = ALLOWED_LABELS;
