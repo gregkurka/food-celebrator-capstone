@@ -11,6 +11,7 @@ function Account() {
   const [error, setError] = useState(null);
   const [selectedPicture, setSelectedPicture] = useState("/basedlogo.png");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [refreshUploads, setRefreshUploads] = useState(false);
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
@@ -88,9 +89,9 @@ function Account() {
       {/* User Uploads Section */}
       <div className="w-full max-w-3xl mt-10 space-y-6">
         <div>
-          <Upload />
+          <Upload setRefreshUploads={setRefreshUploads} />
         </div>
-        <UserUploads user={user} />
+        <UserUploads user={user} refreshUploads={refreshUploads} />
       </div>
     </div>
   );

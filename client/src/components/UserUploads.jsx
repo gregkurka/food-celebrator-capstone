@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import Delete from "./Delete";
 
-function UserUploads({ user }) {
+function UserUploads({ user, refreshUploads }) {
   const [userPosts, setUserPosts] = useState([]);
   const [pictureId, setPictureId] = useState([]);
 
@@ -22,7 +22,7 @@ function UserUploads({ user }) {
     };
 
     fetchUserPictures();
-  }, [user.id]);
+  }, [user.id, refreshUploads]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">
