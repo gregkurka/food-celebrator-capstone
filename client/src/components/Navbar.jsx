@@ -29,9 +29,9 @@ function Navbar({ token, handleLogout }) {
       <div className="flex items-center space-x-3 mb-10">
         <Link to="/feed" className="flex items-center space-x-2">
           <img
-            src="/logonowords.png"
+            src={isDarkMode ? "/logoDark.png" : "/logo.png"}
             alt="AppLogo"
-            className="w-12 h-12 object-contain"
+            className="w-12 h-12 object-contain transition-all duration-300"
           />
           <span className="text-2xl font-extrabold tracking-wide text-font dark:text-darkfont">
             Food Celebrator
@@ -87,7 +87,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/accountIcon.png"
                   }
                   alt="Account Icon"
-                  className="w-9 h-9"
+                  className="w-8 h-9"
                 />
               </div>
               <span className="text-left text-lg">Account</span>
@@ -104,7 +104,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/logoutIcon.png"
                   }
                   alt="Logout Icon"
-                  className="w-10 h-10"
+                  className="w-7 h-10"
                 />
               </div>
               <span className="text-left text-lg">Logout</span>
@@ -124,7 +124,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/signupIcon.png"
                   }
                   alt="Sign Up Icon"
-                  className="w-10 h-10"
+                  className="w-9 h-10"
                 />
               </div>
               <span className="text-left text-lg">Sign Up</span>
@@ -141,7 +141,7 @@ function Navbar({ token, handleLogout }) {
                       : "/icons/loginIcon.png"
                   }
                   alt="Login Icon"
-                  className="w-10 h-10"
+                  className="w-7 h-10"
                 />
               </div>
               <span className="text-left text-lg">Login</span>

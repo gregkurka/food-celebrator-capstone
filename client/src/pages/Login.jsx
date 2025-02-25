@@ -63,7 +63,7 @@ function Login({ setToken }) {
             headers: { Authorization: `${response.data.token}` },
           });
 
-          alert("Login successful!"); // Notify user of successful login
+          // alert("Login successful!"); // Notify user of successful login
           navigate("/account"); // Redirect to the account page
         } catch (userError) {
           console.error("Failed to fetch user data:", userError);
@@ -93,7 +93,7 @@ function Login({ setToken }) {
       }}
     >
       <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl shadow-md backdrop-blur-lg">
-        <h1 className="text-3xl font-bold text-center text-primary dark:text-darkprimary">
+        <h1 className="text-3xl font-bold text-center text-font dark:text-darkfont">
           Login
         </h1>
 

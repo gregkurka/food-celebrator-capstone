@@ -76,7 +76,7 @@ function Signup({ setToken }) {
       }}
     >
       <div className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 p-6 rounded-xl shadow-md backdrop-blur-lg">
-        <h1 className="text-3xl font-bold text-center text-primary dark:text-darkprimary">
+        <h1 className="text-3xl font-bold text-center text-font dark:text-darkfont">
           Sign Up
         </h1>
 

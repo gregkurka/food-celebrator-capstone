@@ -68,28 +68,28 @@ function Home() {
         {/* Conditional Buttons - Wrap on small screens */}
         <div
           className="flex flex-col sm:flex-row justify-center items-center 
-                        space-y-4 sm:space-y-0 sm:space-x-4 mt-8 w-full"
+             space-y-4 sm:space-y-0 sm:space-x-4 mt-8 w-full"
         >
           {isLoggedIn ? (
             <>
               <button
                 onClick={() => navigate("/feed")}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                           transition-all duration-300 w-full sm:w-auto buttongradients"
+                   transition-all duration-300 w-full sm:w-48 buttongradients"
               >
                 Feed
               </button>
               <button
                 onClick={() => navigate("/account")}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                           transition-all duration-300 w-full sm:w-auto buttongradients"
+                   transition-all duration-300 w-full sm:w-48 buttongradients"
               >
                 Account
               </button>
               <button
                 onClick={handleLogout}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                           transition-all duration-300 w-full sm:w-auto bg-red-500 hover:bg-red-600"
+                   transition-all duration-300 w-full sm:w-48 bg-red-500 hover:bg-red-600"
               >
                 Logout
               </button>
@@ -99,14 +99,14 @@ function Home() {
               <button
                 onClick={() => navigate("/signup")}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                           transition-all duration-300 w-full sm:w-auto buttongradients"
+                   transition-all duration-300 w-full sm:w-48 buttongradients"
               >
                 Sign Up
               </button>
               <button
                 onClick={() => navigate("/login")}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                           transition-all duration-300 w-full sm:w-auto buttongradients"
+                   transition-all duration-300 w-full sm:w-48 buttongradients"
               >
                 Login
               </button>
