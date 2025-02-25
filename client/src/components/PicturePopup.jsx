@@ -16,8 +16,9 @@ function PicturePopup({ show, onClose, children }) {
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         {/* Popup Content */}
-        <div className="space-y-4">{children}</div>
-
+        {/* <div className="space-y-4">{children}</div> */}
+        <div>{children}</div>
+        {/* ✅ Removed `space-y-4` */}
         {/* Close Button */}
         <button
           onClick={onClose}

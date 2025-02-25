@@ -1,6 +1,6 @@
 # Food Celebrator Flow Chart
 
-App.jsx > Account.jsx> UserUploads.jsx
+App.jsx > Account.jsx> UserUploads.jsx > Delete.jsx
 App.jsx > Account.jsx> ProfilePicture.jsx
 App.jsx > Feed.jsx > Search.jsx > GetAllUsers.jsx
 App.jsx > Feed.jsx > PictureFeed.jsx > GetPictureByUsers.jsx
