@@ -26,7 +26,7 @@ function MobileNavbar({ token, handleLogout }) {
         {/* Logo */}
         <Link to="/feed" className="flex items-center space-x-2">
           <img
-            src="/logonowords.png"
+            src="/logo.png"
             alt="AppLogo"
             className="w-8 h-8 object-contain"
           />

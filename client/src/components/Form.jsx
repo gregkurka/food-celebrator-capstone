@@ -14,13 +14,13 @@ function Form({
 }) {
   return (
     <form
-      className="bg-gray-900/80 dark:bg-gray-800/80 p-8 rounded-xl shadow-xl 
+      className="bg-gray-400/80 dark:bg-gray-800/80 p-8 rounded-xl shadow-xl 
                  max-w-md mx-auto text-white backdrop-blur-lg border border-gray-700 dark:border-gray-600
                  transition-all duration-300"
       onSubmit={submitFunction}
     >
       {/* Title */}
-      <h2 className="text-3xl font-extrabold text-center text-primary dark:text-darkprimary mb-6">
+      <h2 className="text-3xl font-extrabold text-center text-font dark:text-darkfont mb-6">
         {parent === "signup" ? "Create an Account" : "Welcome Back, Foodie"}
       </h2>
 
@@ -28,7 +28,7 @@ function Form({
       <div className="mb-5">
         <label
           htmlFor="username"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-font dark:text-darkfont"
         >
           Username
         </label>
@@ -51,7 +51,7 @@ function Form({
         <div className="mb-5">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-300"
+            className="block text-sm font-medium text-font dark:text-darkfont"
           >
             Email
           </label>
@@ -74,7 +74,7 @@ function Form({
       <div className="mb-5">
         <label
           htmlFor="password"
-          className="block text-sm font-medium text-gray-300"
+          className="block text-sm font-medium text-font dark:text-darkfont"
         >
           Password
         </label>
@@ -97,7 +97,7 @@ function Form({
         <div className="mb-5">
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-300"
+            className="block text-sm font-medium text-font dark:text-darkfont"
           >
             Confirm Password
           </label>
@@ -119,9 +119,10 @@ function Form({
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full py-3 text-lg font-bold text-white bg-gradient-to-r 
-                   from-primary to-primary dark:from-darkprimary dark:to-darkprimary 
-                   rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105"
+        className="w-full py-3 text-lg font-bold text-white 
+                         rounded-lg shadow-lg hover:opacity-90 transition-all 
+             duration-300 transform hover:scale-105"
+        style={{ backgroundColor: "rgb(59, 130, 100)" }} // Tailwind's `primary` equivalent in RGB
       >
         {parent === "signup" ? "Sign Up" : "Log In"}
       </button>
