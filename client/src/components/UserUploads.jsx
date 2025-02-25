@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
+import Delete from "./Delete";
 
 function UserUploads({ user }) {
   const [userPosts, setUserPosts] = useState([]);
+  const [pictureId, setPictureId] = useState([]);
 
   useEffect(() => {
     const fetchUserPictures = async () => {
@@ -12,6 +14,7 @@ function UserUploads({ user }) {
         const sortedData = data.sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
+        console.log("line15", sortedData); //gives id, url, caption, created_at from picture table
         setUserPosts(sortedData);
       } catch (error) {
         console.error("Failed to fetch user uploads:", error);
@@ -32,6 +35,7 @@ function UserUploads({ user }) {
               key={post.id}
               className="relative group overflow-hidden rounded-lg shadow-md"
             >
+              {console.log("line38", post)}
               <img
                 src={post.url}
                 alt={post.caption || "User Upload"}
@@ -44,6 +48,15 @@ function UserUploads({ user }) {
                 <p className="text-gray-300 text-xs">
                   Uploaded on {new Date(post.created_at).toLocaleDateString()}
                 </p>
+                <Delete
+                  userId={user.id}
+                  postId={post.id}
+                  onDelete={(deletedPostId) => {
+                    setUserPosts((prevUserPosts) =>
+                      prevUserPosts.filter((post) => post.id !== deletedPostId)
+                    );
+                  }}
+                />
               </div>
             </div>
           ))}
