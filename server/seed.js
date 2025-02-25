@@ -17,7 +17,6 @@ const {
 
 const seed = async () => {
   try {
-    console.log(client);
     // separate connection to DB since this file will run separately from index.js
     console.log("Connecting to database...");
     await client.connect();
@@ -181,6 +180,8 @@ const seed = async () => {
     await linkUserToPicture({ user_id: user5.id, picture_id: picture25.id });
 
     console.log("Data seeded.");
+    await client.end(); // Close connection after seeding
+    console.log("Database connection closed.");
   } catch (error) {
     console.log(error);
   }

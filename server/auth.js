@@ -12,17 +12,19 @@ async function findUserByUsername(username) {
 
 async function findUserByToken(token) {
   try {
+    if (!token) throw new Error("Token required");
+
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     const { rows } = await client.query("SELECT * FROM users WHERE id = $1", [
       payload.id,
     ]);
-    if (!rows.length) {
-      throw new Error("User not found");
-    }
+
+    if (!rows.length) throw new Error("User not found");
 
     const { password, ...userWithoutPassword } = rows[0];
     return userWithoutPassword;
   } catch (error) {
+    console.error("Token verification failed:", error.message);
     throw new Error("Invalid token");
   }
 }
