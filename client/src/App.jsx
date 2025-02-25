@@ -72,7 +72,7 @@ function App() {
               path="/signup"
               element={<Signup setToken={setToken} setUser={setUser} />}
             />
-           <Route path="/feed" element={<Feed user={user} />} />
+            <Route path="/feed" element={<Feed user={user} />} />
             <Route
               path="/account"
               element={<Account token={token} user={user} />}

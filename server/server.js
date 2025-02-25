@@ -52,8 +52,6 @@ app.use(
   })
 );
 
-app.use(cors());
-
 const path = require("path");
 
 const { authenticate, findUserByToken, isLoggedIn } = require("./auth");
@@ -480,15 +478,11 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
 
 const init = async () => {
   try {
-    console.log("Connecting to database...");
-    await client.connect(); // Ensure database is connected
-    console.log("Connected to PostgreSQL");
-
+    console.log("Starting server...");
     app.listen(port, () => console.log(`Server running on port ${port}`));
   } catch (err) {
-    console.error("Database connection failed:", err);
+    console.error("Server startup failed:", err);
     process.exit(1);
   }
 };
-
 init();

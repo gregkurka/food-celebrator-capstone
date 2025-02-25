@@ -12,6 +12,10 @@ const client = new Client({
 });
 
 // Connect to PostgreSQL
+client
+  .connect()
+  .then(() => console.log("Connected to PostgreSQL on Render"))
+  .catch((err) => console.error("Connection error", err.stack));
 
 module.exports = client;
 

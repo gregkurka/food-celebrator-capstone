@@ -1,37 +1,32 @@
-// seed.js
+const pictureUrl = "/demophotos/";
 require("dotenv").config();
-const { Client } = require("pg");
 
-// Import only the functions needed for seeding, NOT the shared client
 const {
+  client,
   createTables,
   createUser,
   createPicture,
   linkUserToPicture,
-  // ...any other functions you need
+  fetchUsers,
+  fetchPictures,
+  fetchUserPictures,
+  deleteUser,
+  deletePicture,
+  deleteUserPictureLink,
 } = require("./db");
-
-// We'll define our own client (seedClient) just for seeding:
-const seedClient = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
-const pictureUrl = "/demophotos/";
 
 const seed = async () => {
   try {
-    console.log("Connecting to database (seed script)...");
-    await seedClient.connect();
-    console.log("Connected to database (seed script).");
+    console.log(client);
+    // separate connection to DB since this file will run separately from index.js
+    console.log("Connecting to database...");
+    await client.connect();
+    console.log("Connected to database.");
 
-    // 1) Create all tables
     await createTables();
     console.log("Tables created.");
 
-    // 2) Create seed users
+    // Seed data if you'd like
     const user1 = await createUser({
       username: "gregk",
       password: "pw_gregk",
@@ -58,7 +53,6 @@ const seed = async () => {
       email: "test5@example.com",
     });
 
-    // 3) Create seed pictures
     const picture1 = await createPicture({
       URL: `${pictureUrl}picture1.png`,
       caption: "Salmon",
@@ -160,7 +154,6 @@ const seed = async () => {
       caption: "Salad",
     });
 
-    // 4) Link users to pictures
     await linkUserToPicture({ user_id: user1.id, picture_id: picture1.id });
     await linkUserToPicture({ user_id: user1.id, picture_id: picture2.id });
     await linkUserToPicture({ user_id: user1.id, picture_id: picture3.id });
@@ -172,7 +165,7 @@ const seed = async () => {
     await linkUserToPicture({ user_id: user2.id, picture_id: picture9.id });
     await linkUserToPicture({ user_id: user2.id, picture_id: picture10.id });
     await linkUserToPicture({ user_id: user3.id, picture_id: picture11.id });
-    await linkUserToPicture({ user_id: user3.id, picture_id: picture12.id });
+    await linkUserToPicture({ user_id: user3.id, picture_id: picture22.id });
     await linkUserToPicture({ user_id: user3.id, picture_id: picture13.id });
     await linkUserToPicture({ user_id: user3.id, picture_id: picture14.id });
     await linkUserToPicture({ user_id: user3.id, picture_id: picture15.id });
@@ -188,17 +181,9 @@ const seed = async () => {
     await linkUserToPicture({ user_id: user5.id, picture_id: picture25.id });
 
     console.log("Data seeded.");
-
-    // 5) Close the connection
-    await seedClient.end();
-    console.log("Database connection closed (seed script).");
   } catch (error) {
-    console.error("Seeding error:", error);
-    // Make sure to close the connection if there's an error
-    await seedClient.end();
-    process.exit(1);
+    console.log(error);
   }
 };
 
-// Run the seed
 seed();
