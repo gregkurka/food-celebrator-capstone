@@ -43,16 +43,23 @@ const { ImageAnnotatorClient } = require("@google-cloud/vision");
 const visionClient = new ImageAnnotatorClient();
 const ALLOWED_LABELS = require("./allowedLabels");
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "http://localhost:5173",
+  "https://foodcelebrator.onrender.com",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow only the frontend origin
-    credentials: true, // Allow cookies and authentication headers
-    methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
-
-app.use(cors());
 
 const path = require("path");
 
@@ -480,12 +487,11 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
 
 const init = async () => {
   try {
-    await client.connect();
-    app.listen(port, () => console.log(`Listening on port ${port}`));
+    console.log("Starting server...");
+    app.listen(port, () => console.log(`Server running on port ${port}`));
   } catch (err) {
-    console.error("Init function failed:", err);
+    console.error("Server startup failed:", err);
     process.exit(1);
   }
 };
-
 init();

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import Delete from "./Delete";
 
-function UserUploads({ user, isEditMode }) {
+function UserUploads({ user, isEditMode, refreshUploads }) {
   // Accept isEditMode as a prop
+
   const [userPosts, setUserPosts] = useState([]);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function UserUploads({ user, isEditMode }) {
     };
 
     fetchUserPictures();
-  }, [user.id]);
+  }, [user.id, refreshUploads]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">

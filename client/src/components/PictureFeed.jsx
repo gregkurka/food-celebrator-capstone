@@ -5,11 +5,12 @@ import PicturePopup from "./PicturePopup";
 import SinglePhotoView from "./SinglePhotoView";
 import Likes from "./Likes";
 
-function PictureFeed({ user }) {
+function PictureFeed({ user, refreshFeed }) {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
 
   useEffect(() => {
+    console.log("fetching new feed data");
     const fetchData = async () => {
       try {
         const data = await GetFeedAll();
@@ -23,7 +24,7 @@ function PictureFeed({ user }) {
     };
 
     fetchData();
-  }, []);
+  }, [refreshFeed]);
 
   return (
     <div className="flex flex-col items-center space-y-8">

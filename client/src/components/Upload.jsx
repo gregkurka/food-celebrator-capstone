@@ -4,7 +4,8 @@ import { FaRegPlusSquare } from "react-icons/fa"; // plus icon for uploading pic
 import PicturePopup from "./PicturePopup";
 import { ClipLoader, MoonLoader } from "react-spinners";
 
-function Upload() {
+function Upload({ setRefreshFeed, setRefreshUploads }) {
+  console.log("Upload component: setRefreshFeed =", setRefreshFeed);
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState("");
   const [message, setMessage] = useState(null);
@@ -45,7 +46,7 @@ function Upload() {
     setMessage("Uploading...");
 
     try {
-      const uploadUrl = "http://localhost:3000/api/upload";
+      const uploadUrl = "https://food-celebrator.onrender.com/api/upload";
       const response = await axios.post(uploadUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -61,6 +62,14 @@ function Upload() {
       // Show success message and hide the popup
       setMessage(response.data.message);
       setShowPopup(false);
+      // setRefreshFeed((prev) => !prev);
+      if (typeof setRefreshFeed === "function") {
+        setRefreshFeed((prev) => !prev); //feed refresh
+      }
+
+      if (typeof setRefreshUploads === "function") {
+        setRefreshUploads((prev) => !prev); //  userUploads refresh
+      }
     } catch (error) {
       // If error response contains logs, console log them
       if (error.response && error.response.data && error.response.data.logs) {

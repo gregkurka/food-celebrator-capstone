@@ -12,6 +12,8 @@ function Account() {
   const [selectedPicture, setSelectedPicture] = useState("/basedlogo.png");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false); // 🔥 New state for Edit Mode
+  const [refreshUploads, setRefreshUploads] = useState(false);
+
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
@@ -27,9 +29,12 @@ function Account() {
 
     async function fetchUserData() {
       try {
-        const response = await axios.get("http://localhost:3000/api/auth/me", {
-          headers: { Authorization: token },
-        });
+        const response = await axios.get(
+          "https://food-celebrator.onrender.com/api/auth/me",
+          {
+            headers: { Authorization: token },
+          }
+        );
         setUser(response.data);
       } catch (err) {
         setError("Failed to load user data. Please log in again.");
@@ -99,10 +104,9 @@ function Account() {
       {/* User Uploads Section */}
       <div className="w-full max-w-3xl mt-10 space-y-6">
         <div>
-          <Upload />
+          <Upload setRefreshUploads={setRefreshUploads} />
         </div>
-        <UserUploads user={user} isEditMode={isEditMode} />{" "}
-        {/* 🔥 Pass edit mode to UserUploads */}
+        <UserUploads user={user} isEditMode={isEditMode} refreshUploads={refreshUploads} />{" "}
       </div>
     </div>
   );
