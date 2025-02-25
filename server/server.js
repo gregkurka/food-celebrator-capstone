@@ -43,9 +43,20 @@ const { ImageAnnotatorClient } = require("@google-cloud/vision");
 const visionClient = new ImageAnnotatorClient();
 const ALLOWED_LABELS = require("./allowedLabels");
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "http://localhost:5173",
+  "https://foodcelebrator.onrender.com",
+];
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173", // Allow Render frontend
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, origin);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
