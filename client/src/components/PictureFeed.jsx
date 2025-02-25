@@ -13,7 +13,10 @@ function PictureFeed({ user }) {
     const fetchData = async () => {
       try {
         const data = await GetFeedAll();
-        setPosts(data);
+        const sortedPosts = data.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        setPosts(sortedPosts); // ✅ Corrected this line
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
