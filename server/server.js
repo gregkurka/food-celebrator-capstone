@@ -45,8 +45,8 @@ const ALLOWED_LABELS = require("./allowedLabels");
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Allow only the frontend origin
-    credentials: true, // Allow cookies and authentication headers
+    origin: process.env.FRONTEND_URL || "http://localhost:5173", // Allow Render frontend
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
@@ -480,10 +480,13 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
 
 const init = async () => {
   try {
-    await client.connect();
-    app.listen(port, () => console.log(`Listening on port ${port}`));
+    console.log("Connecting to database...");
+    await client.connect(); // Ensure database is connected
+    console.log("Connected to PostgreSQL");
+
+    app.listen(port, () => console.log(`Server running on port ${port}`));
   } catch (err) {
-    console.error("Init function failed:", err);
+    console.error("Database connection failed:", err);
     process.exit(1);
   }
 };

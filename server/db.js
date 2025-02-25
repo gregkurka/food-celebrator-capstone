@@ -1,6 +1,23 @@
-const pg = require("pg");
-const client = new pg.Client();
 const bcrypt = require("bcrypt");
+
+require("dotenv").config();
+const { Client } = require("pg");
+
+// Configure PostgreSQL connection using Render's DATABASE_URL
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Required for Render-hosted PostgreSQL
+  },
+});
+
+// Connect to PostgreSQL
+client
+  .connect()
+  .then(() => console.log("✅ Connected to PostgreSQL database!"))
+  .catch((err) => console.error("❌ Database connection error:", err));
+
+module.exports = client;
 
 const createTables = async () => {
   const SQL = `
