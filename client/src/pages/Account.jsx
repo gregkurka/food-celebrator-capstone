@@ -11,11 +11,14 @@ function Account() {
   const [error, setError] = useState(null);
   const [selectedPicture, setSelectedPicture] = useState("/basedlogo.png");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // 🔥 New state for Edit Mode
   const [refreshUploads, setRefreshUploads] = useState(false);
+
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
   console.log(user);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -84,6 +87,18 @@ function Account() {
         <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
           Welcome back, {user?.username.toUpperCase()}!
         </p>
+
+        {/* Edit Mode Button */}
+        <button
+          onClick={() => setIsEditMode(!isEditMode)}
+          className={`mt-4 px-4 py-2 text-white font-semibold rounded-lg transition ${
+            isEditMode
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-blue-500 hover:bg-blue-600"
+          }`}
+        >
+          {isEditMode ? "Exit Edit Mode" : "Enter Edit Mode"}
+        </button>
       </div>
 
       {/* User Uploads Section */}
@@ -91,7 +106,7 @@ function Account() {
         <div>
           <Upload setRefreshUploads={setRefreshUploads} />
         </div>
-        <UserUploads user={user} refreshUploads={refreshUploads} />
+        <UserUploads user={user} isEditMode={isEditMode} refreshUploads={refreshUploads} />{" "}
       </div>
     </div>
   );

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import Delete from "./Delete";
 
-function UserUploads({ user, refreshUploads }) {
+function UserUploads({ user, isEditMode, refreshUploads }) {
+  // Accept isEditMode as a prop
+
   const [userPosts, setUserPosts] = useState([]);
-  const [pictureId, setPictureId] = useState([]);
 
   useEffect(() => {
     const fetchUserPictures = async () => {
@@ -35,7 +36,6 @@ function UserUploads({ user, refreshUploads }) {
               key={post.id}
               className="relative group overflow-hidden rounded-lg shadow-md"
             >
-              {console.log("line38", post)}
               <img
                 src={post.url}
                 alt={post.caption || "User Upload"}
@@ -48,15 +48,21 @@ function UserUploads({ user, refreshUploads }) {
                 <p className="text-gray-300 text-xs">
                   Uploaded on {new Date(post.created_at).toLocaleDateString()}
                 </p>
-                <Delete
-                  userId={user.id}
-                  postId={post.id}
-                  onDelete={(deletedPostId) => {
-                    setUserPosts((prevUserPosts) =>
-                      prevUserPosts.filter((post) => post.id !== deletedPostId)
-                    );
-                  }}
-                />
+
+                {/* Show Delete button only when in Edit Mode */}
+                {isEditMode && (
+                  <Delete
+                    userId={user.id}
+                    postId={post.id}
+                    onDelete={(deletedPostId) => {
+                      setUserPosts((prevUserPosts) =>
+                        prevUserPosts.filter(
+                          (post) => post.id !== deletedPostId
+                        )
+                      );
+                    }}
+                  />
+                )}
               </div>
             </div>
           ))}

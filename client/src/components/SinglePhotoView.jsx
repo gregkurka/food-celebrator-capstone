@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function SinglePhotoView({
-  photoId,
-  uploadUserId,
-  setIsOpen,
-  picture,
-}) {
+export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
 
-  const API_URL = "https://food-celebrator.onrender.com/api"; // Adjust as needed
+  const API_URL = "https://food-celebrator.onrender.com/api";// Adjust as needed
+  const userId = localStorage.getItem("userId"); // Get userId from localStorage
 
   useEffect(() => {
     const fetchData = async () => {
-      // If we get new photo call by id delete picture from props and use this data instead: photo api call
       try {
         const { data: commentsData } = await axios.get(
           `${API_URL}/${photoId}/comments`
@@ -36,14 +31,23 @@ export default function SinglePhotoView({
     e.preventDefault();
     if (!newComment.trim()) return;
 
+    // Ensure userId exists before making the request
+    if (!userId) {
+      console.error("User is not logged in.");
+      return;
+    }
+
     setPosting(true);
     try {
       const response = await axios.post(`${API_URL}/createComment`, {
-        user_id: uploadUserId,
+        user_id: userId, // Use stored userId
         picture_id: photoId,
         content: newComment,
       });
-      setComments([response.data, ...comments]); // Add new comment to the top
+
+      if (response.data) {
+        setComments((prevComments) => [response.data, ...prevComments]); // Ensure proper state update
+      }
       setNewComment("");
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -62,17 +66,25 @@ export default function SinglePhotoView({
                  w-11/12 max-w-md md:max-w-lg lg:max-w-3xl xl:max-w-5xl"
     >
       {/* Photo Section */}
-      <img src={picture} className="w-full object-cover rounded-t-lg" />
+      <img
+        src={picture}
+        className="w-full object-cover rounded-t-lg"
+        alt="Uploaded"
+      />
 
       {/* Comments Section */}
       <div className="max-h-80 overflow-y-auto p-4 space-y-3 border-t">
-        {comments.map((comment) => (
-          <Comment
-            key={comment.id}
-            text={comment.content}
-            user={comment.username}
-          />
-        ))}
+        {comments.length > 0 ? (
+          comments.map((comment) => (
+            <Comment
+              key={comment.id || Math.random()} // Ensure a unique key
+              text={comment.content}
+              user={comment.username}
+            />
+          ))
+        ) : (
+          <p className="text-gray-500 italic">No comments yet.</p>
+        )}
       </div>
 
       {/* Comment Form */}
@@ -100,13 +112,16 @@ export default function SinglePhotoView({
 
 // Comment Component (Handles Collapsing Long Comments)
 const Comment = ({ text, user }) => {
+  // Prevent crashes if text is undefined
+  if (!text) return <p className="text-gray-500 italic">[No content]</p>;
+
   const words = text.split(" ");
   const isLong = words.length > 10;
   const [expanded, setExpanded] = useState(false);
 
   return (
     <div className="text-gray-700 dark:text-gray-300">
-      <span className="font-semibold">{user}:</span>{" "}
+      <span className="font-semibold">{user || "Anonymous"}:</span>{" "}
       {isLong && !expanded ? words.slice(0, 10).join(" ") + "..." : text}
       {isLong && (
         <button
