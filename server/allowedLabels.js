@@ -780,6 +780,11 @@ const ALLOWED_LABELS = [
   "barware",
   "cake",
   "condiment",
+  "candy",
+  "fruit rings",
+  "apple",
+  "pupcup",
+  "pup-cup",
 ];
 
 module.exports = ALLOWED_LABELS;
