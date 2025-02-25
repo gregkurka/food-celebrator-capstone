@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const URL = "http://localhost:3000/api";
+const URL = "https://food-celebrator.onrender.com/api";
 import GetAllUsers from "./ApiCalls/GetAllUsers";
 import { Link } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-const URL = "http://localhost:3000/api";
+const URL = "https://food-celebrator.onrender.com/api";
 
 function Delete({ userId, postId, onDelete }) {
   //   console.log(`Deleting post ${postId} for user ${userId}`);

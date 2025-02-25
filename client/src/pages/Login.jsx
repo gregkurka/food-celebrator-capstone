@@ -48,7 +48,7 @@ function Login({ setToken }) {
     try {
       // Send login request to the API
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://food-celebrator.onrender.com/api/auth/login",
         { username, password }
       );
 
@@ -59,7 +59,7 @@ function Login({ setToken }) {
 
         try {
           // Fetch user data with the received token to verify authentication
-          await axios.get("http://localhost:3000/api/auth/me", {
+          await axios.get("https://food-celebrator.onrender.com/api/auth/me", {
             headers: { Authorization: `${response.data.token}` },
           });
 
