@@ -13,12 +13,12 @@ function MobileBottomBar({ onUploadClick }) {
       shadow-md flex justify-around items-center py-3 md:hidden"
     >
       {/* Upload Button (Prominent Center) */}
-      <button
+      <div
         onClick={onUploadClick}
         className="w-18 h-9 bg-primary dark:bg-darkprimary text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition"
       >
-        <Upload/>
-      </button>
+        <Upload />
+      </div>
     </div>
   );
 }
