@@ -4,7 +4,7 @@ function About() {
   return (
     <div className="min-h-screen backgroundcolor text-foreground dark:text-darkforeground flex flex-col items-center justify-center px-6 py-16 md:py-20 animate-fadeIn">
       <img
-        src="/logonowords.png"
+        src="/1.png"
         alt="About me"
         style={{ width: "90px", height: "90px", marginBottom: "1rem" }}
       />
