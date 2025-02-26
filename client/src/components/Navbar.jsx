@@ -90,8 +90,27 @@ function Navbar({ token, handleLogout }) {
                   className="w-8 h-9"
                 />
               </div>
-              <span className="text-left text-lg">Account</span>
+              <span className="text-left text-lg">My Account</span>
             </Link>
+            {/* === RECIPES ======================================= */}
+            <Link
+              to="/recipes"
+              className="hover:text-secondary dark:hover:text-darksecondary transition font-medium flex items-center space-x-4"
+            >
+              <div className="w-12 h-12 flex justify-center items-center">
+                <img
+                  src={
+                    isDarkMode
+                      ? "/icons/recipesIconDark.png"
+                      : "/icons/recipesIcon.png"
+                  }
+                  alt="Recipes Icon"
+                  className="w-8 h-9"
+                />
+              </div>
+              <span className="text-left text-lg">Recipes</span>
+            </Link>
+            {/* === RECIPES ======================================= */}
             <button
               onClick={handleLogout}
               className="hover:text-red-400 dark:hover:text-red-500 transition font-medium flex items-center space-x-4"

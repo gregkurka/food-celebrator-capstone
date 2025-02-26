@@ -91,6 +91,12 @@ function MobileNavbar({ token, handleLogout }) {
                 text="My Account"
                 isDarkMode={isDarkMode}
               />
+              <NavItem
+                to="/recipes"
+                icon="recipesIcon"
+                text="Recipes"
+                isDarkMode={isDarkMode}
+              />
               <button
                 onClick={handleLogout}
                 className="flex items-center justify-center space-x-2 py-2 text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition"
