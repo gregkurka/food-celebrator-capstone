@@ -76,53 +76,60 @@ export default function SinglePhotoView({ photoId, username, setIsOpen }) {
 
   return (
     <div
-      className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg overflow-hidden 
-                    w-11/12 max-w-md md:max-w-lg lg:max-w-3xl xl:max-w-5xl"
+      className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg 
+                w-11/12 max-w-4xl flex flex-col lg:flex-row h-[80vh] lg:h-[85vh] overflow-hidden"
     >
-      {/* Photo Section */}
-      <img
-        src={picture.url}
-        className="w-full object-cover rounded-t-lg"
-        alt="Uploaded"
-      />
-      <p className="p-4 text-gray-700 dark:text-gray-300 italic">
-        {picture.caption}
-      </p>
-
-      {/* Comments Section */}
-      <div className="max-h-80 overflow-y-auto p-4 space-y-3 border-t">
-        {comments.length > 0 ? (
-          comments.map((comment, index) => (
-            <Comment
-              key={index}
-              text={comment.content}
-              user={comment.username || storedUsername}
-            />
-          ))
-        ) : (
-          <p className="text-gray-500 italic">No comments yet.</p>
-        )}
+      {/* Left: Image Section */}
+      <div className="flex-1 flex items-center justify-center bg-black">
+        <img
+          src={picture.url}
+          className="w-full h-auto max-h-[80vh] object-contain"
+          alt="Uploaded"
+        />
       </div>
 
-      {/* Comment Form */}
-      <form onSubmit={handleCommentSubmit} className="p-4 border-t flex">
-        <input
-          type="text"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment..."
-          className="flex-grow p-2 border rounded-lg focus:ring focus:ring-blue-200"
-        />
-        <button
-          type="submit"
-          className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
-                      bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
-                      dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
-          disabled={posting}
-        >
-          {posting ? "Posting..." : "Post"}
-        </button>
-      </form>
+      {/* Right: Comments Section */}
+      <div className="flex-1 flex flex-col border-l border-gray-300 dark:border-gray-700">
+        {/* Caption */}
+        <p className="p-4 text-gray-700 dark:text-gray-300 italic">
+          {picture.caption}
+        </p>
+
+        {/* Scrollable Comments */}
+        <div className="flex-grow overflow-y-auto p-4 space-y-3">
+          {comments.length > 0 ? (
+            comments.map((comment, index) => (
+              <Comment
+                key={index}
+                text={comment.content}
+                user={comment.username || storedUsername}
+              />
+            ))
+          ) : (
+            <p className="text-gray-500 italic text-center">No comments yet.</p>
+          )}
+        </div>
+
+        {/* Comment Input */}
+        <form onSubmit={handleCommentSubmit} className="p-4 border-t flex">
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            placeholder="Add a comment..."
+            className="flex-grow p-2 border rounded-lg focus:ring focus:ring-blue-200"
+          />
+          <button
+            type="submit"
+            className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
+                    bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
+                    dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
+            disabled={posting}
+          >
+            {posting ? "Posting..." : "Post"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
