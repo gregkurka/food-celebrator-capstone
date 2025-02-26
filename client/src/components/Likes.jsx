@@ -16,7 +16,7 @@ const Likes = ({ post, setPosts, user }) => {
       // console.log(response.data); // logs array(user_id, username, like_id, created_at)
 
       // Did the logged-in user liked this post?
-      const userLike = response.data.find((like) => like.user_id === user.id);
+      const userLike = response.data.find((like) => like.user_id === user?.id);
 
       if (userLike) {
         setHasLiked(true);

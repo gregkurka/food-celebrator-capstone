@@ -1,18 +1,31 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
+export default function SinglePhotoView({ photoId, username, setIsOpen }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [posting, setPosting] = useState(false);
+  const [picture, setPicture] = useState(null);
 
-  const API_URL = "https://food-celebrator.onrender.com/api";// Adjust as needed
-  const userId = localStorage.getItem("userId"); // Get userId from localStorage
+  const API_URL = "https://food-celebrator.onrender.com/api";
+  const userId = localStorage.getItem("userId");
+  const storedUsername = localStorage.getItem("username") || "Anonymous";
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("Fetching picture and comments...");
+        const { data: pictureData } = await axios.get(
+          `${API_URL}/username/${username}/pictures/${photoId}`
+        );
+
+        setPicture({
+          url: pictureData.picture_url,
+          caption: pictureData.picture_caption,
+          createdAt: pictureData.picture_createdat,
+        });
+
         const { data: commentsData } = await axios.get(
           `${API_URL}/${photoId}/comments`
         );
@@ -25,13 +38,12 @@ export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
     };
 
     fetchData();
-  }, [photoId]);
+  }, [photoId, username]);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    // Ensure userId exists before making the request
     if (!userId) {
       console.error("User is not logged in.");
       return;
@@ -39,15 +51,17 @@ export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
 
     setPosting(true);
     try {
-      const response = await axios.post(`${API_URL}/createComment`, {
-        user_id: userId, // Use stored userId
+      await axios.post(`${API_URL}/createComment`, {
+        user_id: userId,
         picture_id: photoId,
         content: newComment,
       });
 
-      if (response.data) {
-        setComments((prevComments) => [response.data, ...prevComments]); // Ensure proper state update
-      }
+      const { data: commentsData } = await axios.get(
+        `${API_URL}/${photoId}/comments`
+      );
+      setComments(commentsData);
+
       setNewComment("");
     } catch (error) {
       console.error("Failed to post comment:", error);
@@ -63,23 +77,26 @@ export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
   return (
     <div
       className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg overflow-hidden 
-                 w-11/12 max-w-md md:max-w-lg lg:max-w-3xl xl:max-w-5xl"
+                    w-11/12 max-w-md md:max-w-lg lg:max-w-3xl xl:max-w-5xl"
     >
       {/* Photo Section */}
       <img
-        src={picture}
+        src={picture.url}
         className="w-full object-cover rounded-t-lg"
         alt="Uploaded"
       />
+      <p className="p-4 text-gray-700 dark:text-gray-300 italic">
+        {picture.caption}
+      </p>
 
       {/* Comments Section */}
       <div className="max-h-80 overflow-y-auto p-4 space-y-3 border-t">
         {comments.length > 0 ? (
-          comments.map((comment) => (
+          comments.map((comment, index) => (
             <Comment
-              key={comment.id || Math.random()} // Ensure a unique key
+              key={index}
               text={comment.content}
-              user={comment.username}
+              user={comment.username || storedUsername}
             />
           ))
         ) : (
@@ -99,8 +116,8 @@ export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
         <button
           type="submit"
           className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
-                     bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
-                     dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
+                      bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
+                      dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
           disabled={posting}
         >
           {posting ? "Posting..." : "Post"}
@@ -112,7 +129,6 @@ export default function SinglePhotoView({ photoId, setIsOpen, picture }) {
 
 // Comment Component (Handles Collapsing Long Comments)
 const Comment = ({ text, user }) => {
-  // Prevent crashes if text is undefined
   if (!text) return <p className="text-gray-500 italic">[No content]</p>;
 
   const words = text.split(" ");
