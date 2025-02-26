@@ -5,10 +5,9 @@ import SinglePhotoView from "./SinglePhotoView";
 import PicturePopup from "./PicturePopup";
 
 function UserUploads({ user, isEditMode, refreshUploads }) {
-  // Accept isEditMode as a prop
-
   const [userPosts, setUserPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
+
   useEffect(() => {
     const fetchUserPictures = async () => {
       try {
@@ -32,28 +31,30 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
       <h3 className="text-2xl font-bold mb-6">Your Picture Uploads</h3>
 
       {userPosts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {userPosts.map((post) => (
-            <div
-              key={post.id}
-              className="relative group overflow-hidden rounded-lg shadow-md"
-            >
-              <img
-                src={post.url}
-                alt={post.caption || "User Upload"}
-                className="w-full h-auto md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
-                onClick={() => setSelectedPost(post)}
-              />
-              <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p className="text-white text-sm">
-                  {post.caption || "No caption provided."}
-                </p>
-                <p className="text-gray-300 text-xs">
-                  Uploaded on {new Date(post.created_at).toLocaleDateString()}
-                </p>
+            <div key={post.id} className="flex flex-col items-center">
+              {/* Image Container */}
+              <div className="relative group overflow-hidden rounded-lg shadow-md w-full">
+                <img
+                  src={post.url}
+                  alt={post.caption || "User Upload"}
+                  className="w-full h-auto md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105 cursor-pointer"
+                  onClick={() => setSelectedPost(post)}
+                />
+                <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <p className="text-white text-sm">
+                    {post.caption || "No caption provided."}
+                  </p>
+                  <p className="text-gray-300 text-xs">
+                    Uploaded on {new Date(post.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
 
-                {/* Show Delete button only when in Edit Mode */}
-                {isEditMode && (
+              {/* Delete Button (Below Image) */}
+              {isEditMode && (
+                <div className="mt-4 px-4 py-2 text-white font-semibold rounded-lg transition bg-red-500 hover:bg-red-600">
                   <Delete
                     userId={user.id}
                     postId={post.id}
@@ -65,8 +66,8 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
                       );
                     }}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -75,6 +76,7 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
           No uploads yet. Try uploading a picture!
         </p>
       )}
+
       {/* Full Image Popup (Comment Section Included) */}
       {selectedPost && (
         <PicturePopup
