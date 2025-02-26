@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle"; // Dark mode toggle component
 
 function MobileNavbar({ token, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu toggle
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const locations = useLocation(); //--get current location--
+
+  //--close the hamburger menu when the route changes--
+  useEffect(() => {
+    setIsOpen(false);
+  }, [locations]);
 
   // Track dark mode state dynamically
   useEffect(() => {
