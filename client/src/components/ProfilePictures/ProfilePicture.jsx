@@ -36,20 +36,22 @@ function ProfilePicture({ selectedPicture, setSelectedPicture }) {
       <h3 className="text-lg font-semibold mb-2 text-center">
         Choose a Profile Picture
       </h3>
-      <div className="grid grid-cols-2 gap-4">
-        {profilePictures.map((picture, index) => (
-          <img
-            key={index}
-            src={picture}
-            alt={`Profile ${index + 1}`}
-            className={`w-20 h-20 rounded-full cursor-pointer border-2 ${
-              selectedPicture === picture
-                ? "border-blue-500"
-                : "border-gray-300"
-            }`}
-            onClick={() => setSelectedPicture(picture)}
-          />
-        ))}
+      <div className="overflow-y-auto max-h-60 p-2">
+        <div className="grid grid-cols-3 gap-4">
+          {profilePictures.map((picture, index) => (
+            <img
+              key={index}
+              src={picture}
+              alt={`Profile ${index + 1}`}
+              className={`w-20 h-20 rounded-full cursor-pointer border-2 ${
+                selectedPicture === picture
+                  ? "border-blue-500"
+                  : "border-gray-300"
+              }`}
+              onClick={() => setSelectedPicture(picture)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

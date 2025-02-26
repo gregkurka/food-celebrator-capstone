@@ -9,11 +9,10 @@ function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPicture, setSelectedPicture] = useState("/basedlogo.png");
+  const [selectedPicture, setSelectedPicture] = useState("/1.png");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false); // 🔥 New state for Edit Mode
   const [refreshUploads, setRefreshUploads] = useState(false);
-
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
@@ -106,7 +105,11 @@ function Account() {
         <div>
           <Upload setRefreshUploads={setRefreshUploads} />
         </div>
-        <UserUploads user={user} isEditMode={isEditMode} refreshUploads={refreshUploads} />{" "}
+        <UserUploads
+          user={user}
+          isEditMode={isEditMode}
+          refreshUploads={refreshUploads}
+        />{" "}
       </div>
     </div>
   );
