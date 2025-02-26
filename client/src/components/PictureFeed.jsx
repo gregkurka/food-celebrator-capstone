@@ -17,7 +17,7 @@ function PictureFeed({ user, refreshFeed }) {
         const sortedPosts = data.sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
-        setPosts(sortedPosts); // ✅ Corrected this line
+        setPosts(sortedPosts);
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
@@ -28,8 +28,8 @@ function PictureFeed({ user, refreshFeed }) {
 
   return (
     <div className="flex flex-col items-center space-y-8">
-      {posts.map((post) => (
-        <div key={post.id} className="w-full max-w-lg">
+      {posts.map((post, index) => (
+        <div key={index} className="w-full max-w-lg">
           {/* User Info */}
           <div className="flex items-center space-x-2 px-2">
             <img
@@ -44,10 +44,8 @@ function PictureFeed({ user, refreshFeed }) {
               {post.username}
             </Link>
           </div>
-
           {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
           <div className="relative mt-2 group">
-            {/* Image (No Scaling on Hover) */}
             <img
               src={post.url}
               alt={post.caption}
@@ -59,15 +57,14 @@ function PictureFeed({ user, refreshFeed }) {
               className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg cursor-pointer"
               onClick={() => setSelectedPost(post)} // Open comment modal
             >
-              <div className=" text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg ">
+              <div className="text-gray-900 px-4 py-2 rounded-lg flex items-center shadow-lg">
                 <span className="text-4xl">💬</span>
               </div>
             </div>
           </div>
-
           {/* Caption & Upload Date */}
           {post.caption && (
-            <p className="px-2 text-sm text-font dark:text-darkfont dark:text-darkforeground mt-2">
+            <p className="px-2 text-sm text-font dark:text-darkfont mt-2">
               <span className="font-semibold">{post.username}</span>{" "}
               {post.caption}
             </p>
@@ -75,7 +72,6 @@ function PictureFeed({ user, refreshFeed }) {
           <p className="px-2 text-xs text-font dark:text-darkfont">
             {new Date(post.created_at).toLocaleDateString()}
           </p>
-
           {/* Actions: Like & Comment */}
           <div className="mt-4 flex space-x-6">
             <Likes post={post} setPosts={setPosts} user={user} />
@@ -88,23 +84,22 @@ function PictureFeed({ user, refreshFeed }) {
               💬
             </button>
           </div>
-
-          {/* Full Image Popup (Comment Section Included) */}
-          {selectedPost && (
-            <PicturePopup
-              show={!!selectedPost}
-              onClose={() => setSelectedPost(null)}
-            >
-              <SinglePhotoView
-                picture={selectedPost.url}
-                photoId={selectedPost.picture_id}
-                uploadUserId={selectedPost.user_id}
-                setIsOpen={() => setSelectedPost(null)}
-              />
-            </PicturePopup>
-          )}
         </div>
       ))}
+
+      {/* Full Image Popup (Comment Section Included) */}
+      {selectedPost && (
+        <PicturePopup
+          show={!!selectedPost}
+          onClose={() => setSelectedPost(null)}
+        >
+          <SinglePhotoView
+            photoId={selectedPost.picture_id}
+            username={selectedPost.username}
+            setIsOpen={() => setSelectedPost(null)}
+          />
+        </PicturePopup>
+      )}
     </div>
   );
 }
