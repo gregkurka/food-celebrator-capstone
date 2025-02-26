@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function SinglePhotoView({ photoId, username, setIsOpen }) {
+  // === STATE MANAGEMENT & VARIABLES ========================
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
@@ -12,6 +13,7 @@ export default function SinglePhotoView({ photoId, username, setIsOpen }) {
   const userId = localStorage.getItem("userId");
   const storedUsername = localStorage.getItem("username") || "Anonymous";
 
+  // === FETCH IMAGE AND COMMENTS ========================
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -40,6 +42,7 @@ export default function SinglePhotoView({ photoId, username, setIsOpen }) {
     fetchData();
   }, [photoId, username]);
 
+  // === COMMENT INPUT SUBMISSION ========================
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
@@ -70,10 +73,12 @@ export default function SinglePhotoView({ photoId, username, setIsOpen }) {
     }
   };
 
+  // === OPERATORS & MISSING VALUE ========================
   if (loading) return <p className="text-center text-gray-400">Loading...</p>;
   if (!picture)
     return <p className="text-center text-red-500">Photo not found.</p>;
 
+  // === RENDER COMPONENTS ========================
   return (
     <div
       className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg 
