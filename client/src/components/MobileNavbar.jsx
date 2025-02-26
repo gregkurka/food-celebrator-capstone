@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle"; // Dark mode toggle component
 
@@ -6,11 +6,27 @@ function MobileNavbar({ token, handleLogout }) {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu toggle
   const [isDarkMode, setIsDarkMode] = useState(false);
   const locations = useLocation(); //--get current location--
+  const navbarRef = useRef(null); //--ref for navbar container--
 
   //--close the hamburger menu when the route changes--
   useEffect(() => {
     setIsOpen(false);
   }, [locations]);
+
+  //--if the mobile menu is open, event listener is active & listening for clicks or touches.
+  useEffect(() => {
+    const handleOutsideClicks = (event) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClicks);
+    document.addEventListener("touchstart", handleOutsideClicks);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClicks);
+      document.removeEventListener("touchstart", handleOutsideClicks);
+    };
+  }, []);
 
   // Track dark mode state dynamically
   useEffect(() => {
@@ -27,7 +43,10 @@ function MobileNavbar({ token, handleLogout }) {
   }, []);
 
   return (
-    <nav className="bg-background dark:bg-darkbackground shadow-md backdrop-blur-md">
+    <nav
+      ref={navbarRef}
+      className="bg-background dark:bg-darkbackground shadow-md backdrop-blur-md"
+    >
       <div className="flex justify-between items-center px-6 py-4">
         {/* Logo (Switches for Light/Dark Mode) */}
         <Link to="/feed" className="flex items-center space-x-2">
