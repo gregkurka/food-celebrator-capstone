@@ -40,9 +40,9 @@ export default function CommentSection({ photoId, comments, setComments }) {
   };
 
   return (
-    <div className="flex flex-col w-full lg:w-1/3 border-l border-gray-300 dark:border-gray-700 max-h-full">
-      {/* Scrollable Comments */}
-      <div className="flex-grow overflow-y-auto p-4 space-y-3">
+    <div className="flex flex-col lg:w-[100%] xl:w-[100%]  dark:border-gray-700 bg-white dark:bg-gray-900 h-full">
+      {/* Scrollable Comments Section */}
+      <div className="flex-grow overflow-y-auto  space-y-4 min-h-0">
         {comments.length > 0 ? (
           comments.map((comment, index) => (
             <Comment
@@ -56,20 +56,23 @@ export default function CommentSection({ photoId, comments, setComments }) {
         )}
       </div>
 
-      {/* Comment Input */}
-      <form onSubmit={handleCommentSubmit} className="p-4 border-t flex">
+      {/* Fixed Input Section */}
+      <form
+        onSubmit={handleCommentSubmit}
+        className="p-3 border-t flex items-center bg-white dark:bg-gray-900 sticky bottom-0"
+      >
         <input
           type="text"
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           placeholder="Add a comment..."
-          className="flex-grow p-2 border rounded-lg focus:ring focus:ring-blue-200"
+          className="flex-grow px-3 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
         <button
           type="submit"
-          className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
-                      bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
-                      dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
+          className={`ml-3 text-blue-500 text-sm font-semibold transition ${
+            posting ? "opacity-50 cursor-not-allowed" : "hover:text-blue-600"
+          }`}
           disabled={posting}
         >
           {posting ? "Posting..." : "Post"}
@@ -78,6 +81,7 @@ export default function CommentSection({ photoId, comments, setComments }) {
     </div>
   );
 }
+
 // Comment Component (Handles Collapsing Long Comments)
 const Comment = ({ text, user }) => {
   if (!text) return <p className="text-gray-500 italic">[No content]</p>;
@@ -87,17 +91,21 @@ const Comment = ({ text, user }) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="text-gray-700 dark:text-gray-300">
-      <span className="font-semibold">{user || "Anonymous"}:</span>{" "}
-      {isLong && !expanded ? words.slice(0, 10).join(" ") + "..." : text}
-      {isLong && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-blue-500 dark:text-blue-400 ml-2"
-        >
-          {expanded ? "Show Less" : "Read More"}
-        </button>
-      )}
+    <div className="w-full flex items-start space-x-2">
+      <span className="font-semibold whitespace-nowrap">
+        {user || "Anonymous"}:
+      </span>
+      <p className="flex-1 break-words">
+        {isLong && !expanded ? words.slice(0, 10).join(" ") + "..." : text}
+        {isLong && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-blue-500 dark:text-blue-400 ml-2"
+          >
+            {expanded ? "Show Less" : "Read More"}
+          </button>
+        )}
+      </p>
     </div>
   );
 };

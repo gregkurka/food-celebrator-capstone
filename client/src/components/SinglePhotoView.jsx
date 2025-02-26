@@ -39,14 +39,28 @@ export default function SinglePhotoView({ photoId, username }) {
     return <p className="text-center text-red-500">Photo not found.</p>;
 
   return (
-    <div className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg w-11/12 max-w-7xl flex flex-col lg:flex-row h-[90vh] overflow-hidden">
-      {console.log("PhotoDisplay props:", picture?.url, picture?.caption)}
-      <PhotoDisplay url={picture?.url} caption={picture?.caption} />
-      <CommentSection
-        comments={comments}
-        setComments={setComments}
-        photoId={photoId}
-      />
+    <div className="mx-auto bg-white dark:bg-gray-900 shadow-md rounded-lg w-full max-w-5xl flex flex-col lg:flex-row h-[90vh]">
+      {/* Left Side - Photo Display */}
+      <div className="flex-1 flex items-center justify-center bg-black">
+        <PhotoDisplay url={picture?.url} caption={picture?.caption} />
+      </div>
+
+      {/* Right Side - Comments Section */}
+      <div className="w-full lg:w-[40%] flex flex-col border-l dark:border-gray-700 bg-white dark:bg-gray-900">
+        <div className="px-4 py-3 border-b dark:border-gray-700">
+          <h2 className="text-lg font-semibold">{username}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {new Date(picture.createdAt).toLocaleString()}
+          </p>
+        </div>
+        <div className="flex-1 overflow-y-auto p-4">
+          <CommentSection
+            comments={comments}
+            setComments={setComments}
+            photoId={photoId}
+          />
+        </div>
+      </div>
     </div>
   );
 }
