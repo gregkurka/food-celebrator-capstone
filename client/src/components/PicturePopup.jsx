@@ -9,8 +9,8 @@ function PicturePopup({ show, onClose, children }) {
       onClick={onClose} // Close when clicking outside
     >
       <div
-        className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl text-center 
-                   border border-gray-300 dark:border-gray-700 
+        className="bg-transpa dark:bg-gray-900 p-6 rounded-xl shadow-xl text-center 
+                   
                    text-gray-900 dark:text-gray-100
                    w-11/12 max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
