@@ -45,7 +45,9 @@ export default function RecipeLibrary() {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Recipe Library</h1>
+      <h1 className="text-2xl font-bold mb-4 text-font dark:text-darkfont">
+        Recipe Library
+      </h1>
       <select
         value={selectedIngredient}
         onChange={(e) => setSelectedIngredient(e.target.value)}
@@ -74,7 +76,9 @@ export default function RecipeLibrary() {
                 alt={recipe.strMeal}
                 className="w-full rounded cursor-pointer"
               />
-              <p className="text-center mt-2">{recipe.strMeal}</p>
+              <p className="text-center mt-2 text-font dark:text-darkfont ">
+                {recipe.strMeal}
+              </p>
             </Link>
           </div>
         ))}
