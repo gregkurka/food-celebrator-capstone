@@ -70,7 +70,7 @@ function UserPage() {
             {userData.map((post) => (
               <div key={post.picture_id} className="rounded-lg shadow-lg">
                 {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
-                <div className="relative group">
+                <div className="relative group w-full max-h-[230px] overflow-hidden flex justify-center items-center">
                   {/* Image (No Scaling on Hover) */}
                   <img
                     src={post.picture_url}
@@ -123,7 +123,7 @@ function UserPage() {
           onClose={() => setSelectedPost(null)}
         >
           <SinglePhotoView
-            picture={selectedPost.picture_url}
+            picture={selectedPost.picture_url} // Ensure correct URL is passed
             photoId={selectedPost.picture_id}
             uploadUserId={selectedPost.user_id}
             setIsOpen={() => setSelectedPost(null)}
