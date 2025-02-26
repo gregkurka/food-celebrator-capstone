@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link from React Router
 
 export default function RecipeLibrary() {
   const [ingredients, setIngredients] = useState([]);
@@ -7,7 +8,6 @@ export default function RecipeLibrary() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    // Fetch all available ingredients
     const fetchIngredients = async () => {
       try {
         const response = await axios.get(
@@ -16,7 +16,7 @@ export default function RecipeLibrary() {
         const ingredientList = response.data.meals.map(
           (meal) => meal.strIngredient
         );
-        setIngredients(["Vegetarian", ...ingredientList]); // Add Vegetarian option
+        setIngredients(["Vegetarian", ...ingredientList]);
       } catch (error) {
         console.error("Error fetching ingredients:", error);
       }
@@ -68,12 +68,14 @@ export default function RecipeLibrary() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {recipes.map((recipe) => (
           <div key={recipe.idMeal} className="border p-2 rounded">
-            <img
-              src={recipe.strMealThumb}
-              alt={recipe.strMeal}
-              className="w-full rounded"
-            />
-            <p className="text-center mt-2">{recipe.strMeal}</p>
+            <Link to={`/recipe/${recipe.idMeal}`}>
+              <img
+                src={recipe.strMealThumb}
+                alt={recipe.strMeal}
+                className="w-full rounded cursor-pointer"
+              />
+              <p className="text-center mt-2">{recipe.strMeal}</p>
+            </Link>
           </div>
         ))}
       </div>
