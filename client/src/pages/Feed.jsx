@@ -29,7 +29,7 @@ function Feed({ user }) {
         </div>
 
         {/* Upload Button (Remains Right-Aligned) */}
-        <div className="w-full md:w-auto flex items-center justify-center">
+        <div className="hidden md:flex w-full md:w-auto flex items-center justify-center">
           <Upload setRefreshFeed={setRefreshFeed} />
         </div>
       </div>
