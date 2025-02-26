@@ -123,9 +123,8 @@ function UserPage() {
           onClose={() => setSelectedPost(null)}
         >
           <SinglePhotoView
-            picture={selectedPost.picture_url} // Ensure correct URL is passed
             photoId={selectedPost.picture_id}
-            uploadUserId={selectedPost.user_id}
+            username={selectedPost.username}
             setIsOpen={() => setSelectedPost(null)}
           />
         </PicturePopup>
