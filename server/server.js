@@ -238,13 +238,16 @@ app.get("/api/feed", async (req, res, next) => {
 //--Ingur image upload--
 
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
-  // We'll collect logs here instead of console.log
+  console.log("REQUEST RECEIVED AT /api/upload");
+  // We'll collect logs here to return in the response
   const messages = [];
 
   try {
     // 1) Ensure a file was provided
+    console.log("Checking for file in request...");
     if (!req.file) {
       messages.push("No image provided.");
+      console.log("No image provided in request.");
       return res.status(400).json({
         error: "No image provided",
         logs: messages,
@@ -252,9 +255,11 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     }
 
     // 2) Extract token from Authorization header
+    console.log("Extracting token from header:", req.headers.authorization);
     const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       messages.push("Unauthorized: No token provided.");
+      console.log("No token provided, returning 401");
       return res.status(401).json({
         error: "Unauthorized: No token provided",
         logs: messages,
@@ -262,11 +267,14 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     }
 
     // 3) Find user by token
+    console.log("Finding user by token...");
     let user;
     try {
       user = await findUserByToken(token);
+      console.log("User found:", user);
     } catch (err) {
       messages.push("Unauthorized: Invalid token.");
+      console.log("Invalid token:", err.message);
       return res.status(401).json({
         error: "Unauthorized: Invalid token",
         logs: messages,
@@ -274,9 +282,12 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     }
 
     // 4) Face Detection: Reject if any face is detected
+    console.log("Running face detection...");
     const [faceResult] = await visionClient.faceDetection(req.file.buffer);
+    console.log("Face detection result:", faceResult);
     if (faceResult.faceAnnotations && faceResult.faceAnnotations.length > 0) {
       messages.push("Face detected, rejecting image.");
+      console.log("Face detected, returning 400");
       return res.status(400).json({
         error: "This image contains a person (face detected).",
         logs: messages,
@@ -284,14 +295,17 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     }
 
     // 5) Object Localization: Reject if any 'person' object is detected
+    console.log("Running object localization...");
     const [objectResult] = await visionClient.objectLocalization(
       req.file.buffer
     );
+    console.log("Object localization result:", objectResult);
     const personDetected = objectResult.localizedObjectAnnotations.some(
       (obj) => obj.name.toLowerCase() === "person"
     );
     if (personDetected) {
       messages.push("Person object detected, rejecting image.");
+      console.log("Person detected in image, returning 400");
       return res.status(400).json({
         error: "This image contains a person (object detected).",
         logs: messages,
@@ -299,13 +313,16 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     }
 
     // 6) Label Detection: Check for allowed food-related labels
+    console.log("Running label detection...");
     const [visionResult] = await visionClient.labelDetection(req.file.buffer);
+    console.log("Label detection result:", visionResult);
 
     // Extract labels with confidence score filtering (0.80+)
     const MIN_CONFIDENCE = 0.8;
     const detectedLabels = visionResult.labelAnnotations
       .filter((label) => label.score >= MIN_CONFIDENCE)
       .map((label) => label.description.toLowerCase());
+    console.log("Detected labels (80%+ confidence):", detectedLabels);
 
     // For each label, determine if it is allowed or not and push a log
     detectedLabels.forEach((label) => {
@@ -321,17 +338,22 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     const allowedMatches = detectedLabels.filter((label) =>
       ALLOWED_LABELS.some((allowed) => label.includes(allowed))
     );
+    console.log("Allowed label matches:", allowedMatches);
 
     // Calculate ratio of allowed labels to total detected labels
     const ratio = allowedMatches.length / (detectedLabels.length || 1);
+    console.log(`Ratio of allowed to total: ${ratio}`);
 
-    // Stricter check: require at least 60% of high-confidence labels be allowed
+    // Stricter check: require at least 60% of these labels be allowed
     // and at least 2 allowed labels overall.
     if (ratio < 0.6 || allowedMatches.length < 2) {
       messages.push(
         `Upload rejected. Ratio: ${ratio.toFixed(2)}; Allowed matches: ${
           allowedMatches.length
         }`
+      );
+      console.log(
+        "Rejecting image due to ratio or insufficient allowed matches"
       );
       return res.status(400).json({
         error: "This image contains disallowed items.",
@@ -344,31 +366,63 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
         allowedMatches.length
       }`
     );
+    console.log("Image passed label checks, continuing...");
 
     // 7) Convert the image buffer to a base64 string
+    console.log("Converting image to base64...");
     const base64Image = req.file.buffer.toString("base64");
 
     // 8) Upload the image to Imgur
-    const imgurResponse = await axios.post(
-      "https://api.imgur.com/3/image",
-      { image: base64Image, type: "base64" },
-      {
-        headers: {
-          Authorization: `Client-ID ${process.env.IMGUR_ACCESS_TOKEN}`,
-        },
-      }
+    console.log(
+      "Uploading to Imgur with Client-ID:",
+      process.env.IMGUR_ACCESS_TOKEN
     );
+    let imgurResponse;
+    try {
+      imgurResponse = await axios.post(
+        "https://api.imgur.com/3/image",
+        { image: base64Image, type: "base64" },
+        {
+          headers: {
+            Authorization: `Client-ID ${process.env.IMGUR_ACCESS_TOKEN}`,
+          },
+        }
+      );
+      console.log(
+        "Imgur response status:",
+        imgurResponse.status,
+        " data:",
+        imgurResponse.data
+      );
+    } catch (imgurError) {
+      console.log(
+        "Error uploading to Imgur:",
+        imgurError.response?.data || imgurError.message
+      );
+      throw imgurError; // This will go to the catch block below
+    }
 
     const imageUrl = imgurResponse.data.data.link;
+    console.log("Image uploaded to Imgur. URL:", imageUrl);
 
-    // 9) Create a picture in the database using the returned URL and caption
+    // 9) Create a picture in the DB using the returned URL and caption
     const caption = req.body.caption || "";
+    console.log(
+      "Creating picture record with URL:",
+      imageUrl,
+      "and caption:",
+      caption
+    );
     const newPicture = await createPicture({ URL: imageUrl, caption });
+    console.log("New picture created with ID:", newPicture.id);
 
     // 10) Link the picture to the authenticated user
+    console.log("Linking picture to user with ID:", user.id);
     await linkUserToPicture({ user_id: user.id, picture_id: newPicture.id });
+    console.log("Picture linked to user successfully.");
 
     // 11) Respond with success, including logs
+    console.log("Responding with success. messages:", messages);
     return res.status(201).json({
       message: "Upload successful",
       picture: newPicture,
@@ -376,6 +430,7 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     });
   } catch (err) {
     // If something unexpected happens, log it and return a server error
+    console.log("Unexpected error in upload handler:", err);
     messages.push(`Unexpected error: ${err.message}`);
     return next({
       status: 500,
