@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import GetPictureByUser from "./ApiCalls/GetPictureByUser";
 import Delete from "./Delete";
+import SinglePhotoView from "./SinglePhotoView";
+import PicturePopup from "./PicturePopup";
 
 function UserUploads({ user, isEditMode, refreshUploads }) {
   // Accept isEditMode as a prop
 
   const [userPosts, setUserPosts] = useState([]);
-
+  const [selectedPost, setSelectedPost] = useState(null);
   useEffect(() => {
     const fetchUserPictures = async () => {
       try {
@@ -40,6 +42,7 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
                 src={post.url}
                 alt={post.caption || "User Upload"}
                 className="w-full h-auto md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+                onClick={() => setSelectedPost(post)}
               />
               <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <p className="text-white text-sm">
@@ -71,6 +74,19 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
         <p className="text-center text-gray-500">
           No uploads yet. Try uploading a picture!
         </p>
+      )}
+      {/* Full Image Popup (Comment Section Included) */}
+      {selectedPost && (
+        <PicturePopup
+          show={!!selectedPost}
+          onClose={() => setSelectedPost(null)}
+        >
+          <SinglePhotoView
+            photoId={selectedPost.id}
+            username={user.username}
+            setIsOpen={() => setSelectedPost(null)}
+          />
+        </PicturePopup>
       )}
     </div>
   );
