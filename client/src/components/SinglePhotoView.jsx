@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import PhotoDisplay from "./PhotoDisplay";
+import CommentSection from "./CommentSection";
 
-export default function SinglePhotoView({ photoId, username, setIsOpen }) {
-  // === STATE MANAGEMENT & VARIABLES ========================
+export default function SinglePhotoView({ photoId, username }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [newComment, setNewComment] = useState("");
-  const [posting, setPosting] = useState(false);
   const [picture, setPicture] = useState(null);
-
   const API_URL = "https://food-celebrator.onrender.com/api";
-  const userId = localStorage.getItem("userId");
-  const storedUsername = localStorage.getItem("username") || "Anonymous";
 
-  // === FETCH IMAGE AND COMMENTS ========================
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("Fetching picture and comments...");
         const { data: pictureData } = await axios.get(
           `${API_URL}/username/${username}/pictures/${photoId}`
         );
-
         setPicture({
           url: pictureData.picture_url,
           caption: pictureData.picture_caption,
@@ -38,127 +31,22 @@ export default function SinglePhotoView({ photoId, username, setIsOpen }) {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [photoId, username]);
 
-  // === COMMENT INPUT SUBMISSION ========================
-  const handleCommentSubmit = async (e) => {
-    e.preventDefault();
-    if (!newComment.trim()) return;
-
-    if (!userId) {
-      console.error("User is not logged in.");
-      return;
-    }
-
-    setPosting(true);
-    try {
-      await axios.post(`${API_URL}/createComment`, {
-        user_id: userId,
-        picture_id: photoId,
-        content: newComment,
-      });
-
-      const { data: commentsData } = await axios.get(
-        `${API_URL}/${photoId}/comments`
-      );
-      setComments(commentsData);
-
-      setNewComment("");
-    } catch (error) {
-      console.error("Failed to post comment:", error);
-    } finally {
-      setPosting(false);
-    }
-  };
-
-  // === OPERATORS & MISSING VALUE ========================
   if (loading) return <p className="text-center text-gray-400">Loading...</p>;
   if (!picture)
     return <p className="text-center text-red-500">Photo not found.</p>;
 
-  // === RENDER COMPONENTS ========================
   return (
-    <div
-      className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg 
-                w-11/12 max-w-7xl flex flex-col lg:flex-row h-[90vh] overflow-hidden"
-    >
-      {/* Left: Image Section (Takes More Space) */}
-      <div className="flex-1 lg:w-2/3 flex items-center justify-center bg-black">
-        <img
-          src={picture.url}
-          className="max-h-full max-w-full w-auto h-auto object-contain"
-          alt="Uploaded"
-        />
-      </div>
-
-      {/* Right: Comments Section (Smaller, More Readable) */}
-      <div className="flex flex-col w-full lg:w-1/3 border-l border-gray-300 dark:border-gray-700 max-h-full">
-        {/* Caption */}
-        <p className="p-4 text-gray-700 dark:text-gray-300 italic">
-          {picture.caption}
-        </p>
-
-        {/* Scrollable Comments */}
-        <div className="flex-grow overflow-y-auto p-4 space-y-3">
-          {comments.length > 0 ? (
-            comments.map((comment, index) => (
-              <Comment
-                key={index}
-                text={comment.content}
-                user={comment.username || storedUsername}
-              />
-            ))
-          ) : (
-            <p className="text-gray-500 italic text-center">No comments yet.</p>
-          )}
-        </div>
-
-        {/* Comment Input */}
-        <form onSubmit={handleCommentSubmit} className="p-4 border-t flex">
-          <input
-            type="text"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-            className="flex-grow p-2 border rounded-lg focus:ring focus:ring-blue-200"
-          />
-          <button
-            type="submit"
-            className="ml-2 px-6 py-3 text-lg font-semibold rounded-lg shadow-lg transition 
-                    bg-primary text-font border dark:text-darkfont border-primary hover:bg-primary/80 
-                    dark:bg-darkprimary dark:border-darkprimary dark:hover:bg-darkprimary/80"
-            disabled={posting}
-          >
-            {posting ? "Posting..." : "Post"}
-          </button>
-        </form>
-      </div>
+    <div className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg w-11/12 max-w-7xl flex flex-col lg:flex-row h-[90vh] overflow-hidden">
+      {console.log("PhotoDisplay props:", picture?.url, picture?.caption)};
+      <PhotoDisplay url={picture?.url} caption={picture?.caption} />
+      <CommentSection
+        comments={comments}
+        setComments={setComments}
+        photoId={photoId}
+      />
     </div>
   );
 }
-
-// Comment Component (Handles Collapsing Long Comments)
-const Comment = ({ text, user }) => {
-  if (!text) return <p className="text-gray-500 italic">[No content]</p>;
-
-  const words = text.split(" ");
-  const isLong = words.length > 10;
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="text-gray-700 dark:text-gray-300">
-      <span className="font-semibold">{user || "Anonymous"}:</span>{" "}
-      {isLong && !expanded ? words.slice(0, 10).join(" ") + "..." : text}
-      {isLong && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-blue-500 dark:text-blue-400 ml-2"
-        >
-          {expanded ? "Show Less" : "Read More"}
-        </button>
-      )}
-    </div>
-  );
-};
