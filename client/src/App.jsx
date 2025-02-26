@@ -13,7 +13,10 @@ import Contact from "./pages/Contact";
 import Navbar from "./components/Navbar"; // Import Sidebar Navbar
 import Footer from "./components/Footer";
 import MobileNavbar from "./components/MobileNavbar"; // Import Mobile Navbar
-import MobileBottomBar from "./components/MobileBottomBar"; // Import Mobile Bottom Bar
+import RecipeLibrary from "./components/RecipeLibrary/RecipeLibrary";
+import RecipeDetails from "./components/RecipeLibrary/RecipeDetails";
+import MobileBottomBar from "./components/MobileBottomBar";
+
 
 function App() {
   const [token, setToken] = useState(null);
@@ -73,6 +76,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
+            <Route path="/recipes" element={<RecipeLibrary />} />
+            <Route path="/recipe/:id" element={<RecipeDetails />} />
             <Route
               path="/login"
               element={<Login setToken={setToken} setUser={setUser} />}
