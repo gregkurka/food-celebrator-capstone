@@ -40,7 +40,7 @@ export default function SinglePhotoView({ photoId, username }) {
 
   return (
     <div className="mx-auto bg-white dark:bg-gray-900 shadow-xl rounded-lg w-11/12 max-w-7xl flex flex-col lg:flex-row h-[90vh] overflow-hidden">
-      {console.log("PhotoDisplay props:", picture?.url, picture?.caption)};
+      {console.log("PhotoDisplay props:", picture?.url, picture?.caption)}
       <PhotoDisplay url={picture?.url} caption={picture?.caption} />
       <CommentSection
         comments={comments}

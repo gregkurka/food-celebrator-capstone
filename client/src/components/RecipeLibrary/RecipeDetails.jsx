@@ -30,14 +30,18 @@ export default function RecipeDetails() {
       <Link to="/recipes" className="text-blue-500">
         ← Back to Library
       </Link>
-      <h1 className="text-3xl font-bold my-4">{recipe.strMeal}</h1>
+      <h1 className="text-3xl font-bold my-4 text-font dark:text-darkfont">
+        {recipe.strMeal}
+      </h1>
       <img
         src={recipe.strMealThumb}
         alt={recipe.strMeal}
         className="w-full rounded-lg"
       />
-      <h2 className="text-xl font-semibold mt-4">Ingredients:</h2>
-      <ul className="list-disc pl-5">
+      <h2 className="text-xl font-semibold mt-4 text-font dark:text-darkfont">
+        Ingredients:
+      </h2>
+      <ul className="list-disc pl-5 text-font dark:text-darkfont">
         {Array.from({ length: 20 }, (_, i) => i + 1)
           .map((i) => ({
             ingredient: recipe[`strIngredient${i}`],
@@ -50,8 +54,12 @@ export default function RecipeDetails() {
             </li>
           ))}
       </ul>
-      <h2 className="text-xl font-semibold mt-4">Instructions:</h2>
-      <p className="whitespace-pre-line">{recipe.strInstructions}</p>
+      <h2 className="text-xl font-semibold mt-4 text-font dark:text-darkfont">
+        Instructions:
+      </h2>
+      <p className="whitespace-pre-line text-font dark:text-darkfont">
+        {recipe.strInstructions}
+      </p>
     </div>
   );
 }
