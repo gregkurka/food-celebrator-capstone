@@ -33,7 +33,7 @@ function PictureFeed({ user, refreshFeed }) {
           {/* User Info */}
           <div className="flex items-center space-x-2 px-2">
             <img
-              src={post.profilePic || "/logonowords.png"}
+              src={post.profilePic || "/1.png"}
               alt={`${post.username}'s profile`}
               className="w-8 h-8 rounded-full border"
             />

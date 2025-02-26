@@ -12,7 +12,7 @@ function Search() {
       try {
         const data = await GetAllUsers();
         setAllUsers(data);
-        console.log("Fetched Users:", data);
+        // console.log("Fetched Users:", data);
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
