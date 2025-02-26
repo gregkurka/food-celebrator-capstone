@@ -102,7 +102,7 @@ function Account() {
 
       {/* User Uploads Section */}
       <div className="w-full max-w-3xl mt-10 space-y-6">
-        <div>
+        <div className="hidden md:flex justify-center">
           <Upload setRefreshUploads={setRefreshUploads} />
         </div>
         <UserUploads

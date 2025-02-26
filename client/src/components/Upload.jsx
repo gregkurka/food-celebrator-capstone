@@ -139,7 +139,7 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
     <div className="flex items-center justify-center min-h-[100px]">
       <button
         onClick={() => setShowPopup(true)}
-        className="flex items-center gap-2 px-6 py-3 text-lg border border-gray-300 
+        className="flex items-center gap-2 px-4 py-2 text-lg border border-gray-300 
              rounded-md transition shadow-md 
              w-full md:w-auto whitespace-nowrap
              bg-white text-gray-900 dark:bg-gray-700 dark:text-white

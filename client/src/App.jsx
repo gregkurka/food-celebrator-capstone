@@ -15,6 +15,8 @@ import Footer from "./components/Footer";
 import MobileNavbar from "./components/MobileNavbar"; // Import Mobile Navbar
 import RecipeLibrary from "./components/RecipeLibrary/RecipeLibrary";
 import RecipeDetails from "./components/RecipeLibrary/RecipeDetails";
+import MobileBottomBar from "./components/MobileBottomBar";
+
 
 function App() {
   const [token, setToken] = useState(null);
@@ -63,8 +65,13 @@ function App() {
         <MobileNavbar token={token} handleLogout={handleLogout} />
       </div>
 
+      {/* Mobile Upload for Small Screens */}
+      <div className="md:hidden w-full fixed top-0 left-0 z-50">
+        <MobileBottomBar />
+      </div>
+
       {/* Main Content Area */}
-      <div className="flex-1 md:pl-64 min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black">
+      <div className="flex-1 md:pl-64 pb-9 min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black">
         <main className="flex-grow pt-16 md:pt-0">
           <Routes>
             <Route path="/" element={<Home />} />
