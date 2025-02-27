@@ -387,7 +387,7 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
         { image: base64Image, type: "base64" },
         {
           headers: {
-            Authorization: `Client-ID ${process.env.IMGUR_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${process.env.IMGUR_ACCESS_TOKEN}`,
           },
         }
       );
