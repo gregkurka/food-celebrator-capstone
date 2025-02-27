@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { FaRegPlusSquare } from "react-icons/fa"; // plus icon for uploading pics
+import PicturePopup from "./PicturePopup";
 import { ClipLoader, MoonLoader } from "react-spinners";
-import UploadPopup from "./UploadPopup";
 
 function Upload({ setRefreshFeed, setRefreshUploads }) {
   console.log("Upload component: setRefreshFeed =", setRefreshFeed);
@@ -148,9 +148,11 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
         <FaRegPlusSquare className="text-2xl" />
         Upload your photo!
       </button>
-      <UploadPopup show={showPopup} onClose={() => setShowPopup(false)}>
-        {contentToShow}
-      </UploadPopup>
+      <PicturePopup
+        show={showPopup}
+        onClose={setShowPopup}
+        children={contentToShow}
+      />
     </div>
   );
 }
