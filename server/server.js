@@ -546,22 +546,23 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
 
 //BIO AND PROFILE PICS
 
-//returns bio by username
+//updates Bio
 app.put("/api/:username/bio", async (req, res, next) => {
   try {
     const { username } = req.params;
-    const { bio } = req.body;
+    const { updatedBio } = req.body;
 
-    // First, see if there's a user with this username
-    const userBioRow = await fetchBioByUsername(username);
-    if (!userBioRow) {
-      return res.status(404).send({ error: "User not found" });
+    // First, find the user’s ID by username
+    const getUserSQL = `SELECT id FROM users WHERE username = $1;`;
+    const userRes = await client.query(getUserSQL, [username]);
+    if (userRes.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
     }
+    const userId = userRes.rows[0].id;
 
-    const userId = userBioRow.id; // adjust if your function returns the full user row
-    const updated = await editBioByUserId(userId, bio);
-
-    res.send(updated);
+    // Then, use your helper to update the profile pic number by userId
+    const updated = await editBioByUserId(userId, updatedBio);
+    res.json(updated); // updated should include the new profile_pic_num
   } catch (err) {
     next(err);
   }
