@@ -87,11 +87,11 @@ function Home() {
                 Account
               </button>
               <button
-                onClick={handleLogout}
+                onClick={() => navigate("/recipes")}
                 className="px-6 sm:px-8 py-3 sm:py-4 text-lg font-semibold rounded-xl 
-                   transition-all duration-300 w-full sm:w-48 bg-red-500 hover:bg-red-600"
+                   transition-all duration-300 w-full sm:w-48 buttongradients"
               >
-                Logout
+                Recipes
               </button>
             </>
           ) : (
