@@ -17,7 +17,6 @@ import RecipeLibrary from "./components/RecipeLibrary/RecipeLibrary";
 import RecipeDetails from "./components/RecipeLibrary/RecipeDetails";
 import MobileBottomBar from "./components/MobileBottomBar";
 
-
 function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
@@ -92,7 +91,7 @@ function App() {
               element={<Account token={token} user={user} />}
             />
             <Route path="/user" element={<Account />} />
-            <Route path="/user/:username" element={<UserPage />} />
+            <Route path="/user/:username" element={<UserPage user={user} />} />
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<Contact />} />
