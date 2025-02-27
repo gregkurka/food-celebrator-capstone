@@ -61,6 +61,8 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
 
       // Show success message and hide the popup
       setMessage(response.data.message);
+      setCaption("");
+      setFile(null);
       setShowPopup(false);
       // setRefreshFeed((prev) => !prev);
       if (typeof setRefreshFeed === "function") {
@@ -88,10 +90,13 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
     <div
       className={`fixed inset-0 flex items-center justify-center bg-black/50 transition-all duration-300 ease-in-out
       ${showPopup ? "translate-y-[-1000%] md:translate-y-0" : "bottom-0"}`}
-      onClick={() => setShowPopup(false)}
+      onClick={() => {
+        setShowPopup(false);
+        setCaption("");
+      }}
     >
       <div
-        className="ml-64 bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg text-center w-96 text-white"
+        className="ml-64 bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg text-center w-96 text-font dark:text-darkfont"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-bold mb-4">Upload your photo</h2>
@@ -110,7 +115,7 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
           placeholder="Enter a caption for your photo"
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
-          className="mb-4 w-full border p-2 text-white"
+          className="mb-4 w-full border p-2 text-font dark:text-darkfont"
         />
         <div className="flex justify-center gap-4">
           <button
@@ -125,7 +130,10 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
             )}
           </button>
           <button
-            onClick={() => setShowPopup(false)}
+            onClick={() => {
+              setShowPopup(false);
+              setCaption("");
+            }}
             disabled={uploading}
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
           >
@@ -150,7 +158,10 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
         <FaRegPlusSquare className="text-2xl" />
         Upload your photo!
       </button>
-      <UploadPopup show={showPopup} onClose={() => setShowPopup(false)}>
+      <UploadPopup show={showPopup} onClose={() => {
+        setShowPopup(false);
+        setCaption("");
+        }}>
         {contentToShow}
       </UploadPopup>
     </div>
