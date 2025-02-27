@@ -97,16 +97,9 @@ function UserPage({ user }) {
                     Uploaded on{" "}
                     {new Date(post.picture_createdat).toLocaleDateString()}
                   </p>
-
+                  {/* Likes feature*/}
                   <div className="mt-3 flex justify-between text-sm text-gray-400">
                     <Likes post={post} user={user} setPosts={setUserData} />
-
-                    {/* <div className="mt-4 flex space-x-6"> */}
-                    {/* <Likes post={post} setPosts={setPosts} user={user} /> */}
-                    {/* </div>
-                    <button className="flex items-center space-x-2 hover:text-green-300 transition">
-                      ❤️ <span>{post.likes}</span>
-                    </button> */}
 
                     {/* Comment Button (Also Opens Comments) */}
                     <button
