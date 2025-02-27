@@ -22,6 +22,8 @@ function App() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  console.log("app rendering");
+
   useEffect(() => {
     const localToken = localStorage.getItem("token");
     if (localToken) {

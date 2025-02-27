@@ -4,50 +4,58 @@ import axios from "axios";
 const URL = "https://food-celebrator.onrender.com/api";
 
 const Likes = ({ post, setPosts, user }) => {
-  const [hasLiked, setHasLiked] = useState(false);
-  const [likeId, setLikeId] = useState(null);
-  const [likesCount, setLikesCount] = useState(0);
+  const [hasLiked, setHasLiked] = useState(post?.hasLiked || false);
+  const [likeId, setLikeId] = useState(post?.likeId || null);
+  const [likesCount, setLikesCount] = useState(post?.likes?.length || 0);
 
-  //Gets all the likes data
-  const fetchLikeData = async () => {
-    try {
-      const response = await axios.get(`${URL}/${post.picture_id}/likes`);
-      setLikesCount(response.data.length); // Count total likes
-      // console.log(response.data); // logs array(user_id, username, like_id, created_at)
-
-      // Did the logged-in user liked this post?
-      const userLike = response.data.find((like) => like.user_id === user?.id);
-
-      if (userLike) {
-        setHasLiked(true);
-        // console.log(userLike.like_id); //logs all the likeIds
-        setLikeId(userLike.like_id);
-      } else {
-        setHasLiked(false);
-        setLikeId(null);
-      }
-    } catch (err) {
-      console.error("Error fetching like data:", err);
-    }
-  };
+  // Ensure user is properly retrieved
+  const currentUser = user?.id || localStorage.getItem("userId");
 
   useEffect(() => {
+    if (!post || !post.picture_id || !currentUser) return;
+
+    const fetchLikeData = async () => {
+      try {
+        const response = await axios.get(`${URL}/${post.picture_id}/likes`);
+        setLikesCount(response.data.length);
+
+        const userLike = response.data.find(
+          (like) => like.user_id == currentUser // Ensure type consistency
+        );
+
+        if (userLike) {
+          setHasLiked(true);
+          setLikeId(userLike.like_id);
+        } else {
+          setHasLiked(false);
+          setLikeId(null);
+        }
+      } catch (err) {
+        console.error("Error fetching like data:", err);
+      }
+    };
+
     fetchLikeData();
-  }, [post.picture_id]);
+  }, [post.picture_id, currentUser]);
 
   const handleLikeToggle = async () => {
+    if (!currentUser || !post) return;
+
     try {
       if (!hasLiked) {
+        console.log("two - has liked true");
         setLikesCount((prev) => prev + 1);
+
         setHasLiked(true);
 
         const response = await axios.post(`${URL}/createLike`, {
-          user_id: user.id,
+          user_id: currentUser,
           picture_id: post.picture_id,
         });
 
-        // console.log("Like added:", response.data);
-        // console.log(response.data.like.id); //logs out the likeId
+        console.log("response:", response);
+        console.log("Like added:", response.data);
+        console.log(response.data.like.id); //logs out the likeId
         setLikeId(response.data.like.id);
 
         setPosts((prevPosts) =>
@@ -66,11 +74,11 @@ const Likes = ({ post, setPosts, user }) => {
         setLikesCount((prev) => prev - 1);
         setHasLiked(false);
 
-        await axios.delete(`${URL}/deleteLike`, {
+        const response = await axios.delete(`${URL}/deleteLike`, {
           data: { like_id: likeId },
         });
-
-        console.log("Like removed");
+        console.log("delete", response);
+        console.log("delete", response.data);
 
         setPosts((prevPosts) =>
           prevPosts.map((p) =>
@@ -80,15 +88,10 @@ const Likes = ({ post, setPosts, user }) => {
           )
         );
 
-        // After unliking, clear stored likeId
         setLikeId(null);
       }
-
-      fetchLikeData();
     } catch (error) {
       console.error("Failed to toggle like:", error);
-
-      // Rollback UI update in case of an error
       setLikesCount((prev) => (hasLiked ? prev + 1 : prev - 1));
       setHasLiked(!hasLiked);
     }
