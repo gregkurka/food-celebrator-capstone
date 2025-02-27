@@ -29,6 +29,9 @@ const {
   fetchUserPicturesByUsername,
   fetchPictureById,
   fetchPictureByUsernameAndId,
+  editBioByUserId,
+  fetchBioByUsername,
+  setProfilePicNumByUserId,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -538,6 +541,86 @@ app.get("/api/:pictureId/comments", async (req, res, next) => {
     res.json(response.rows);
   } catch (ex) {
     next(ex);
+  }
+});
+
+//BIO AND PROFILE PICS
+
+//returns bio by username
+app.put("/api/:username/bio", async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const { bio } = req.body;
+
+    // First, see if there's a user with this username
+    const userBioRow = await fetchBioByUsername(username);
+    if (!userBioRow) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    const userId = userBioRow.id; // adjust if your function returns the full user row
+    const updated = await editBioByUserId(userId, bio);
+
+    res.send(updated);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Fetch user’s bio by username
+app.get("/api/:username/bio", async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const userBio = await fetchBioByUsername(username);
+    if (!userBio) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // userBio might be an object like { bio: '...' }
+    res.json(userBio);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Fetch user’s profile_pic_num by username
+app.get("/api/:username/profilepic", async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const SQL = `
+      SELECT profile_pic_num 
+      FROM users 
+      WHERE username = $1
+    `;
+    const response = await client.query(SQL, [username]);
+    if (response.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // Return the number only or an object—your choice:
+    res.json({ profile_pic_num: response.rows[0].profile_pic_num });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update user’s profile_pic_num by username
+app.put("/api/:username/profilepic", async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const { profile_pic_num } = req.body;
+
+    // First, find the user’s ID by username
+    const getUserSQL = `SELECT id FROM users WHERE username = $1;`;
+    const userRes = await client.query(getUserSQL, [username]);
+    if (userRes.rows.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const userId = userRes.rows[0].id;
+
+    // Then, use your helper to update the profile pic number by userId
+    const updated = await setProfilePicNumByUserId(userId, profile_pic_num);
+    res.json(updated); // updated should include the new profile_pic_num
+  } catch (err) {
+    next(err);
   }
 });
 
