@@ -86,7 +86,8 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
 
   const contentToShow = (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/50"
+      className={`fixed inset-0 flex items-center justify-center bg-black/50 transition-all duration-300 ease-in-out
+      ${showPopup ? "translate-y-[-1000%] md:translate-y-0" : "bottom-0"}`}
       onClick={() => setShowPopup(false)}
     >
       <div
@@ -135,6 +136,7 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
       </div>
     </div>
   );
+
   return (
     <div className="flex items-center justify-center min-h-[100px]">
       <button
