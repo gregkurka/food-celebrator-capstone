@@ -35,7 +35,9 @@ const createTables = async () => {
         password VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        bio VARCHAR(255) DEFAULT 'Create your bio here!',
+        profile_pic_num INT DEFAULT 1
     );
     CREATE TABLE pictures (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -311,6 +313,43 @@ const fetchAllLinkLikePictureAndUser = async () => {
   return response.rows;
 };
 
+//BIO and PROFILE PICS
+
+// Edits (updates) a user’s bio for a given userId
+const editBioByUserId = async (userId, newBio) => {
+  const SQL = `
+    UPDATE users
+    SET bio = $2, updated_at = NOW()
+    WHERE id = $1
+    RETURNING bio;
+  `;
+  const response = await client.query(SQL, [userId, newBio]);
+  return response.rows[0];
+};
+
+// Fetches a user's bio by username
+const fetchBioByUsername = async (username) => {
+  const SQL = `
+    SELECT bio
+    FROM users
+    WHERE username = $1;
+  `;
+  const response = await client.query(SQL, [username]);
+  return response.rows[0]; // or return response.rows[0]?.bio if you only need the string
+};
+
+// Sets the profile_pic_num for a given userId
+const setProfilePicNumByUserId = async (userId, newProfilePicNum) => {
+  const SQL = `
+    UPDATE users
+    SET profile_pic_num = $2, updated_at = NOW()
+    WHERE id = $1
+    RETURNING profile_pic_num;
+  `;
+  const response = await client.query(SQL, [userId, newProfilePicNum]);
+  return response.rows[0];
+};
+
 module.exports = {
   client,
   createTables,
@@ -336,4 +375,7 @@ module.exports = {
   fetchUserPicturesByUsername,
   fetchPictureById,
   fetchPictureByUsernameAndId,
+  editBioByUserId,
+  fetchBioByUsername,
+  setProfilePicNumByUserId,
 };
