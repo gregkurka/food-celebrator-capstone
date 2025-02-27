@@ -39,7 +39,7 @@ function UserPage({ user }) {
         {/* Profile Avatar */}
         <div className="relative">
           <img
-            src="/default-avatar.png"
+            src="/1.png"
             alt="User Avatar"
             className="w-28 h-28 rounded-full border-4 border-primary dark:border-darkprimary shadow-lg"
           />
@@ -71,12 +71,12 @@ function UserPage({ user }) {
             {userData.map((post) => (
               <div key={post.picture_id} className="rounded-lg shadow-lg">
                 {/* Image Wrapper (Ensures Overlay Stays Only on Image) */}
-                <div className="relative group w-full max-h-[230px] overflow-hidden flex justify-center items-center">
+                <div className="relative group w-full overflow-hidden flex justify-center items-center">
                   {/* Image (No Scaling on Hover) */}
                   <img
                     src={post.picture_url}
                     alt={post.picture_caption || "User Upload"}
-                    className="w-full h-auto object-cover rounded-lg border-2 border-gray-700"
+                    className="w-full h-auto md:h-64 object-cover rounded-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105 cursor-pointer"
                   />
 
                   {/* Hover Overlay (Triggers Comment Modal) */}
@@ -97,16 +97,9 @@ function UserPage({ user }) {
                     Uploaded on{" "}
                     {new Date(post.picture_createdat).toLocaleDateString()}
                   </p>
-
+                  {/* Likes feature*/}
                   <div className="mt-3 flex justify-between text-sm text-gray-400">
                     <Likes post={post} user={user} setPosts={setUserData} />
-
-                    {/* <div className="mt-4 flex space-x-6"> */}
-                    {/* <Likes post={post} setPosts={setPosts} user={user} /> */}
-                    {/* </div>
-                    <button className="flex items-center space-x-2 hover:text-green-300 transition">
-                      ❤️ <span>{post.likes}</span>
-                    </button> */}
 
                     {/* Comment Button (Also Opens Comments) */}
                     <button
