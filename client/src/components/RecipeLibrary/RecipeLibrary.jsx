@@ -51,11 +51,17 @@ export default function RecipeLibrary() {
       <select
         value={selectedIngredient}
         onChange={(e) => setSelectedIngredient(e.target.value)}
-        className="p-2 border rounded mb-4"
+        className="p-2 border rounded mb-4 border-font dark:border-darkfont text-font dark:text-darkfont"
       >
-        <option value="">Select an Ingredient</option>
+        <option className="text-font dark:text-font" value="">
+          Select an Ingredient
+        </option>
         {ingredients.map((ingredient, index) => (
-          <option key={index} value={ingredient}>
+          <option
+            className="text-font dark:text-font"
+            key={index}
+            value={ingredient}
+          >
             {ingredient}
           </option>
         ))}
@@ -69,7 +75,10 @@ export default function RecipeLibrary() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {recipes.map((recipe) => (
-          <div key={recipe.idMeal} className="border p-2 rounded">
+          <div
+            key={recipe.idMeal}
+            className="border border-font dark:border-darkfont p-2 rounded"
+          >
             <Link to={`/recipe/${recipe.idMeal}`}>
               <img
                 src={recipe.strMealThumb}

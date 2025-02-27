@@ -71,7 +71,7 @@ function App() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 md:pl-64 pb-9 min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black">
+      <div className="flex-1 pb-9 md:pl-64 md:pb-0 min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 dark:from-gray-900 dark:to-black">
         <main className="flex-grow pt-16 md:pt-0">
           <Routes>
             <Route path="/" element={<Home />} />
