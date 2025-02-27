@@ -3,10 +3,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import PicturePopup from "../components/PicturePopup";
 import SinglePhotoView from "../components/SinglePhotoView";
+import Likes from "../components/Likes";
 
 const URL = "https://food-celebrator.onrender.com/api";
 
-function UserPage() {
+function UserPage({ user }) {
   const { username } = useParams();
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -96,10 +97,16 @@ function UserPage() {
                     Uploaded on{" "}
                     {new Date(post.picture_createdat).toLocaleDateString()}
                   </p>
+
                   <div className="mt-3 flex justify-between text-sm text-gray-400">
+                    <Likes post={post} user={user} setPosts={setUserData} />
+
+                    {/* <div className="mt-4 flex space-x-6"> */}
+                    {/* <Likes post={post} setPosts={setPosts} user={user} /> */}
+                    {/* </div>
                     <button className="flex items-center space-x-2 hover:text-green-300 transition">
                       ❤️ <span>{post.likes}</span>
-                    </button>
+                    </button> */}
 
                     {/* Comment Button (Also Opens Comments) */}
                     <button
