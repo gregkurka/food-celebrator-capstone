@@ -1,17 +1,18 @@
 import React from "react";
 
-function PicturePopup({ show, onClose, children }) {
+function UploadPopup({ show, onClose, children }) {
   if (!show) return null; // Don't render if `show` is false
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black/60 z-50"
+      className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 p-4"
       onClick={onClose} // Close when clicking outside
     >
       <div
-        className="relative bg-opacity-0 dark:bg-opacity-0 p-6 rounded-xl shadow-xl text-center
+        className="relative bg-white dark:bg-gray-900 p-6 rounded-xl shadow-xl text-center
                    text-gray-900 dark:text-gray-100
-                   w-11/12 max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl"
+                   w-11/12 max-w-md md:max-w-lg lg:max-w-2xl xl:max-w-3xl
+                   max-h-screen overflow-auto h-auto"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         {/* Close Button (X Icon) */}
@@ -38,10 +39,10 @@ function PicturePopup({ show, onClose, children }) {
         </button>
 
         {/* Popup Content */}
-        <div>{children}</div>
+        <div className="max-h-[80vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
 }
 
-export default PicturePopup;
+export default UploadPopup;
