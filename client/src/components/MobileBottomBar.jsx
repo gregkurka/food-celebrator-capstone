@@ -15,7 +15,7 @@ function MobileBottomBar({ onUploadClick }) {
       {/* Upload Button (Prominent Center) */}
       <div
         onClick={onUploadClick}
-        className="w-18 h-9 bg-primary dark:bg-darkprimary text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition"
+        className="w-18 h-9 bg-primary dark:bg-darkprimary text-white rounded-full flex items-center justify-center shadow-lg transform hover:scale-105 transition fixed bottom-50"
       >
         <Upload />
       </div>
