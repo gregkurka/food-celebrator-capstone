@@ -4,6 +4,7 @@ import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 import Upload from "../components/Upload";
+import ProfileBio from "../components/ProfileBio/ProfileBio";
 
 function Account() {
   const [user, setUser] = useState(null);
@@ -16,7 +17,6 @@ function Account() {
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
-  console.log(user);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,6 +35,7 @@ function Account() {
           }
         );
         setUser(response.data);
+        console.log("RESPONSE: ", response.data);
       } catch (err) {
         setError("Failed to load user data. Please log in again.");
         localStorage.removeItem("token");
@@ -83,9 +84,10 @@ function Account() {
         </h3>
 
         {/* Profile Info */}
-        <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
+        <div className="mt-2 text-lg text-gray-700 dark:text-gray-300">
           Welcome back, {user?.username.toUpperCase()}!
-        </p>
+          <ProfileBio user={user} isEditMode={isEditMode} />
+        </div>
 
         {/* Edit Mode Button */}
         <button
