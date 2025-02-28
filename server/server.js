@@ -35,6 +35,7 @@ const {
   editBioByUserId,
   fetchBioByUsername,
   setProfilePicNumByUserId,
+  fetchFeedLimitOffset,
 } = require("./db");
 
 const port = process.env.PORT || 3000;
@@ -233,7 +234,19 @@ app.use((err, req, res, next) => {
 
 app.get("/api/feed", async (req, res, next) => {
   try {
-    res.send(await fetchFeed());
+    if (req.query.limit && req.query.offset) {
+      const limit = parseInt(req.query.limit, 10);
+      const offset = parseInt(req.query.offset, 10);
+
+      // Check if the parsed values are valid numbers
+      if (isNaN(limit) || isNaN(offset)) {
+        return res.status(400).json({ error: "Invalid limit or offset" });
+      }
+
+      res.send(await fetchFeedLimitOffset(limit, offset));
+    } else {
+      res.send(await fetchFeed());
+    }
   } catch (ex) {
     next(ex);
   }
