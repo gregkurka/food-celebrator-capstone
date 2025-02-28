@@ -96,7 +96,7 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
       }}
     >
       <div
-        className="ml-64 bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg text-center w-96 text-font dark:text-darkfont"
+        className="md:ml-64 bg-muted dark:bg-darkmuted p-6 rounded-lg shadow-lg text-center w-96 text-font dark:text-darkfont"
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-bold mb-4">Upload your photo</h2>
