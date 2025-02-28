@@ -140,7 +140,15 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
             Cancel
           </button>
         </div>
-        {message && <p className="mt-4 text-primary">{message}</p>}
+        {message && (
+          <p
+            className={`mt-4 font-bold text-lg ${
+              message.includes("Uploading") ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -158,10 +166,13 @@ function Upload({ setRefreshFeed, setRefreshUploads }) {
         <FaRegPlusSquare className="text-2xl" />
         Upload your photo!
       </button>
-      <UploadPopup show={showPopup} onClose={() => {
-        setShowPopup(false);
-        setCaption("");
-        }}>
+      <UploadPopup
+        show={showPopup}
+        onClose={() => {
+          setShowPopup(false);
+          setCaption("");
+        }}
+      >
         {contentToShow}
       </UploadPopup>
     </div>
