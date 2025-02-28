@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 const profilePictures = [
   "/1.png",
@@ -30,7 +31,29 @@ const profilePictures = [
   "/31.png",
 ];
 
-function ProfilePicture({ selectedPicture, setSelectedPicture }) {
+function ProfilePicture({ selectedPicture, setSelectedPicture, username }) {
+  const handlePictureSelect = async (picture, index) => {
+    setSelectedPicture(picture);
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No authentication token found");
+      return;
+    }
+
+    try {
+      await axios.put(
+        `https://food-celebrator.onrender.com/api/${username}/profilepic`,
+        { profile_pic_num: index + 1 }, // Convert index to match DB numbering
+        {
+          headers: { Authorization: token },
+        }
+      );
+    } catch (error) {
+      console.error("Failed to update profile picture number", error);
+    }
+  };
+
   return (
     <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
       <h3 className="text-lg font-semibold mb-2 text-center">
@@ -48,7 +71,7 @@ function ProfilePicture({ selectedPicture, setSelectedPicture }) {
                   ? "border-blue-500"
                   : "border-gray-300"
               }`}
-              onClick={() => setSelectedPicture(picture)}
+              onClick={() => handlePictureSelect(picture, index)}
             />
           ))}
         </div>
