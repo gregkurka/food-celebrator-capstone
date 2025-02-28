@@ -74,6 +74,7 @@ function Account() {
                 setSelectedPicture(picture);
                 setIsMenuOpen(false);
               }}
+              username={user.username}
             />
           )}
         </div>
