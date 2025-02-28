@@ -35,7 +35,17 @@ function Account() {
             headers: { Authorization: token },
           }
         );
-        setUser(response.data);
+        const userData = response.data;
+        setUser(userData);
+
+        // Ensure profile_pic_num is within the valid index range
+        if (
+          userData.profile_pic_num &&
+          userData.profile_pic_num > 0 &&
+          userData.profile_pic_num <= profilepicArray.length
+        ) {
+          setSelectedPicture(profilepicArray[userData.profile_pic_num - 1]);
+        }
       } catch (err) {
         setError("Failed to load user data. Please log in again.");
         localStorage.removeItem("token");
@@ -111,7 +121,7 @@ function Account() {
           user={user}
           isEditMode={isEditMode}
           refreshUploads={refreshUploads}
-        />{" "}
+        />
       </div>
     </div>
   );
