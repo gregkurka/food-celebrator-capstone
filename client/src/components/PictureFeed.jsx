@@ -18,6 +18,7 @@ function PictureFeed({ user, refreshFeed }) {
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
         setPosts(sortedPosts);
+        console.log("Updated Posts:", sortedPosts);
       } catch (error) {
         console.error("Failed to fetch feed data:", error);
       }
