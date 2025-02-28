@@ -239,7 +239,7 @@ app.get("/api/feed", async (req, res, next) => {
   }
 });
 
-//--Ingur image upload--
+//Image Upload--
 
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
   console.log("REQUEST RECEIVED AT /api/upload");
@@ -321,13 +321,18 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     const ratio = allowedMatches.length / (detectedLabels.length || 1);
 
     if (ratio < 0.6 || allowedMatches.length < 2) {
+      const rejectedLabels = detectedLabels.filter(
+        (label) => !ALLOWED_LABELS.some((allowed) => label.includes(allowed))
+      );
       messages.push(
         `Upload rejected. Ratio: ${ratio.toFixed(2)}; Allowed matches: ${
           allowedMatches.length
-        }`
+        }; Rejected labels: ${rejectedLabels.join(", ")}`
       );
       return res.status(400).json({
-        error: "This image contains disallowed items.",
+        error: `This image contains disallowed items: ${rejectedLabels.join(
+          ", "
+        )}`,
         logs: messages,
       });
     }

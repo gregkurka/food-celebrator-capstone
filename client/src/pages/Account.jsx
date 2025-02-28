@@ -4,13 +4,15 @@ import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 import Upload from "../components/Upload";
+
 import ProfileBio from "../components/ProfileBio/ProfileBio";
+import profilepicArray from "../components/profilepicArray.js";
 
 function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPicture, setSelectedPicture] = useState("/1.png");
+  const [selectedPicture, setSelectedPicture] = useState(profilepicArray[0]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false); // 🔥 New state for Edit Mode
   const [refreshUploads, setRefreshUploads] = useState(false);
@@ -34,8 +36,19 @@ function Account() {
             headers: { Authorization: token },
           }
         );
-        setUser(response.data);
-        console.log("RESPONSE: ", response.data);
+
+        const userData = response.data;
+        setUser(userData);
+
+        // Ensure profile_pic_num is within the valid index range
+        if (
+          userData.profile_pic_num &&
+          userData.profile_pic_num > 0 &&
+          userData.profile_pic_num <= profilepicArray.length
+        ) {
+          setSelectedPicture(profilepicArray[userData.profile_pic_num - 1]);
+        }
+
       } catch (err) {
         setError("Failed to load user data. Please log in again.");
         localStorage.removeItem("token");
@@ -74,6 +87,7 @@ function Account() {
                 setSelectedPicture(picture);
                 setIsMenuOpen(false);
               }}
+              username={user.username}
             />
           )}
         </div>
@@ -111,7 +125,7 @@ function Account() {
           user={user}
           isEditMode={isEditMode}
           refreshUploads={refreshUploads}
-        />{" "}
+        />
       </div>
     </div>
   );
