@@ -4,19 +4,20 @@ import axios from "axios";
 import UserUploads from "../components/UserUploads";
 import ProfilePicture from "../components/ProfilePictures/ProfilePicture";
 import Upload from "../components/Upload";
+import profilepicArray from "../components/profilepicArray.js";
 
 function Account() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedPicture, setSelectedPicture] = useState("/1.png");
+  const [selectedPicture, setSelectedPicture] = useState(profilepicArray[0]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false); // 🔥 New state for Edit Mode
   const [refreshUploads, setRefreshUploads] = useState(false);
 
   const navigate = useNavigate();
   localStorage.userId = user?.id || "";
-  console.log(user);
+  console.log("user information", user);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
