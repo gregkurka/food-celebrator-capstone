@@ -4,6 +4,8 @@ import axios from "axios";
 import PicturePopup from "../components/PicturePopup";
 import SinglePhotoView from "../components/SinglePhotoView";
 import Likes from "../components/Likes";
+import profilepicArray from "../components/profilepicArray.js";
+import ProfileBio from "../components/ProfileBio/ProfileBio.jsx";
 
 const URL = "https://food-celebrator.onrender.com/api";
 
@@ -12,6 +14,7 @@ function UserPage({ user }) {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedPost, setSelectedPost] = useState(null);
+  const [profilePicNum, setProfilePicNum] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -20,7 +23,7 @@ function UserPage({ user }) {
         const response = await axios.get(
           `${URL}/username/${username}/pictures`
         );
-        setUserData(response.data);
+        setUserData([...response.data].reverse());
       } catch (error) {
         console.error("Failed to fetch user data:", error);
         setUserData([]);
@@ -29,8 +32,24 @@ function UserPage({ user }) {
       }
     };
 
+    const getProfilePic = async (username) => {
+      try {
+        const response = await axios.get(`${URL}/${username}/profilepic`);
+        console.log("Profile Picture Number:", response.data.profile_pic_num);
+        setProfilePicNum(response.data.profile_pic_num);
+      } catch (error) {
+        if (error.response) {
+          console.error("Error:", error.response.data.error);
+        } else {
+          console.error("Network Error:", error.message);
+        }
+      }
+    };
+
     fetchUserData();
-  }, [username]);
+    getProfilePic(username);
+    console.log("profile pic num:", profilePicNum);
+  }, [username, profilePicNum]);
 
   return (
     <div className="min-h-screen backgroundcolor text-font dark:text-darkfont flex flex-col items-center px-6 py-16 md:py-20 animate-fadeIn">
@@ -39,7 +58,7 @@ function UserPage({ user }) {
         {/* Profile Avatar */}
         <div className="relative">
           <img
-            src="/1.png"
+            src={profilepicArray[profilePicNum - 1]}
             alt="User Avatar"
             className="w-28 h-28 rounded-full border-4 border-primary dark:border-darkprimary shadow-lg"
           />
@@ -49,6 +68,8 @@ function UserPage({ user }) {
         <h3 className="mt-4 text-3xl font-bold text-font dark:text-darkfont tracking-wide">
           @{username}
         </h3>
+        {/* Bio */}
+        <ProfileBio user={{ username }} />
 
         {/* User Upload Count */}
         <p className="mt-2 text-lg text-gray-700 dark:text-gray-300">
