@@ -5,6 +5,7 @@ const multer = require("multer");
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
+const path = require("path");
 
 const {
   client,
@@ -65,8 +66,6 @@ app.use(
     credentials: true,
   })
 );
-
-const path = require("path");
 
 const { authenticate, findUserByToken, isLoggedIn } = require("./auth");
 
@@ -241,11 +240,6 @@ app.get("/api/feed", async (req, res, next) => {
 });
 
 //--Ingur image upload--
-
-const axios = require("axios");
-const FormData = require("form-data");
-const fs = require("fs");
-const path = require("path");
 
 app.post("/api/upload", upload.single("image"), async (req, res, next) => {
   console.log("REQUEST RECEIVED AT /api/upload");
