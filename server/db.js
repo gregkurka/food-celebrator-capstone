@@ -249,6 +249,7 @@ const fetchFeedLimitOffset = async (limit, offset) => {
     FROM users_x_pictures ux
     JOIN pictures p ON ux.picture_id = p.id
     JOIN users u ON ux.user_id = u.id
+    ORDER BY ux.created_at DESC
     LIMIT $1
     OFFSET $2 ;
   `;
