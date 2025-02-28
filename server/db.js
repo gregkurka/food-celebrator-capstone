@@ -235,6 +235,26 @@ const fetchFeed = async () => {
   const response = await client.query(SQL);
   return response.rows;
 };
+
+const fetchFeedLimitOffset = async (limit, offset) => {
+  const SQL = `
+    SELECT 
+      ux.user_id, 
+      ux.picture_id, 
+      p.URL, 
+      p.caption, 
+      p.created_at, 
+      u.username,
+      u.profile_pic_num
+    FROM users_x_pictures ux
+    JOIN pictures p ON ux.picture_id = p.id
+    JOIN users u ON ux.user_id = u.id
+    LIMIT $1
+    OFFSET $2 ;
+  `;
+  const response = await client.query(SQL, [limit, offset]);
+  return response.rows;
+};
 //--CREATE FUNCTIONS--
 const createComment = async ({ content }) => {
   const SQL = `
@@ -379,4 +399,5 @@ module.exports = {
   editBioByUserId,
   fetchBioByUsername,
   setProfilePicNumByUserId,
+  fetchFeedLimitOffset,
 };
