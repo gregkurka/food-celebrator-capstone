@@ -39,6 +39,7 @@ function App() {
           headers: { Authorization: token },
         }
       );
+      console.log("RESPONSE: ", response);
       setToken(token);
       setUser(response.data);
     } catch (error) {

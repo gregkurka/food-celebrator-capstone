@@ -3,7 +3,7 @@ import Form from "../components/Form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Login({ setToken }) {
+function Login({ setToken, setUser }) {
   // State variables to store user input and application state
   const [username, setUsername] = useState(""); // Stores the username input
   const [password, setPassword] = useState(""); // Stores the password input
@@ -62,7 +62,7 @@ function Login({ setToken }) {
           await axios.get("https://food-celebrator.onrender.com/api/auth/me", {
             headers: { Authorization: `${response.data.token}` },
           });
-
+          setUser(response.data); // Update user state with the received data
           // alert("Login successful!"); // Notify user of successful login
           navigate("/account"); // Redirect to the account page
         } catch (userError) {
