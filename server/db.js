@@ -226,7 +226,8 @@ const fetchFeed = async () => {
       p.URL, 
       p.caption, 
       p.created_at, 
-      u.username
+      u.username,
+      u.profile_pic_num
     FROM users_x_pictures ux
     JOIN pictures p ON ux.picture_id = p.id
     JOIN users u ON ux.user_id = u.id;
