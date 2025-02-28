@@ -5,7 +5,6 @@ const multer = require("multer");
 const axios = require("axios");
 const FormData = require("form-data");
 const fs = require("fs");
-const path = require("path");
 
 const {
   client,
@@ -285,12 +284,10 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     const [faceResult] = await visionClient.faceDetection(req.file.buffer);
     if (faceResult.faceAnnotations && faceResult.faceAnnotations.length > 0) {
       messages.push("Face detected, rejecting image.");
-      return res
-        .status(400)
-        .json({
-          error: "This image contains a person (face detected).",
-          logs: messages,
-        });
+      return res.status(400).json({
+        error: "This image contains a person (face detected).",
+        logs: messages,
+      });
     }
 
     console.log("Running object localization...");
@@ -302,12 +299,10 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     );
     if (personDetected) {
       messages.push("Person object detected, rejecting image.");
-      return res
-        .status(400)
-        .json({
-          error: "This image contains a person (object detected).",
-          logs: messages,
-        });
+      return res.status(400).json({
+        error: "This image contains a person (object detected).",
+        logs: messages,
+      });
     }
 
     console.log("Running label detection...");
@@ -337,12 +332,10 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
           allowedMatches.length
         }`
       );
-      return res
-        .status(400)
-        .json({
-          error: "This image contains disallowed items.",
-          logs: messages,
-        });
+      return res.status(400).json({
+        error: "This image contains disallowed items.",
+        logs: messages,
+      });
     }
 
     messages.push(
@@ -402,13 +395,11 @@ app.post("/api/upload", upload.single("image"), async (req, res, next) => {
     await linkUserToPicture({ user_id: user.id, picture_id: newPicture.id });
 
     console.log("Responding with success.");
-    return res
-      .status(201)
-      .json({
-        message: "Upload successful",
-        picture: newPicture,
-        logs: messages,
-      });
+    return res.status(201).json({
+      message: "Upload successful",
+      picture: newPicture,
+      logs: messages,
+    });
   } catch (err) {
     console.log("Unexpected error in upload handler:", err);
     messages.push(`Unexpected error: ${err.message}`);
