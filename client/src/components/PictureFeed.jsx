@@ -89,7 +89,11 @@ function PictureFeed({ user, refreshFeed }) {
                 className="w-8 h-8 rounded-full border"
               />
               <Link
-                to={`/user/${post.username}`}
+                to={
+                  user?.username === post.username
+                    ? "/account"
+                    : `/user/${post.username}`
+                }
                 className="text-sm font-semibold hover:underline"
               >
                 {post.username}
