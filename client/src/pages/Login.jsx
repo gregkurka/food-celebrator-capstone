@@ -54,16 +54,19 @@ function Login({ setToken, setUser }) {
 
       // If login is successful and a token is received
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token); // Store token in local storage
-        setToken(response.data.token); // Update token state
+        const token = response.data.token;
+        localStorage.setItem("token", token); // Store token in local storage
+        setToken(token); // Update token state
 
         try {
-          // Fetch user data with the received token to verify authentication
-          await axios.get("https://food-celebrator.onrender.com/api/auth/me", {
-            headers: { Authorization: `${response.data.token}` },
-          });
-          setUser(response.data); // Update user state with the received data
-          // alert("Login successful!"); // Notify user of successful login
+          // Fetch user data with the received token
+          const userResponse = await axios.get(
+            "https://food-celebrator.onrender.com/api/auth/me",
+            {
+              headers: { Authorization: `${token}` }, // Proper format for Bearer token
+            }
+          );
+          setUser(userResponse.data); // Update user state with retrieved user data
           navigate("/account"); // Redirect to the account page
         } catch (userError) {
           console.error("Failed to fetch user data:", userError);
@@ -71,13 +74,12 @@ function Login({ setToken, setUser }) {
         }
       }
     } catch (err) {
-      // Handle login failure and display appropriate error message
       setErrorMessage(
         err.response?.data?.message ||
           "Login failed. Please check your credentials."
       );
     } finally {
-      setIsLoading(false); // Set loading state to false after request completes
+      setIsLoading(false);
     }
   }
 
