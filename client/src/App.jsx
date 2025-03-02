@@ -16,13 +16,12 @@ import MobileNavbar from "./components/MobileNavbar"; // Import Mobile Navbar
 import RecipeLibrary from "./components/RecipeLibrary/RecipeLibrary";
 import RecipeDetails from "./components/RecipeLibrary/RecipeDetails";
 import MobileBottomBar from "./components/MobileBottomBar";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
-  console.log("app rendering");
 
   useEffect(() => {
     const localToken = localStorage.getItem("token");
@@ -39,7 +38,6 @@ function App() {
           headers: { Authorization: token },
         }
       );
-      console.log("RESPONSE: ", response);
       setToken(token);
       setUser(response.data);
     } catch (error) {
@@ -78,8 +76,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<Home />} />
-            <Route path="/recipes" element={<RecipeLibrary />} />
-            <Route path="/recipe/:id" element={<RecipeDetails />} />
+
             <Route
               path="/login"
               element={<Login setToken={setToken} setUser={setUser} />}
@@ -88,13 +85,20 @@ function App() {
               path="/signup"
               element={<Signup setToken={setToken} setUser={setUser} />}
             />
-            <Route path="/feed" element={<Feed user={user} />} />
-            <Route
-              path="/account"
-              element={<Account token={token} user={user} />}
-            />
-            <Route path="/user" element={<Account />} />
-            <Route path="/user/:username" element={<UserPage user={user} />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/feed" element={<Feed user={user} />} />
+              <Route
+                path="/account"
+                element={<Account token={token} user={user} />}
+              />
+              {/* <Route path="/user" element={<Account />} /> */}
+              <Route
+                path="/user/:username"
+                element={<UserPage user={user} />}
+              />
+              <Route path="/recipes" element={<RecipeLibrary />} />
+              <Route path="/recipe/:id" element={<RecipeDetails />} />
+            </Route>
             <Route path="/about" element={<About />} />
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/contact" element={<Contact />} />
