@@ -67,7 +67,9 @@ export default function RecipeLibrary() {
         onChange={(e) => setSelectedIngredient(e.target.value)}
         className="p-2 border rounded mb-4 border-font dark:border-darkfont text-font dark:text-darkfont"
       >
-        <option value="">Select an Ingredient</option>
+        <option className="text-font dark:text-font" value="">
+          Select an Ingredient
+        </option>
         {ingredients.map((ingredient, index) => (
           <option
             className="text-font dark:text-font"
