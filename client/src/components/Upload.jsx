@@ -5,7 +5,7 @@ import { ClipLoader, MoonLoader } from "react-spinners";
 import UploadPopup from "./UploadPopup";
 
 function Upload({ setRefreshFeed, setRefreshUploads }) {
-  console.log("Upload component: setRefreshFeed =", setRefreshFeed);
+  // console.log("Upload component: setRefreshFeed =", setRefreshFeed);
   const [file, setFile] = useState(null);
   const [caption, setCaption] = useState("");
   const [message, setMessage] = useState(null);

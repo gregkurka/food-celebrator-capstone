@@ -15,7 +15,6 @@ function ProfileBio({ user: { username }, isEditMode }) {
       setLoading(true);
       try {
         const data = await GetBio(username);
-        console.log("Fetched Bio Data:", data);
         setBio(data.bio ?? ""); // Ensures it's never null
       } catch (error) {
         console.error("Failed to fetch bio data:", error);

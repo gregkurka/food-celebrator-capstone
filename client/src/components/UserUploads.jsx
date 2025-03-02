@@ -16,7 +16,6 @@ function UserUploads({ user, isEditMode, refreshUploads }) {
         const sortedData = data.sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
         );
-        console.log("line15", sortedData); //gives id, url, caption, created_at from picture table
         setUserPosts(sortedData);
       } catch (error) {
         console.error("Failed to fetch user uploads:", error);
