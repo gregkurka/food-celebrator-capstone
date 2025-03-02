@@ -16,26 +16,24 @@ function PictureFeed({ user, refreshFeed }) {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
-    console.log("Fetching new feed data...");
-    const fetchData = async () => {
-      if (isFetching) return;
-
+    console.log("Refreshing feed data...");
+    const refreshFeedData = async () => {
       setIsFetching(true);
       try {
-        const data = await GetFeedAll(limit, offset);
-        if (data.length > 0) {
-          setPosts((prevPosts) => [...prevPosts, ...data]);
-          setOffset((prevOffset) => prevOffset + limit);
-        }
+        // Reset the posts and load fresh data from the beginning (offset 0)
+        const data = await GetFeedAll(limit, 0);
+        setPosts(data);
+        // Set offset to the number of posts fetched (assuming API returns up to 'limit' posts)
+        setOffset(data.length);
       } catch (error) {
-        console.error("Failed to fetch feed data:", error);
+        console.error("Failed to refresh feed data:", error);
       } finally {
         setIsFetching(false);
         setIsInitialLoad(false);
       }
     };
 
-    fetchData();
+    refreshFeedData();
   }, [refreshFeed]);
 
   // Intersection Observer for infinite scrolling
