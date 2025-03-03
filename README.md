@@ -84,13 +84,13 @@ npm install
 1. Configure Environment Variables: Create a file named .env in the root of the project (or set environment variables in your development environment) with the following keys:
     
 
-- DATABASE_URL – The connection string for your PostgreSQL database ([food-celebrator-capstone/server/db.js at main · gregkurka/food-celebrator-capstone · GitHub](https://github.com/gregkurka/food-celebrator-capstone/blob/main/server/db.js#:~:text=const%20client%20%3D%20new%20Client%28)). For example, if running Postgres locally, use a URL like:  
+- DATABASE_URL – The connection string for your PostgreSQL database For example, if running Postgres locally, use a URL like:  
     DATABASE_URL=postgres://<username>:<password>@localhost:5432/<your_database_name>  
     Make sure to create a database in Postgres for this project and put its name in the URL.
     
-- JWT_SECRET – A secret key for JWT signing and verification ([food-celebrator-capstone/server/auth.js at main · gregkurka/food-celebrator-capstone · GitHub](https://github.com/gregkurka/food-celebrator-capstone/blob/main/server/auth.js#:~:text=if%20%28%21token%29%20throw%20new%20Error%28,required)). Set this to a long random string. This secret is used to sign authentication tokens for users.
+- JWT_SECRET – A secret key for JWT signing and verification. Set this to a long random string. This secret is used to sign authentication tokens for users.
     
-- FRONTEND_URL – (Optional) The URL of the front-end application for CORS. In development, this can be http://localhost:5173 (the default port for Vite dev server) ([food-celebrator-capstone/server/server.js at main · gregkurka/food-celebrator-capstone · GitHub](https://github.com/gregkurka/food-celebrator-capstone/blob/main/server/server.js#:~:text=const%20allowedOrigins%20%3D%20)). If you are not running a separate front-end dev server (because the Express server will serve the built client), you can omit this or set it to the same as your server origin.
+- FRONTEND_URL – (Optional) The URL of the front-end application for CORS. In development, this can be http://localhost:5173 (the default port for Vite dev server). If you are not running a separate front-end dev server (because the Express server will serve the built client), you can omit this or set it to the same as your server origin.
     
 - GOOGLE_APPLICATION_CREDENTIALS – (Optional, for Vision API) The file path to your Google Cloud service account credentials JSON file. This is required if you want to enable the Google Vision API for image moderation. Obtain a service account JSON key from Google Cloud and save it locally, then provide its path here. Alternatively, you can set up the Google Cloud environment variables as per Google’s documentation. If this variable is not set and you attempt to upload images, the Vision API call will fail – you can disable or remove the Vision validation in code for testing without it.
     
