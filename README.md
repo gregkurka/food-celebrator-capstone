@@ -66,19 +66,19 @@ Food Celebrator is a web application that allows users to share and celebrate th
 
 To set up the Food Celebrator project locally, follow these steps:
 
-1. Prerequisites: Ensure you have Node.js (v14 or above recommended) and PostgreSQL installed on your system. You’ll also need a Google Cloud account with access to the Vision API if you want to enable image content validation (optional for basic functionality).
+-Prerequisites: Ensure you have Node.js (v14 or above recommended) and PostgreSQL installed on your system. You’ll also need a Google Cloud account with access to the Vision API if you want to enable image content validation (optional for basic functionality).
     
 
-Clone the Repository: Clone this GitHub repository to your local machine using git:  
+-Clone the Repository: Clone this GitHub repository to your local machine using git:  
 git clone https://github.com/gregkurka/food-celebrator-capstone.git
 
-Then navigate into the project directory:  
+-Then navigate into the project directory:  
 cd food-celebrator-capstone 
     
-Install Dependencies: Install the Node.js dependencies for both the server and client by running npm install in the root project directory. This will install Express, React, and all other required packages as listed in package.json:  
+-Install Dependencies: Install the Node.js dependencies for both the server and client by running npm install in the root project directory. This will install Express, React, and all other required packages as listed in package.json:  
 npm install
 
-1. Configure Environment Variables: Create a file named .env in the root of the project (or set environment variables in your development environment) with the following keys:
+-Configure Environment Variables: Create a file named .env in the root of the project (or set environment variables in your development environment) with the following keys:
     
 
 - DATABASE_URL – The connection string for your PostgreSQL database For example, if running Postgres locally, use a URL like:  
@@ -94,15 +94,15 @@ npm install
 
   
 
-1. Note: Instead of storing actual credentials in the .env file, use placeholder values and ensure you keep this file secure and not committed to version control.
+-Note: Instead of storing actual credentials in the .env file, use placeholder values and ensure you keep this file secure and not committed to version control.
     
 
-Database Setup and Seeding: The application can automatically create the required tables and even seed some initial data. To set up the database schema, run the seed script:  
+-Database Setup and Seeding: The application can automatically create the required tables and even seed some initial data. To set up the database schema, run the seed script:  
 npm run seed
 
-1.  This will connect to the database, create tables, and insert sample data (users, pictures, comments, and likes). You should see logs indicating tables being created. The seed script will also create a few test users with predefined credentials for convenience. For example, a user gregk with password pw_gregk, and several others (see the server/seed.js for all test users and data). You can use these accounts to log in and test the app immediately.
+-This will connect to the database, create tables, and insert sample data (users, pictures, comments, and likes). You should see logs indicating tables being created. The seed script will also create a few test users with predefined credentials for convenience. For example, a user gregk with password pw_gregk, and several others (see the server/seed.js for all test users and data). You can use these accounts to log in and test the app immediately.
     
-6. Build Client (Optional): The repository includes a pre-built client in the client/dist folder, so building the front-end manually is usually not required to run the app. However, if you plan to modify the front-end code, you will need to rebuild it. Assuming the project uses Vite for the React app, you can run the build (if a script is configured) or start the Vite dev server. (If no specific build script is present in package.json, the static files are already prepared for use.)
+-Build Client (Optional): The repository includes a pre-built client in the client/dist folder, so building the front-end manually is usually not required to run the app. However, if you plan to modify the front-end code, you will need to rebuild it. Assuming the project uses Vite for the React app, you can run the build (if a script is configured) or start the Vite dev server. (If no specific build script is present in package.json, the static files are already prepared for use.)
     
 
 - To build the production-ready static files (if needed): [Add the appropriate build command here if it exists, e.g., npm run build].
@@ -110,22 +110,22 @@ npm run seed
 - To run the front-end in development (optional): You can serve the front-end separately by navigating to the client directory and running the dev server (for example, npm run dev if using Vite or Create React App). Ensure that FRONTEND_URL is set so the backend accepts requests from the dev server origin.
     
 
-1. Start the Application: Once everything is configured, you can start the Node.js server.
+-Start the Application: Once everything is configured, you can start the Node.js server.
     
 
-For development, it’s recommended to use nodemon for auto-reloading:  
+-For development, it’s recommended to use nodemon for auto-reloading:  
 npm run dev
 
 -  This will launch the Express server on port 3000 by default (or the port set in your PORT env variable). The server will also serve the client from the client/dist directory. Leave this running and proceed to open the app in your browser.
     
 
-For production or without nodemon:  
+-For production or without nodemon:  
 npm start
 
 -  This runs the server using Node (without file watching). Make sure to build the client before this if you made changes to front-end code.
     
 
-1. Verify Setup: Open your web browser and navigate to http://localhost:3000 (or the custom port you set) to access Food Celebrator. You should see the home page of the application. From here, you can register a new account or use one of the seeded test accounts to log in. After logging in, try uploading an image and adding a caption to verify that everything is working. If the image upload succeeds and the image is of food, it will appear in the feed. You can also test liking and commenting features.
+- Verify Setup: Open your web browser and navigate to http://localhost:3000 (or the custom port you set) to access Food Celebrator. You should see the home page of the application. From here, you can register a new account or use one of the seeded test accounts to log in. After logging in, try uploading an image and adding a caption to verify that everything is working. If the image upload succeeds and the image is of food, it will appear in the feed. You can also test liking and commenting features.
     
 
 ## Running the Project
