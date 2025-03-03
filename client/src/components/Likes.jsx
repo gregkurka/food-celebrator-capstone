@@ -4,9 +4,9 @@ import axios from "axios";
 const URL = "https://food-celebrator.onrender.com/api";
 
 const Likes = ({ post, setPosts, user }) => {
-  const [hasLiked, setHasLiked] = useState(post?.hasLiked || false);
-  const [likeId, setLikeId] = useState(post?.likeId || null);
-  const [likesCount, setLikesCount] = useState(post?.likes?.length || 0);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likeId, setLikeId] = useState(null);
+  const [likesCount, setLikesCount] = useState(0);
 
   // Ensure user is properly retrieved
   const currentUser = user?.id || localStorage.getItem("userId");
