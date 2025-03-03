@@ -72,12 +72,9 @@ To set up the Food Celebrator project locally, follow these steps:
 Clone the Repository: Clone this GitHub repository to your local machine using git:  
 git clone https://github.com/gregkurka/food-celebrator-capstone.git
 
- Then navigate into the project directory:  
-cd food-celebrator-capstone
-
-1.   
+Then navigate into the project directory:  
+cd food-celebrator-capstone 
     
-
 Install Dependencies: Install the Node.js dependencies for both the server and client by running npm install in the root project directory. This will install Express, React, and all other required packages as listed in package.json:  
 npm install
 
