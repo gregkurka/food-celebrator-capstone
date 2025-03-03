@@ -1,0 +1,808 @@
+{
+	"info": {
+		"_postman_id": "5349f194-c5db-4ddc-a851-2a657462c579",
+		"name": "Food Celebrator API",
+		"description": "Postman collection for all Food Celebrator endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41100763"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register (POST /api/auth/register)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\",\n  \"email\": \"[email protected]\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/auth/register",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (POST /api/auth/login)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"testpass\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/auth/login",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User (GET /api/auth/me)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/auth/me",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Create User (POST /api/users)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"anotheruser\",\n  \"password\": \"pass123\",\n  \"email\": \"[email protected]\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Users (GET /api/users)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (DELETE /api/users/:id)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Bio (PUT /api/:username/bio)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bio\": \"I love pizza and coding!\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/testuser/bio",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"testuser",
+								"bio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Bio (GET /api/:username/bio)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/testuser/bio",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"testuser",
+								"bio"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile Pic Num (GET /api/:username/profilepic)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/testuser/profilepic",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"testuser",
+								"profilepic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile Pic Num (PUT /api/:username/profilepic)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"profile_pic_num\": 3\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/testuser/profilepic",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"testuser",
+								"profilepic"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pictures",
+			"item": [
+				{
+					"name": "Create Picture (POST /api/pictures)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"URL\": \"https://i.imgur.com/example.jpg\",\n  \"caption\": \"Some yummy food!\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/pictures",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"pictures"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Link User to Picture (POST /api/users/:userId/pictures/:pictureId)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users/1/pictures/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"pictures",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Pictures (GET /api/pictures)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/pictures",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"pictures"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Picture by ID (GET /api/pictures/:pictureId)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/pictures/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"pictures",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Users_x_Pictures (GET /api/users_x_pictures)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users_x_pictures",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users_x_pictures"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Picture (DELETE /api/pictures/:id)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/pictures/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"pictures",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User-Picture Link (DELETE /api/users/:userId/pictures/:pictureId)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users/1/pictures/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"pictures",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User's Pictures by User ID (GET /api/users/:userId/pictures)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/users/1/pictures",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"users",
+								"1",
+								"pictures"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch User's Pictures by Username (GET /api/username/:username/pictures)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/username/testuser/pictures",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"username",
+								"testuser",
+								"pictures"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Picture by Username & ID (GET /api/username/:username/pictures/:pictureid)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/username/testuser/pictures/1",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"username",
+								"testuser",
+								"pictures",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feed",
+			"item": [
+				{
+					"name": "Fetch Feed (GET /api/feed)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/feed",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"feed"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Upload Image (POST /api/upload)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"value": "",
+									"type": "file"
+								},
+								{
+									"key": "caption",
+									"value": "Delicious homemade meal!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/upload",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Create Comment (POST /api/createComment)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 1,\n  \"picture_id\": 1,\n  \"content\": \"This looks great!\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/createComment",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"createComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Comment (PUT /api/editComment)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment_id\": 1,\n  \"content\": \"Updated comment content\"\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/editComment",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"editComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment (DELETE /api/deleteComment)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comment_id\": 1\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/deleteComment",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"deleteComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Comments on a Picture (GET /api/:pictureId/comments)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/1/comments",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Likes",
+			"item": [
+				{
+					"name": "Create Like (POST /api/createLike)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": 1,\n  \"picture_id\": 1\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/createLike",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"createLike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Like (DELETE /api/deleteLike)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"like_id\": 1\n}"
+						},
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/deleteLike",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"deleteLike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch All Likes on a Picture (GET /api/:pictureId/likes)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://food-celebrator.onrender.com/api/1/likes",
+							"protocol": "https",
+							"host": [
+								"food-celebrator",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"1",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
