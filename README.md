@@ -1,5 +1,5 @@
 # food-celebrator-capstone
-## Live Server -
+## Live Deployment
 https://foodcelebrator.onrender.com/
 
 ## Project Overview
