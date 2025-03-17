@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import GetBio from "../ApiCalls/GetBio";
 import EditBio from "../ApiCalls/EditBio";
 
-function ProfileBio({ user: { username }, isEditMode }) {
+function ProfileBio({ user: { username }, isEditMode, extraClass = "" }) {
   const [bio, setBio] = useState(""); // Prevents null issues
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -35,10 +35,7 @@ function ProfileBio({ user: { username }, isEditMode }) {
 
     setLoading(true);
     try {
-      console.log("Updating bio with:", bio); // Debugging line
       const data = await EditBio(username, bio);
-      console.log("Updated Bio Data from API:", data);
-
       setBio(data?.bio ?? bio); // Ensures bio is set correctly
       setMessage("Bio updated successfully!");
     } catch (error) {
@@ -54,31 +51,37 @@ function ProfileBio({ user: { username }, isEditMode }) {
 
   // === RENDER ===
   return (
-    <div>
+    <div className="mt-4">
       {loading ? (
-        <p>Loading...</p>
+        <p className="text-sm text-gray-500">Loading...</p>
       ) : isEditMode ? (
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleEdit();
           }}
+          className="flex flex-col space-y-2"
         >
-          <input
-            className="text-font dark:text-darkfont"
-            type="text"
+          <textarea
+            className={`w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-indigo-200 ${extraClass}`}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
             maxLength={255}
+            rows={6} // Adjust rows as needed for more space
           />
-          <button type="submit">Save</button>
+          <button
+            type="submit"
+            className="self-end bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+          >
+            Save
+          </button>
         </form>
       ) : (
-        <div>
-          <p>Bio: {bio || "No bio available"}</p> {/* Handles empty bio */}
+        <div className="text-gray-700 dark:text-gray-300">
+          <p className="text-base">{bio || "No bio available"}</p>
         </div>
       )}
-      {message && <p>{message}</p>}
+      {message && <p className="mt-2 text-sm text-green-500">{message}</p>}
     </div>
   );
 }
