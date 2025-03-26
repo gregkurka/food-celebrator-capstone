@@ -25,6 +25,15 @@ function Signup({ setToken }) {
       return;
     }
 
+    // Check that username does not contain spaces
+    if (/\s/.test(username)) {
+      setError("Username cannot contain spaces.");
+      return;
+    }
+
+    // // Normalize username to lowercase for consistency
+    // const normalizedUsername = username.toLowerCase();
+
     setError(null);
     setLoading(true);
 
